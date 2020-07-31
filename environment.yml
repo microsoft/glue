@@ -1,0 +1,22 @@
+name: ba
+dependencies:
+- python=3.8
+- pip
+- pip:
+  - azure-cognitiveservices-speech>=1.5.0
+  - edit_distance==1.0.3
+  - termcolor==1.1.0
+  - matplotlib==3.2.2
+  - numpy==1.19.0
+  - pandas==1.0.5
+  - requests==2.24.0
+  - pydub==0.24.1
+  - scikit-learn==0.23.1
+  - scipy==1.5.1
+  - seaborn==0.10.1
+
+# To install this environment
+# -> conda env install -f environment.yml
+# To install kernel to Jupyter Hub
+# -> conda install ipykernel --name ba
+# -> python -m ipykernel install --user --name stk --display-name "Python (ba)"

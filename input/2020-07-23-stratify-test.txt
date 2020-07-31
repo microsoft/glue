@@ -1,0 +1,55 @@
+	Unnamed: 0	intent	text
+72	91	ALG_TempArbeit	Ich bin arbeitslos, arbeite jetzt nur kurz, ist das ok?
+195	313	Arbeitsvermittlung_Vermittlungsvorschlag	Ich find euren Vermittlungsvorschlag doof!
+54	392	KUG_Berechnung	Berechnet mein Chef mein Kurzarbeitergeld?
+101	96	ALG_Auszahlung	Wann bekomme ich das Geld von euch überwiesen?
+0	273	ALG_Mitteilung_Ortsabwesenheit	Ich bin arbeitslos, will aber wegfahren.
+22	328	Arbeitsvermittlung_Bildungsgutschein	Ich brauche Bildungsgutscheine!
+57	229	ALG_Krankenversicherung	Warum bin ich plötzlich nicht mehr krankenversichert?
+26	156	ALG_Nebeneinkommen	Ich bin arbeitslos, aber hab eine kleinen Job nebenher, krieg ich trotzdem mein Geld?
+23	228	ALG_Beitraege_Sozialversicherungen	Was muss mein Chef an Sozialversicherung zahlen?
+154	103	ALG_Widerspruch_Leistungsbescheid	Ich habe leistungsbescheid von euch bekommen, spinnt jawohl.
+4	387	KUG_Krankheit	Wird mein Kurzarbeitergeld bezahlt, auch wenn ich krank bin?
+104	182	ALG_Sperrzeit_Krankenversicherung	Was passiert denn jetzt bitte mit meinen Versicherungen, wenn ich gesperrt bin?
+105	60	ALG_Unterschied_Arbeitslos_Arbeitssuchend	
+89	404	KUG_Weiterfuehrende_Informationen	Habt ihr irgendwo mehr Infos zur Kurzarbeit?
+191	212	Teilarbeitslosengeld_Beantragung	Wo bekomme ich Teilarbeitslosengeld her?
+19	204	Teilarbeitslosengeld_Erklaerung	Krieg ich Geld, weil ich teilarbeitslos bin?
+79	17	SGBII_AufstockendeLeistungen	ja, ich bekomme Arbeitslosengeld, aber das reicht mir nicht.
+186	141	ALG_Anspruchshoehe	Was gebt ihr mir an Arbeitslosengeld?
+39	201	Teilarbeitslosengeld_Anspruchsdauer	Ich brauche länger Teilarbeitslosengeld
+6	249	Veraenderungsmitteilung_schriftlich_Rente	Ich bin bald in Rente.
+33	133	ALG_Anrechnung_Leistungen	Was wird alles angerechnet für mein Arbeitslosengeld?
+171	29	ALG_Arbeitssuchend_melden	Ich bin auf Jobsuche.
+37	304	Arbeitsvermittlung_Vermittlungsgutschein	Was soll ein Vermittlungsgutschein sein?
+44	9	SGBII_Mietkostenuebernahme	Kann ich irgendwie beantragen, dass ich Unterstützung bei meinem Mietkosten bekomme?
+169	281	ALG_Anfrage_Unterlagen_vollstaendig	Sind alle Unterlagen angekommen?
+75	80	Webseite_Verifizierung	Verifiziere mich
+126	125	ALG_Anspruchsdauer	Bis wann zahlt ihr mir Arbeitslosengeld?
+16	408	KUG_Arbeitszeitnachweis	Werden meine gearbeiteten Stunden überprüft?
+133	340	Arbeitsvermittlung_Betreuer_erreichen	Kann mich mal einer zurückrufen?
+139	6	SGBII_Unterschied_SGBIII	Ist Jobcenter das gleiche wie Arbeitsagentur?
+204	196	Teilarbeitslosengeld_Anspruchshoehe	Ich bin teilarbeitslos, wieviel Geld bekomme ich dann?
+64	354	KUG_Auszahlung	Bekomme ich mein Kurzarbeitergeld später?
+21	239	Veraenderungsmitteilung_eService_Bankverbindung	Wir haben geheiratet!
+103	132	ALG_Kuendigung	Man hat mich gefeuert, jetzt brauche ich Geld.
+24	44	ALG_Arbeitslos_melden	Ja, ich hab jetzt keinen Job mehr und möchte nicht bei der BA dafür melden, also für Arbeitslosengeld und so.
+190	77	ALG_Aussteuerung	Wenn mein Krankengeld alle ist, kann ich mich dann arbeitslos melden?
+106	172	ALG_Sperrzeit	Ich habe Angst vor einer Sperre.
+5	380	KUG_Anspruchsvoraussetzungen	Ich bekomme nur noch Kurzarbeitergeld, warum?
+155	368	Allgemein_Rehaspezifische_Foerderung	Ich will eine Reha machen und brauche Unterstützung.
+58	397	KUG_Berechnung	Wie hoch ist mein Gehalt in Kurzarbeit?
+127	269	Veraenderungsmitteilung_Umzug	Ich hab eine neue Wohnung!
+2	149	ALG_Nettoentgelt_Erklaerung	Was ist brutto oder netto Geld?
+193	117	ALG_Anspruchsbedingungen	Wie lange muss ich gearbeitet haben, damit ich Arbeitslosengeld krieg?
+196	40	ALG_Meldung_Wann	Wann melde ich mich arbeitssuchend?
+59	302	Allgemein_Oeffnungszeiten_BA	Kann ich jetzt zu euch kommen?
+120	420	KUG_Sozialversicherung	Kurzarbeitergeld und Sozialversicherung?
+211	165	ALG_Aenderung_Anspruchsdauer_2020	Bekomme ich wirklich länger Arbeitslosengeld?
+84	332	Arbeitsvermittlung_Probearbeit_Mitteilung	Ich habe ein Praktikumsplatz!
+159	373	Allgemein_Ausbildungssuchend_Nachweis	Ich brauche eine Bestätigung von euch, dass ich eine Ausbildung suche.
+1	424	KUG_Sozialversicherung	Muss mein Chef weiter die Sozialversicherung zahlen?
+9	69	Veraenderungsmitteilung_NeueStelle	Melde mich bei euch ab, ich arbeite wieder.
+203	345	ALG_Anfrage_Bearbeitungsstand	Wie weit seid ihr mit meinem Antrag?
+119	289	Allgemein_Arbeitsbescheinigung_Erklaerung	Wozu eine Arbeitsbescheinigung?
+150	223	ALG_Beitraege_Private_Krankenversicherung	Ich wurde rausgeschmissen, will aber meine private Krank
