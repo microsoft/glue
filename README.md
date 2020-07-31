@@ -1,8 +1,6 @@
 # Speech Toolkit
 This toolkit serves to extract LUIS files from Excel sheets and with that create test data sets to be scored using a LUIS endpoint.
 
-[[_TOC_]]
-
 ## Know before you go
 This toolkit is based on multiple, free and/or open source software components. Before getting your hands on the toolkits, make sure your local computer is equipped with the following frameworks and base packages:
 - [Python](https://www.python.org/downloads/windows/) (required, Version 3.8 is recommended)
@@ -75,7 +73,7 @@ This section helps you to start your LUIS scoring with help of `speechTools.py`.
 --do_scoring            Text to speech using Microsoft Speech API
 ```
 
-1. Make sure your conda environment is activated, otherwise do by <br>`conda activate ba`
+1. Make sure your conda environment is activated, otherwise do by <br>`conda activate txttools`
 1. Put your tab-delimited scoring file into the `input` folder of the repository and make sure that it has the columns `intent` and `text`. Otherwise, the script will not find the correct values.
 1. Execute the following command:<br>
 `python code/speechTools.py --input input/scoringfile.txt --do_scoring`<br>
@@ -105,8 +103,8 @@ The following table shows the structure of the scoring file and gives you an exa
 
 ### Evaluation with the Jupyter Notebook
 To get deeper insights into the classification performance, there is a Jupyter notebook in the `notebook` subdirectory. 
-1. Open the `Eval - LUIS for BA.ipynb` Jupyter notebook in the `notebook` subfolder of the repository
-1. Choose the right kernel `Python (ba)`, which you installed
+1. Open the `Eval - LUIS Scoring Review.ipynb` Jupyter notebook in the `notebook` subfolder of the repository
+1. Choose the right kernel `Python (txttool)`, which you installed
 1. Place the scoring file from the output folder in the same folder as the notebook or just keep the directory in mind. There is an example file in the notebooks-folder as well
 1. Change the file name in the `Import data` section. If you want to reference to the file in the output folder, change it to `../../output/[date-of-case]-case/[date-of-case]-case.txt`.
 1. Execute all the fields - this might take a while especially during the plotting phase of the confusion matrix
