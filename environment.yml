@@ -1,4 +1,4 @@
-name: ba
+name: txttool
 dependencies:
 - python=3.8
 - pip
@@ -18,5 +18,5 @@ dependencies:
 # To install this environment
 # -> conda env install -f environment.yml
 # To install kernel to Jupyter Hub
-# -> conda install ipykernel --name ba
-# -> python -m ipykernel install --user --name stk --display-name "Python (ba)"
+# -> conda install ipykernel --name txttool
+# -> python -m ipykernel install --user --name stk --display-name "Python (txttool)"

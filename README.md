@@ -30,7 +30,7 @@ Afterwards, you should be able to see the activated environment in the command l
 ### Get your keys
 In the root directory, you will find a file named `config.sample.ini`. This is the file where all the LUIS keys have to be set. First, create a copy of this file and rename it to `config.ini`. Open the file and set the respective keys for the `[luis]`-section. You can ignore the other parts. For this purpose, go to your LUIS app by accessing the [portal](https://eu.luis.ai). Click on your app and click "MANAGE"/"VERWALTEN". In the "Settings"-section, copy the "App ID" and insert it in the file. Afterwards, go to "Azure Resources" below, make sure you are in the tab "Prediction Resources"/"Vorhersageressourcen" and copy+paste the following keys and names:
 
-![LUIS Resources](assets/img/luis-resources.jpg)
+![LUIS Resources](assets/img/luis-resources.JPG)
 
 For `slot`, either insert `staging` or `production`, depending which deployment slot you are using with your LUIS model. Region can remain blank.
 
@@ -99,8 +99,9 @@ The following table shows the structure of the scoring file and gives you an exa
 | intent | text | prediction | score | drop |
 | --- | --- | --- | --- | --- |
 | Intent name based on reference Excel file | Raw text string | Predicted intent by LUIS app | Certainty score of LUIS model, between 0 and 1 | Predicted intent by LUIS app, _None_-intent in case of dropped value (when below the confidence score e.g. of 0.82) |
-| ALG_Abfindung |	Wirkt sich eine Abfindung auf ALG aus? |	ALG_Abfindung |	0.9450068 | ALG_Abfindung |
-ALG_Anrechnung_Leistungen |	Was zieht ihr mir alles vom Arbeitslosengeld ab? |	ALG_Anspruchsbedingungen |	0.5517158 |	None |
+| Book_Flight | I would like to book a flight to Frankfurt. |	Book_Flight |	0.9450068 | Book_Flight |
+| Flight_Change | Please rebook my flight to Singapore, please | Change_Flight | 0.9112311 | Flight_Change |
+| Flight_Change |	I would like to change my flight. |	Flight_Cancel |	0.5517158 |	None |
 
 ### Evaluation with the Jupyter Notebook
 To get deeper insights into the classification performance, there is a Jupyter notebook in the `notebook` subdirectory. 
