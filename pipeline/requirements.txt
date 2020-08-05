@@ -1,0 +1,67 @@
+# azure-functions
+# requests==2.24.0
+# datetime
+# azure-storage==0.33.0
+# boto3
+# numpy==1.19.0
+# scipy==1.5.1
+# pydub==0.23.1
+# google-api-core==1.22.0
+# google-auth==1.20.0
+# google-cloud-texttospeech==2.1.0
+# googleapis-common-protos==1.52.0
+# grpcio==1.29.0
+# #pip install --upgrade google-cloud-texttospeech
+
+azure-cognitiveservices-speech==1.13.0
+azure-common==1.1.25
+azure-functions==1.3.0
+azure-nspkg==3.0.2
+azure-storage==0.33.0
+boto3==1.14.33
+botocore==1.17.33
+cachetools==4.1.1
+certifi==2020.6.20
+cffi==1.14.1
+chardet==3.0.4
+cryptography==3.0
+cycler==0.10.0
+DateTime==4.3
+docutils==0.15.2
+edit-distance==1.0.3
+google-api-core==1.17.0 #1.22.0
+google-auth==1.20.0
+google-cloud-texttospeech==1.0.1
+googleapis-common-protos==1.52.0
+grpcio==1.29.0
+idna==2.10
+jmespath==0.10.0
+joblib==0.16.0
+kiwisolver==1.2.0
+libcst==0.3.8
+matplotlib==3.2.2
+mypy-extensions==0.4.3
+numpy==1.19.0
+pandas==1.0.5
+proto-plus==1.5.1
+protobuf==3.12.4
+pyasn1==0.4.8
+pyasn1-modules==0.2.8
+pycparser==2.20
+pydub==0.23.1
+pyparsing==2.4.7
+python-dateutil==2.8.1
+pytz==2020.1
+PyYAML==5.3.1
+requests==2.24.0
+rsa==4.6
+s3transfer==0.3.3
+scikit-learn==0.23.1
+scipy==1.5.1
+six==1.15.0
+termcolor==1.1.0
+threadpoolctl==2.1.0
+typing-extensions==3.7.4.2
+typing-inspect==0.6.0
+urllib3==1.25.10
+zope.interface==5.1.0

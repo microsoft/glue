@@ -19,11 +19,11 @@ After making sure these are all available on your system, the environment can be
 4. Enter the root folder of your repository
 5. Set up the Conda environment using the yaml file<br> `conda env create -f environment.yml`
 6. After successfully installing the yaml-file, your environment is set up and you can go ahead. See the following section how to activate it.
-7. In any case, you should activate your `ba` conda environment to make sure all the required packages are loaded. Submit this command in your preferred workspace:<br>`conda activate ba`<br>
-Afterwards, you should be able to see the activated environment in the command line:<br>`(ba)`
+7. In any case, you should activate your `ba` conda environment to make sure all the required packages are loaded. Submit this command in your preferred workspace:<br>`conda activate txttool`<br>
+Afterwards, you should be able to see the activated environment in the command line:<br>`(txttool)`
 8. To install the kernel to Jupyter Hub in order to use the notebooks, do the following steps:<br>
-`conda install ipykernel --name ba`<br>
-`python -m ipykernel install --user --name stk --display-name "Python (ba)"`
+`conda install ipykernel --name txttool`<br>
+`python -m ipykernel install --user --name stk --display-name "Python (txttool)"`
 
 ### Get your keys
 In the root directory, you will find a file named `config.sample.ini`. This is the file where all the LUIS keys have to be set. First, create a copy of this file and rename it to `config.ini`. Open the file and set the respective keys for the `[luis]`-section. You can ignore the other parts. For this purpose, go to your LUIS app by accessing the [portal](https://eu.luis.ai). Click on your app and click "MANAGE"/"VERWALTEN". In the "Settings"-section, copy the "App ID" and insert it in the file. Afterwards, go to "Azure Resources" below, make sure you are in the tab "Prediction Resources"/"Vorhersageressourcen" and copy+paste the following keys and names:
