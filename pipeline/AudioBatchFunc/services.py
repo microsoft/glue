@@ -6,7 +6,7 @@ import time
 # Microsoft
 import requests
 # Google
-from google.cloud import texttospeech
+from google.cloud import texttospeech as tts
 # Amazon
 import boto3
 
@@ -24,7 +24,7 @@ except Exception as e:
 class TextToSpeech(object):
     def __init__(self, subscription_key, language, font, text, region):
         self.subscription_key = subscription_key
-        self.tts = f'<speak version="1.0" xml:lang="en-us"><voice xml:lang="{language}" name="Microsoft Server Speech Text to Speech Voice ({language}, {font})">{text}</voice></speak>'
+        self.tts = f'<speak version="1.0" xml:lang="en-us"><voice xml:lang="{language}" name="{font}">{text}</voice></speak>'
         self.timestr = time.strftime("%Y%m%d-%H%M")
         self.access_token = None
 
@@ -46,7 +46,7 @@ class TextToSpeech(object):
         }
         response = requests.post(url, headers=headers, data=self.tts)
         if response.status_code == 200:
-            fname = he.getFilename('generated/', output_folder, provider, language, font, i, 'wav')
+            fname = he.getFilename('generated/', output_folder, provider, language, font.split(',')[1][1:-1], i, 'wav')
             with open(fname, "wb") as audio:
                 audio.write(response.content)
                 logging.info(f"[INFO] - File {fname} written.")
@@ -60,25 +60,20 @@ class TextToSpeech(object):
         
 ''' GOOGLE '''
 def googleTTS(ssml_text, output_folder, provider, language, font, i, transcribe, transfile):
-    client = texttospeech.TextToSpeechClient()
-    synthesis_input = texttospeech.types.SynthesisInput(ssml = ssml_text)
-    if font.split("_")[1] == "MALE":
-        voice = texttospeech.types.VoiceSelectionParams(
-            language_code = language,
-            name = f'{language}-{font.split("_")[0]}',
-            ssml_gender = texttospeech.enums.SsmlVoiceGender.MALE)
-    elif font.split("_")[1] == "FEMALE":
-        voice = texttospeech.types.VoiceSelectionParams(
-            language_code = language,
-            name = f'{language}-{font.split("_")[0]}',
-            ssml_gender = texttospeech.enums.SsmlVoiceGender.FEMALE)
-    else:
-        logging.warning(f'[ERROR] - Gender {font.split("_")[1]} not available.')
-    # Selects the type of audio file to return
-    audio_config = texttospeech.types.AudioConfig(
-        audio_encoding = texttospeech.enums.AudioEncoding.LINEAR16)
-    # Performs the text-to-speech request on the text input with the selected voice parameters and audio file type
-    response = client.synthesize_speech(synthesis_input, voice, audio_config)
+    # Set request parameters
+    client = tts.TextToSpeechClient()
+    synthesis_input = tts.types.SynthesisInput(ssml=ssml_text)
+    voice_params = tts.types.VoiceSelectionParams(
+        language_code=language,
+        name=font.split('_')[0])
+    audio_config = tts.types.AudioConfig(
+        audio_encoding = tts.enums.AudioEncoding.LINEAR16)
+    client = tts.TextToSpeechClient()
+    # Submit request
+    response = client.synthesize_speech(
+        synthesis_input,
+        voice=voice_params,
+        audio_config=audio_config)
     # Writes the synthetic audio to the output file. The response's audio_content is binary.
     fname = he.getFilename('generated/', output_folder, provider, language, font, i, 'wav')   
     try:
@@ -99,8 +94,8 @@ def amazonTTS(text, aws_key, aws_secret, region, output_folder, provider, langua
     polly_client = boto3.Session(
         aws_access_key_id = aws_key,          
         aws_secret_access_key = aws_secret, 
-        region_name = region).client('polly') # 'eu-central-1'
-    response = polly_client.synthesize_speech(VoiceId = font, # Hans, Marlene or Vicki
+        region_name = region).client('polly')
+    response = polly_client.synthesize_speech(VoiceId = font,
         Engine = 'standard', 
         LanguageCode = language,
         OutputFormat = 'mp3',
