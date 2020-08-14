@@ -99,6 +99,7 @@ def amazonTTS(text, aws_key, aws_secret, region, output_folder, provider, langua
         Engine = 'standard', 
         LanguageCode = language,
         OutputFormat = 'mp3',
+        SampleRate = '16000',
         TextType = texttype,
         Text = text)
     fname = he.getFilename('generated/', output_folder, provider, language, font, i, 'mp3')

@@ -23,7 +23,7 @@ try:
     from __app__ import params as pa
 except Exception as e:
     logging.warning('[INFO] - Main: Using local imports.')
-    sys.path.append('./')
+    sys.path.append('C:\\Users\\tiwalz\\Documents\\Projects\\Daimler\\iBDC_VoiceBot_CPL_DataScience\\code\\CPL\\')
     import AudioBatchFunc.helper as he
     import AudioBatchFunc.audio as au
     import AudioBatchFunc.services as se
@@ -114,6 +114,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         res = json.dumps(dict(
             job_id          =   pa.job_id,
             text            =   pa.text,
+            transcription   =   he.removeTags(pa.text),
             service         =   pa.provider,
             code            =   200,
             output          =   [{"level": pa.level, "filename": fname, "transcribe": pa.transcribe}]

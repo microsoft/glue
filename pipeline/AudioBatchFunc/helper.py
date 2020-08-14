@@ -49,7 +49,9 @@ def getFilename(mode, output_folder, provider, language, font, i, format):
 # Remove XML/SSML Tags
 def removeTags(text):
     logging.info(f'[INFO] - Removing SSML-tags from input text.')
-    return re.compile(r'<[^>]+>').sub('', text)
+    text = re.compile(r'<[^>]+>').sub('', text)
+    text = ' '.join(text.split())
+    return text
 
 def copytoBLOB(local_file_path, fname, blobstring, container):
     try:
@@ -84,14 +86,14 @@ def cleanUp(dir_path, output_folder):
     for path, subdirs, files in os.walk(dir_path):
         for sub in subdirs:
             timestamp = os.path.getmtime(os.path.join(path, sub))
-            if time.time() - 86400*2 > timestamp:
+            if time.time() - 86400 * 2 > timestamp:
                 try:
                     # os.remove(os.path.join(path, sub))
                     logging.warning(f'[INFO] - Deleted {sub}.')
                 except Exception as e:
                     logging.error(f'[ERROR] - Could not delete {os.path.join(path, sub)} -> {e}.')
                     continue
-            """
+    """
 
 def writeError(output_folder, text, exception):
     newline = "\n"

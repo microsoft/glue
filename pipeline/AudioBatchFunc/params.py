@@ -3,6 +3,7 @@ import os
 import sys
 import tempfile
 import logging
+import html
 
 def getParams(req):
     logging.info(f'[INFO] - Collecting input parameters.')
@@ -13,10 +14,10 @@ def getParams(req):
     language = req.get('lang')
     provider = req.get('provider')
     font = req.get('font')
-    text = req.get('input')
+    text = html.unescape(req.get('input'))
     output_format = req.get('format')
     # Case management
-    transcribe = True if req.get('transcribe') == "True" else False
+    transcribe = True if req.get('transcribe') == "True" or req.get('transcribe') == "true" else False
     level = req.get('level')
     job_id = req.get('jobid') 
     # General Resources
