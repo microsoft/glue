@@ -15,12 +15,13 @@ import scoreLUIS as sl
 import speechTranscribe as stt
 import synthesizeText as tts
 import evaluate as ev
+import parameters as pa
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
 ''' COMMAND EXAMPLES '''
 # conda activate nlptools
-# python .\code\speechTools.py  --do_synthesize --input input/scoringfile.txt
+# python .\code\speechTools.py --do_synthesize --input input/scoringfile.txt
 
 # Parse arguments
 parser = argparse.ArgumentParser()
@@ -78,36 +79,17 @@ do_transcribe = args.do_transcribe
 do_evaluate = args.do_evaluate
 do_lufile = args.do_lufile
 
-# Get config file
-sys.path.append('./')
-config = configparser.ConfigParser()
-try:
-    config.read('config.ini')
-    output_folder = config['dir']['output_folder']
-    app_id = config['luis']['app_id']
-    key = config['luis']['key']
-    region_luis = config['luis']['region']
-    luis_endpoint = config['luis']['endpoint']
-    slot = config['luis']['slot']
-    speech_key = config['speech']['key']
-    endpoint = config['speech']['endpoint']
-    region_speech = config['speech']['region']
-    synth_key = config['synth']['key']
-    region_synth = config['synth']['region']
-    resource_name = config['synth']['resource_name']
-    language = config['synth']['language']
-    font = config['synth']['font']
-except Exception as e:
-    sys.exit(f'[EXCEPT] - Config file could not be loaded -> {e}.')
+# Get and set params
+pa.get_params()
 
 if __name__ == '__main__':
     logging.warning('[INFO] - STARTING SPEECHTOOL')
     # Case management
     try:
         if any([do_scoring, do_synthesize, do_transcribe, do_evaluate]):
-            output_folder, case, output_file = he.createCase(mode, output_folder, subfolder)
+            output_folder, case, output_file = he.createCase(mode, pa.output_folder, subfolder)
             shutil.copyfile(fname, f'{output_folder}{case}input/{os.path.basename(fname)}')
-            logging.warning(f'[STATUS] - Created case {case} and copied input files to case folder')
+            logging.info(f'[INFO] - Created case {case} and copied input files to case folder')
         else:
             sys.exit('[ERROR] - Please activate at least one of the following modes: --do_synthesize, --do_transcribe, --do_scoring, --do_evaluate')
     except Exception as e:
@@ -119,15 +101,15 @@ if __name__ == '__main__':
     
     # TTS
     if do_synthesize:
-        logging.warning('[STATUS] - Starting text-to-speech synthetization')
-        df = tts.batchSynthesize(df, synth_key, language, font, region_synth, resource_name, output_folder, case)
-        logging.warning(f'[STATUS] - Finished text-to-speech synthetization of {len(df)} utterances')
+        logging.info('[INFO] - Starting text-to-speech synthetization')
+        df = tts.batchSynthesize(df, pa.synth_key, pa.language, pa.font, pa.region_synth, pa.resource_name, output_folder, case)
+        logging.info(f'[INFO] - Finished text-to-speech synthetization of {len(df)} utterances')
 
-    # Speech
+    # STT
     if do_transcribe:
         if audio_files != "":
             logging.warning('[STATUS] - Starting with speech-to-text conversion')
-            stt.batchTranscribe(audio_files, output_folder, case, region_speech, speech_key, endpoint)
+            stt.batchTranscribe(audio_files, output_folder, case, pa.region_speech, pa.speech_key, pa.endpoint)
             transcription = pd.read_csv(f'{output_folder}{case}transcriptions.txt', sep="\t", names=['audio', 'rec'], encoding='utf-8', header=None, index_col=None)
             if 'audio' in list(df.columns):
                 df = pd.merge(left=df, right=transcription, how='left', on='audio')
@@ -148,7 +130,7 @@ if __name__ == '__main__':
     if do_scoring and 'intent' in list(df.columns):
         if mode == 'score':
             logging.warning('[STATUS] - Starting with LUIS scoring')
-            data = sl.scoreLUIS(df, mode, app_id, luis_endpoint, key, tres, slot)
+            data = sl.scoreLUIS(df, mode, pa.app_id, pa.luis_endpoint, pa.key, pa.tres, pa.slot)
             data.to_csv(output_file, sep='\t', encoding='utf-8', index=False)
         elif mode == 'eval':
             logging.warning('[STATUS] - Starting with LUIS eval')

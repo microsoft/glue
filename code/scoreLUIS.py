@@ -36,7 +36,9 @@ def scoreLUIS(df, mode, app_id, endpoint, key, tres, slot='production'):
     logging.warn(f'[START] - STARTED LUIS MODEL SCORING of {len(df)} utterances ... ')
     for index, row in df.iterrows():
         try:
-            #endpoint_url = f'{endpoint}.api.cognitive.microsoft.com'
+            # Uncomment this if you are using the old url version having the region name as endpoint
+            # endpoint_url = f'{endpoint}.api.cognitive.microsoft.com'
+            # Below, you see the most current version of the api having the prediction resource name as endpoint
             endpoint_url = f'{endpoint}.cognitiveservices.azure.com'
             headers = {
             }
@@ -62,7 +64,6 @@ def scoreLUIS(df, mode, app_id, endpoint, key, tres, slot='production'):
                 # TODO - second and third best confidence
                 if topScore < tres: 
                     drop = "None"
-                    #topIntent = "None"
                 else:
                     drop = topIntent
                 logging.warn(f"[INFO] {str(index+1)}/{len(df)} -> '{row['text']}' -> Original: {row['intent']}, Pred: {topIntent} ({topScore}, drop? {topIntent != row['intent']})")
