@@ -58,7 +58,7 @@ parser.add_argument("--do_synthesize",
                  action="store_true",
                  help="Text to speech using Microsoft Speech API")
 parser.add_argument("--do_evaluate",
-                 default=True,
+                 default=False,
                  action="store_true",
                  help="Evaluate speech transcriptions")
 parser.add_argument("--do_lufile",
@@ -112,8 +112,8 @@ if __name__ == '__main__':
             logging.warning('[STATUS] - Starting with speech-to-text conversion')
             stt.batchTranscribe(audio_files, output_folder, case, pa.region_speech, pa.speech_key, pa.endpoint)
             transcription = pd.read_csv(f'{output_folder}{case}transcriptions.txt', sep="\t", names=['audio', 'rec'], encoding='utf-8', header=None, index_col=None)
-            if 'audio' in list(df.columns):
-                df = pd.merge(left=df, right=transcription, how='left', on='audio')
+            #if 'audio' in list(df.columns):
+            #    df = pd.merge(left=df, right=transcription, how='left', on='audio')
 
     # Speech Evaluation
     if do_evaluate:
@@ -146,7 +146,7 @@ if __name__ == '__main__':
 
     # Write transcript file
     try:
-        df.to_csv(f'{output_folder}{case}transcriptions.txt', sep="\t", encoding="utf-8", index=False)
+        #df.to_csv(f'{output_folder}{case}transcriptions.txt', sep="\t", encoding="utf-8", index=False)
         logging.warning(f'[INFO] - Wrote transcription file to case.')
         logging.warning(f'[STATUS] - All set!')
     except Exception as e:
