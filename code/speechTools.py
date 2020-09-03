@@ -27,6 +27,7 @@ from sklearn.metrics import confusion_matrix
 parser = argparse.ArgumentParser()
 parser.add_argument("--input",
                 type=str,
+                default="input/testset-example.txt",
                 help="give the whole path to tab-delimited file")
 parser.add_argument("--mode",
                 default="score",
