@@ -27,24 +27,23 @@ from sklearn.metrics import confusion_matrix
 parser = argparse.ArgumentParser()
 parser.add_argument("--input",
                 type=str,
-                default="input/testset-example.txt",
-                help="give the whole path to tab-delimited file")  
-parser.add_argument("--mode", 
+                help="give the whole path to tab-delimited file")
+parser.add_argument("--mode",
                 default="score",
                 type=str,
                 help="Mode, either score or eval")
-parser.add_argument("--subfolder", 
+parser.add_argument("--subfolder",
                 default="input",
                 type=str,
                 help="Input folders, pass comma-separated if multiple ones")
-parser.add_argument("--audio_files", 
+parser.add_argument("--audio_files",
                 default="input/audio/",
                 type=str,
                 help="Input folders, pass comma-separated if multiple ones")
-parser.add_argument("--treshold", 
+parser.add_argument("--treshold",
                 default=0.82,
                 type=float,
-                help="Set minimum confidence score between 0.00 and 1.00") 
+                help="Set minimum confidence score between 0.00 and 1.00")
 parser.add_argument("--do_transcribe",
                 default=False,
                  action="store_true",
@@ -52,7 +51,7 @@ parser.add_argument("--do_transcribe",
 parser.add_argument("--do_scoring",
                  default=False,
                  action="store_true",
-                 help="Text to speech using Microsoft Speech API") 
+                 help="Text to speech using Microsoft Speech API")
 parser.add_argument("--do_synthesize",
                  default=False,
                  action="store_true",
@@ -60,11 +59,11 @@ parser.add_argument("--do_synthesize",
 parser.add_argument("--do_evaluate",
                  default=True,
                  action="store_true",
-                 help="Evaluate speech transcriptions")  
+                 help="Evaluate speech transcriptions")
 parser.add_argument("--do_lufile",
                  default=False,
                  action="store_true",
-                 help="Create LU-file")  
+                 help="Create LU-file")
 args = parser.parse_args()
 
 # Set arguments
@@ -88,7 +87,8 @@ if __name__ == '__main__':
     try:
         if any([do_scoring, do_synthesize, do_transcribe, do_evaluate]):
             output_folder, case, output_file = he.createCase(mode, pa.output_folder, subfolder)
-            shutil.copyfile(fname, f'{output_folder}{case}input/{os.path.basename(fname)}')
+            if do_synthesize: 
+                shutil.copyfile(fname, f'{output_folder}{case}input/{os.path.basename(fname)}')
             logging.info(f'[INFO] - Created case {case} and copied input files to case folder')
         else:
             sys.exit('[ERROR] - Please activate at least one of the following modes: --do_synthesize, --do_transcribe, --do_scoring, --do_evaluate')
@@ -98,7 +98,7 @@ if __name__ == '__main__':
     # File reader
     if os.path.exists(f'{output_folder}{case}input/{os.path.basename(fname)}'):
         df = pd.read_csv(f'{output_folder}{case}input/{os.path.basename(fname)}', sep='\t', encoding='utf-8', index_col=None)
-    
+
     # TTS
     if do_synthesize:
         logging.info('[INFO] - Starting text-to-speech synthetization')
@@ -149,4 +149,4 @@ if __name__ == '__main__':
         logging.warning(f'[INFO] - Wrote transcription file to case.')
         logging.warning(f'[STATUS] - All set!')
     except Exception as e:
-        logging.warn(f'[ERROR] - An error has occured -> {e}.')
+        logging.warning(f'[ERROR] - An error has occured -> {e}.')
