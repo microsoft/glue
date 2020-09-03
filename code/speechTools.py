@@ -15,7 +15,7 @@ import scoreLUIS as sl
 import speechTranscribe as stt
 import synthesizeText as tts
 import evaluate as ev
-import parameters as pa
+import params as pa
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
