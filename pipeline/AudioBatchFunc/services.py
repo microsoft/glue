@@ -3,6 +3,7 @@ import os
 import logging
 import sys
 import time
+import wave
 # Microsoft
 import requests
 # Google
@@ -95,17 +96,28 @@ def amazonTTS(text, aws_key, aws_secret, region, output_folder, provider, langua
         aws_access_key_id = aws_key,          
         aws_secret_access_key = aws_secret, 
         region_name = region).client('polly')
-    response = polly_client.synthesize_speech(VoiceId = font,
-        Engine = 'standard', 
-        LanguageCode = language,
-        OutputFormat = 'mp3',
-        SampleRate = '16000',
-        TextType = texttype,
-        Text = text)
-    fname = he.getFilename('generated/', output_folder, provider, language, font, i, 'mp3')
+    try:
+        response = polly_client.synthesize_speech(VoiceId = "Hans",
+            Engine = 'neural', 
+            LanguageCode = language,
+            OutputFormat = 'pcm',
+            SampleRate = '16000',
+            TextType = texttype,
+            Text = text)
+    except Exception as e:
+        response = polly_client.synthesize_speech(VoiceId = "Hans",
+            Engine = 'standard', 
+            LanguageCode = language,
+            OutputFormat = 'pcm',
+            SampleRate = '16000',
+            TextType = texttype,
+            Text = text)
+        logging.warning(f'[WARNING] -> {e}')
+    fname = he.getFilename('generated/', output_folder, provider, language, font, i, 'wav')
     try: 
-        with open(fname, 'wb') as out:
-            out.write(response['AudioStream'].read())
+        with wave.open(fname, 'wb') as out:
+            out.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
+            out.writeframes(response['AudioStream'].read())
             out.close()
         logging.info(f"[INFO] - File {fname} written.")
         if transcribe:

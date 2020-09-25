@@ -14,6 +14,7 @@ import json
 import tempfile
 import time
 import datetime
+import uuid
 
 # Import sub scripts
 try:
@@ -40,7 +41,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             logging.info(f'[INFO] - Received data from request body.')
         else:
             data = req.params
-            logging.info(f'[WARNING] - Received data as request params.')
+            logging.warning(f'[WARNING] - Received data as request params.')
 
         # Get parameters
         pa.getParams(data)
@@ -66,12 +67,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             if pa.provider == "Microsoft":
                 app = se.TextToSpeech(pa.subscription_key, pa.language, pa.font, pa.text, pa.region)
                 app.get_token(pa.region, pa.subscription_key)
-                fname = app.save_audio(pa.region, pa.resource_name, output_folder, pa.provider, pa.language, pa.font, datetime.datetime.now().strftime("%f"), pa.transcribe, transfile)
+                fname = app.save_audio(pa.region, pa.resource_name, output_folder, pa.provider, pa.language, pa.font, uuid.uuid4().hex, pa.transcribe, transfile)
             elif pa.provider == "Google":
-                fname = se.googleTTS(pa.text, output_folder, pa.provider, pa.language, pa.font, datetime.datetime.now().strftime("%f"), pa.transcribe, transfile)
+                fname = se.googleTTS(pa.text, output_folder, pa.provider, pa.language, pa.font, uuid.uuid4().hex, pa.transcribe, transfile)
                 os.remove(f"{pa.dir_path}/auth.json") if os.path.exists(f"{pa.dir_path}/auth.json") else f"[INFO] - No {pa.provider} auth file found, nothing to delete."
             elif pa.provider == "Amazon":
-                fname = se.amazonTTS(pa.text, pa.aws_key, pa.aws_secret, pa.aws_region, output_folder, pa.provider, pa.language, pa.font, datetime.datetime.now().strftime("%f"), pa.transcribe, transfile)
+                fname = se.amazonTTS(pa.text, pa.aws_key, pa.aws_secret, pa.aws_region, output_folder, pa.provider, pa.language, pa.font, uuid.uuid4().hex, pa.transcribe, transfile)
             else:
                 raise TypeError(f'[ERROR] - Service "{pa.provider}" is not supported, please choose "Microsoft", "Google" or "Amazon".')
         except Exception as e:
@@ -80,21 +81,25 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             raise TypeError(f'Failed to build up connection with {pa.provider}.')
 
         ''' FILE HANDLING '''
+        # Build list of output files and append generated file
+        output = [{"level": "generated", "filename": fname, "success": True}]
+
         # Convert to MP3
         if "mp3" in fname:
-            au.convertMP3(output_folder, fname)
+            success_mp3 = au.convertMP3(output_folder, fname)
+            output.append([{"level": "mp3", "filename": fname, "success": success_mp3}])
         else:
             logging.info(f'[INFO] - No mp3 files found, skipping conversion.')
 
         # Convert to Custom Speech format
-        try:
-            if int(pa.level) == 1:
-                au.customSpeech(output_folder, fname, 8000, 0, None)
-            elif int(pa.level) == 2:
-                au.customSpeech(output_folder, fname, 8000, 0, None)
-                au.telephoneFilter(output_folder, fname)
-        except Exception as e:
-            logging.warning(f'[ERROR] -> Failed to convert audio files -> {e}.')
+        if int(pa.level) == 1:
+            success_cs = au.customSpeech(output_folder, fname, 8000, 0, None)
+            output.append({"level": "converted", "filename": fname, "success": success_cs})
+        elif int(pa.level) == 2:
+            success_cs = au.customSpeech(output_folder, fname, 8000, 0, None)
+            success_tf = au.telephoneFilter(output_folder, fname)
+            output.append({"level": "converted", "filename": fname, "success": success_cs})
+            output.append({"level": "noise", "filename": fname, "success": success_tf})
 
         # Close transcription file
         if pa.transcribe: 
@@ -112,12 +117,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         ''' RESPONSE '''
         res = json.dumps(dict(
+            code            =   200,
             job_id          =   pa.job_id,
+            service         =   pa.provider,
             text            =   pa.text,
             transcription   =   he.removeTags(pa.text),
-            service         =   pa.provider,
-            code            =   200,
-            output          =   [{"level": pa.level, "filename": fname, "transcribe": pa.transcribe}]
+            transcribe      =   pa.transcribe,
+            level           =   pa.level,
+            output          =   output
             )
         )
         ''' RESPONSE '''
@@ -127,7 +134,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         # Copy error-file
         he.copytoBLOB(output_folder, "errors.txt", pa.blobstring, pa.container)
         return func.HttpResponse(
-             f"[ERROR] - Received errorneous request or invalid API data -> {e}",
+             f"[ERROR] - Received invalid request or API data -> {e}",
              status_code=500
         )
     

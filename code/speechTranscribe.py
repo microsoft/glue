@@ -13,7 +13,7 @@ import helper as he
 import azure.cognitiveservices.speech as speechsdk
 
 # Function for Standard Model
-def batchTranscribe(speech_files, output_folder, case, service_region, speech_key, endpoint_id = "", enable_proxy = False, lexical = False, *argv):
+def batchTranscribe(speech_files, output_folder, case, service_region, speech_key, endpoint_id = "", enable_proxy = False, lexical = True, *argv):
     """
 
     """
@@ -55,6 +55,7 @@ def processRecognition(result, filename, output_folder, case, lexical):
     if result.reason == speechsdk.ResultReason.RecognizedSpeech:
         if lexical:
             text = f"{filename}\t{format(result.text)}\t{json.loads(result.json)['NBest'][0]['Lexical']}"
+            print(json.dumps(result.json))
         else:
             text = f"{filename}\t{format(result.text)}"
         logging.warning(f"[INFO] - Recognition successful: {filename} -> {result.text}")

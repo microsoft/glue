@@ -1,7 +1,8 @@
 # Speech Toolkit
-The speech toolkit is a lightweight, Python-based collection of scripts to support you with text and speech use cases, especially at the following tasks:
-- Batch-transcribe audio files to text transcripts using [Microsoft Speech to Text](https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/)
+The speech toolkit is a lightweight, Python-based collection of scripts to support you with [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/) text and speech use cases, especially at the following tasks:
+- Batch-transcribe audio files to text transcripts using [Microsoft Speech to Text Service](https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/)
 - Batch-synthesize text data using [Microsoft Text to Speech Service](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/)
+- Batch-translate text data using [Microsoft Translator](https://azure.microsoft.com/en-us/services/cognitive-services/translator/)
 - Batch-score text strings on a [Microsoft LUIS](https://luis.ai)-model
 - [to extract LUIS files from Excel sheets and with that create test data sets to be scored using a LUIS endpoint.]
 
@@ -35,52 +36,7 @@ Afterwards, you should be able to see the activated environment in the command l
 ### Get your keys
 In the root directory, you will find a file named `config.sample.ini`. This is the file where all the LUIS keys have to be set. First, create a copy of this file and rename it to `config.ini`. You only need the keys for the services you use during your experiment. However, keep the structure of the `config.ini`-file as it is to avoid errors. The toolkit will just set the variable values as _none_, but will throw an error when the keys cannot be found.
 
-#### Text to Speech
-- Go to the [Azure portal](https://portal.azure.com), open the Cognitive Service resource you want to use
-- Be aware that not every voice is available in every Azure region
-![Microsoft Speech Service portal](assets/img/speech-portal.png)
-```
-[synth]
-key=
-region=
-resource_name=
-language=
-font=
-```
-
-#### Speech Service
-- Go to the [Microsoft Speech Service portal](https://speech.microsoft.com), open your respective case and follow the breadcrumbs as illustrated below
-- Copy the values from the highlighted fields
-- In case you are not using a custom endpoint, it is sufficient to copy the subscription key as well as the region from your Azure Cogntitive Service resource in the [Azure portal](https://portal.azure.com)
-
-![Speech Resources](assets/img/speech-endpoint.PNG)
-
-The final file should look as below:
-```
-[speech]
-key=
-endpoint=
-region=
-```
-
-#### LUIS
- Open the file and set the respective keys for the `[luis]`-section. You can ignore the other parts. For this purpose, go to your LUIS app by accessing the [portal](https://luis.ai). Click on your app and click _MANAGE_/_VERWALTEN_. In the _Settings_-section, copy the _App ID_ and insert it in the file. Afterwards, go to _Azure Resources_ below, make sure you are in the tab _Prediction Resources_/_Vorhersageressourcen_ and copy+paste the following keys and names:
-
-![LUIS Resources](assets/img/luis-resources.JPG)
-
-For `slot`, either insert `staging` or `production`, depending which deployment slot you are using with your LUIS model. Region can remain blank.
-
-The final section should look as below:
-```
-[luis]
-key=12312a873891f2738b912798
-app_id=1a23456-b321-4a4a-9c08-09bdaf5b520e
-endpoint=nameofyourservice
-region=
-slot=staging
-```
-
-You are now ready to score your test set with LUIS.
+An instruction on how to get the keys can be found [here](getyourkeys.md).
 
 ## How to use
 
