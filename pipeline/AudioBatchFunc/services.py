@@ -97,7 +97,7 @@ def amazonTTS(text, aws_key, aws_secret, region, output_folder, provider, langua
         aws_secret_access_key = aws_secret, 
         region_name = region).client('polly')
     try:
-        response = polly_client.synthesize_speech(VoiceId = "Hans",
+        response = polly_client.synthesize_speech(VoiceId = font,
             Engine = 'neural', 
             LanguageCode = language,
             OutputFormat = 'pcm',
@@ -105,7 +105,7 @@ def amazonTTS(text, aws_key, aws_secret, region, output_folder, provider, langua
             TextType = texttype,
             Text = text)
     except Exception as e:
-        response = polly_client.synthesize_speech(VoiceId = "Hans",
+        response = polly_client.synthesize_speech(VoiceId = font,
             Engine = 'standard', 
             LanguageCode = language,
             OutputFormat = 'pcm',
