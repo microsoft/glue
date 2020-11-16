@@ -1,0 +1,4 @@
+intent	text
+Book_Flight	I would like to book a flight to Frankfurt.
+Flight_Change	Please rebook my flight to Singapore, please
+Flight_Change	I would like to change my flight.

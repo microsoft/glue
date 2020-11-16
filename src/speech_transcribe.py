@@ -13,9 +13,9 @@ import helper as he
 import azure.cognitiveservices.speech as speechsdk
 
 # Function for Standard Model
-def batchTranscribe(speech_files, output_folder, case, service_region, speech_key, endpoint_id = "", enable_proxy = False, lexical = True, *argv):
+def batch_transcribe(speech_files, output_folder, case, service_region, speech_key, endpoint_id = "", enable_proxy = False, lexical = True, *argv):
     """
-
+    Batch-transcribe audio files using speech-to-text
     """
     speech_config = speechsdk.SpeechConfig(subscription = speech_key, region = service_region)
     if enable_proxy:
@@ -29,8 +29,8 @@ def batchTranscribe(speech_files, output_folder, case, service_region, speech_ke
     # Check the result
     return result, filename
 
-def requestEndpoint(audio, speech_config, output_folder, case, lexical):
-    """
+def request_endpoint(audio, speech_config, output_folder, case, lexical):
+    """Request the speech service endpoint
     Args:
         audio: input data frame
         speech_config: choice between scoring and 
@@ -46,11 +46,12 @@ def requestEndpoint(audio, speech_config, output_folder, case, lexical):
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config = speech_config, audio_config = audio_config)
     result = speech_recognizer.recognize_once()
     filename = audio[audio.rindex('\\')+1:]
-    processRecognition(result, filename, output_folder, case, lexical)
+    process_recognition(result, filename, output_folder, case, lexical)
     return result, filename
 
-def processRecognition(result, filename, output_folder, case, lexical):
+def process_recognition(result, filename, output_folder, case, lexical):
     """
+    Process recognition received from the speech service
     """
     if result.reason == speechsdk.ResultReason.RecognizedSpeech:
         if lexical:

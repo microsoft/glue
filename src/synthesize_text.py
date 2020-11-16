@@ -5,6 +5,7 @@
 import requests
 import random
 import logging
+import uuid
 import time
 import sys
 import re
@@ -106,7 +107,7 @@ def remove_tags(text):
 def custom_speech(output_folder, case, fname, rate, crop_start, crop_end):
     '''
     Convert to Microsoft Speech Service format
-    ''''
+    '''
     rec = AudioSegment.from_wav(f"{output_folder}{case}generated/{fname}").set_frame_rate(rate).set_sample_width(2)
     rec = rec.set_channels(1)
     rec = rec[crop_start:crop_end]

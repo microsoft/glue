@@ -14,7 +14,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # Helper Functions
-def createCase(mode, output_folder, subfolders):
+def create_case(mode, output_folder, subfolders):
     """ Create case for project
     Args:
         mode: mode of the run
@@ -34,7 +34,7 @@ def createCase(mode, output_folder, subfolders):
     return output_folder, case, output_file
 
 # General Function
-def writeTranscription(output_folder, case, text):
+def write_transcription(output_folder, case, text):
     ''' Write transcriptions '''
     if not os.path.exists(f'{output_folder}{case}transcriptions.txt'):
         transfile = codecs.open(f'{output_folder}{case}transcriptions.txt', 'w', encoding='utf-8-sig')
@@ -45,7 +45,7 @@ def writeTranscription(output_folder, case, text):
         transfile.close()
     logging.warning(f'[INFO] - Written to transcript file.')         
 
-def unravelXLS(fname):
+def unravel_xls(fname):
     df = pd.read_csv(fname, sep="\t", encoding="utf-8", index_col=None)
     df_new = pd.DataFrame(columns=['text', 'intent'])
     for index, row in df.iterrows():
@@ -58,7 +58,7 @@ def unravelXLS(fname):
     df_new['text'] = df_new['text'].str.replace("- ", "").str.strip()
     return df_new
 
-def createDF(fname):
+def create_df(fname):
     df = pd.DataFrame(columns=['intent', 'text'])
     intents = []
     texts = []
@@ -80,7 +80,7 @@ def createDF(fname):
     #df.to_csv('out_df.txt', sep='\t', encoding='utf-8', index=None)
     return df
 
-def writeLU(luis_file):
+def write_lu(luis_file):
     luis_file = luis_file.sort_values(by=['intent', 'text'])
     file = open(f"../output/{datetime.today().strftime('%Y-%m-%d')}-luis.lu", "w")
     compare = ""

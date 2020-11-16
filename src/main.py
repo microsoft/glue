@@ -13,9 +13,9 @@ import pandas as pd
 import helper as he
 import score_luis as sl
 import speech_transcribe as stt
-import synthesize_test as tts
+import synthesize_text as tts
 import evaluate as ev
-import params as pa
+import collect_params as pa
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
@@ -24,7 +24,7 @@ from sklearn.metrics import confusion_matrix
 
 # Parse arguments
 parser = argparse.ArgumentParser()
-args = get_params(parser)
+args = pa.get_params(parser)
 
 # Set arguments
 fname = args.input
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     # Case management
     try:
         if any([do_scoring, do_synthesize, do_transcribe, do_evaluate]):
-            output_folder, case, output_file = he.createCase(mode, pa.output_folder, subfolder)
+            output_folder, case, output_file = he.create_case(mode, pa.output_folder, subfolder)
             if do_synthesize: 
                 shutil.copyfile(fname, f'{output_folder}{case}input/{os.path.basename(fname)}')
             logging.info(f'[INFO] - Created case {case} and copied input files to case folder')
@@ -57,8 +57,10 @@ if __name__ == '__main__':
         logging.error(f'[ERROR] -> {e}')
 
     # File reader
-    if os.path.exists(f'{output_folder}{case}input/{os.path.basename(fname)}'):
+    try:
         df = pd.read_csv(f'{output_folder}{case}input/{os.path.basename(fname)}', sep='\t', encoding='utf-8', index_col=None)
+    except FileNotFoundError as e:
+        sys.exit(f'[ERROR] - Please pass an input file!')
 
     # TTS
     if do_synthesize:
@@ -69,7 +71,7 @@ if __name__ == '__main__':
     # STT
     if do_transcribe:
         if audio_files != "":
-            logging.warning('[STATUS] - Starting with speech-to-text conversion')
+            logging.info('[STATUS] - Starting with speech-to-text conversion')
             stt.batch_transcribe(audio_files, output_folder, case, pa.region_speech, pa.speech_key, pa.endpoint)
             transcription = pd.read_csv(f'{output_folder}{case}transcriptions.txt', sep="\t", names=['audio', 'rec'], encoding='utf-8', header=None, index_col=None)
             #if 'audio' in list(df.columns):
@@ -77,7 +79,7 @@ if __name__ == '__main__':
 
     # Speech Evaluation
     if do_evaluate:
-        logging.warning('[STATUS] - Starting with ref/rec evaluation')
+        logging.info('[STATUS] - Starting with ref/rec evaluation')
         if 'text' in list(df.columns) and 'rec' in list(df.columns):
             df.text = df.text.fillna("")
             df.rec = df.rec.fillna("")
@@ -90,18 +92,18 @@ if __name__ == '__main__':
     # LUIS Scoring
     if do_scoring and 'intent' in list(df.columns):
         if mode == 'score':
-            logging.warning('[STATUS] - Starting with LUIS scoring')
+            logging.info('[STATUS] - Starting with LUIS scoring')
             data = sl.score_endpoint(df, mode, pa.app_id, pa.luis_endpoint, pa.key, pa.tres, pa.slot)
             data.to_csv(output_file, sep='\t', encoding='utf-8', index=False)
         elif mode == 'eval':
-            logging.warning('[STATUS] - Starting with LUIS eval')
+            logging.info('[STATUS] - Starting with LUIS eval')
             data = pd.read_csv(fname, sep='\t', encoding='utf-8')
         # Classification Report
-        print('[OUTPUT] - CLASSIFICATION REPORT (without drop)')
+        print('[OUTPUT] - CLASSIFICATION REPORT (without reset by treshold):')
         print(classification_report(data['intent'], data['prediction']))
-        print(f'[OUTPUT] - AFTER DROP ({tres})')
+        print(f'[OUTPUT] - AFTER RESET BY TRESHOLD ({tres}):')
         print(classification_report(data['intent'], data['drop']))
-        print('[OUTPUT] - Confusion Matrix:')
+        print('[OUTPUT] - CONFUSION MATRIX:')
         print(confusion_matrix(data['intent'], data['prediction']))
 
     # Write transcript file
