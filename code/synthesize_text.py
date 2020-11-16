@@ -34,6 +34,9 @@ class TextToSpeech(object):
         self.access_token = None
 
     def get_token(self, region, subscription_key):
+        '''
+        Get connection token to text to speech service
+        '''
         fetch_token_url = f"https://{region}.api.cognitive.microsoft.com/sts/v1.0/issueToken"
         headers = {
             'Ocp-Apim-Subscription-Key': self.subscription_key
@@ -42,6 +45,9 @@ class TextToSpeech(object):
         self.access_token = str(response.text)
 
     def save_audio(self, region, resource_name, output_folder, case, language, font):
+        '''
+        Save generated audio to file
+        '''
         base_url = f'https://{region}.tts.speech.microsoft.com/'
         path = 'cognitiveservices/v1'
         constructed_url = base_url + path
@@ -60,16 +66,13 @@ class TextToSpeech(object):
         else:
             sys.exit(f"[ERROR] - Status code: {str(response.status_code)} -> something went wrong, please check your subscription key and headers.")
 
-def batchSynthesize(df, subscription_key, language, font, region, resource_name, output_folder, case, custom=True, tel=True):
-    """
-
+def batch_synthesize(df, subscription_key, language, font, region, resource_name, output_folder, case, custom=True, tel=True):
+    """Synthesize text snippets to audio files
     Args:
         param1: 
         param2: 
-
     Returns:
         The return value. 
-
     """
     os.makedirs(f'{output_folder}{case}generated/', exist_ok=True)
     audio_synth = []
@@ -80,10 +83,10 @@ def batchSynthesize(df, subscription_key, language, font, region, resource_name,
             fname = app.save_audio(region, resource_name, output_folder, case, language, font)
             if custom:
                 os.makedirs(f'{output_folder}{case}converted/', exist_ok=True)
-                customSpeech(output_folder, case, fname, 8000, 0, None)
+                custom_speech(output_folder, case, fname, 8000, 0, None)
             if tel:
                 os.makedirs(f'{output_folder}{case}noise/', exist_ok=True)
-                telephoneFilter(output_folder, case, fname)          
+                telephone_filter(output_folder, case, fname)          
             logging.warning(f'[INFO] - Synthesized {fname}')
         except Exception as e:
             logging.warning(f'[ERROR] - Synthetization of {row["text"]} failed -> {e}')
@@ -94,10 +97,16 @@ def batchSynthesize(df, subscription_key, language, font, region, resource_name,
 
 ''' PRE AND POSTPROCESS '''
 # Remove XML/SSML Tags
-def removeTags(text):
+def remove_tags(text):
+    '''
+    Remove SSML tags from text strings
+    '''
     return re.compile(r'<[^>]+>').sub('', text)
 
-def customSpeech(output_folder, case, fname, rate, crop_start, crop_end):
+def custom_speech(output_folder, case, fname, rate, crop_start, crop_end):
+    '''
+    Convert to Microsoft Speech Service format
+    ''''
     rec = AudioSegment.from_wav(f"{output_folder}{case}generated/{fname}").set_frame_rate(rate).set_sample_width(2)
     rec = rec.set_channels(1)
     rec = rec[crop_start:crop_end]
@@ -107,22 +116,37 @@ def customSpeech(output_folder, case, fname, rate, crop_start, crop_end):
                 bitrate="192k")
     del rec
 
-def butter_params(low_freq, high_freq, fs, order=5):
+def bandpass_params(low_freq, high_freq, fs, order=5):
+    '''
+    Set bandpass params
+    '''
     nyq = 0.5 * fs
     low = low_freq / nyq
     high = high_freq / nyq
     b, a = butter(order, [low, high], btype='band')
     return b, a
 
-def butter_bandpass_filter(data, low_freq, high_freq, fs, order=5):
-    b, a = butter_params(low_freq, high_freq, fs, order=order)
+def bandpass_filter(data, low_freq, high_freq, fs, order=5):
+    '''
+    Apply bandpass filter on the generated training data
+    '''
+    b, a = bandpass_params(low_freq, high_freq, fs, order=order)
     y = lfilter(b, a, data)
     return y
 
-def telephoneFilter(output_folder, case, fname):
+def telephone_filter(output_folder, case, fname):
+    '''
+    Apply telephone-like filter on the generated training data
+    '''
     fs,audio = read(f"{output_folder}{case}converted/{fname}")
     low_freq = 300.0
     high_freq = 3000.0
-    filtered_signal = butter_bandpass_filter(audio, low_freq, high_freq, fs, order=6)
+    filtered_signal = bandpass_filter(audio, low_freq, high_freq, fs, order=6)
     fname = f'{output_folder}{case}noise/{fname}'
     write(fname, fs, array(filtered_signal, dtype=int16))
+
+def main():
+    return None
+
+if __name__ == '__main__':
+    main()

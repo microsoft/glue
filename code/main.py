@@ -11,61 +11,20 @@ import configparser
 import shutil
 import pandas as pd
 import helper as he
-import scoreLUIS as sl
-import speechTranscribe as stt
-import synthesizeText as tts
+import score_luis as sl
+import speech_transcribe as stt
+import synthesize_test as tts
 import evaluate as ev
 import params as pa
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
 ''' COMMAND EXAMPLES '''
-# conda activate nlptools
-# python .\code\speechTools.py --do_synthesize --input input/scoringfile.txt
+# python .\code\main.py --do_synthesize --input input/scoringfile.txt
 
 # Parse arguments
 parser = argparse.ArgumentParser()
-parser.add_argument("--input",
-                type=str,
-                default="input/testset-example.txt",
-                help="give the whole path to tab-delimited file")
-parser.add_argument("--mode",
-                default="score",
-                type=str,
-                help="Mode, either score or eval")
-parser.add_argument("--subfolder",
-                default="input",
-                type=str,
-                help="Input folders, pass comma-separated if multiple ones")
-parser.add_argument("--audio_files",
-                default="input/audio/",
-                type=str,
-                help="Input folders, pass comma-separated if multiple ones")
-parser.add_argument("--treshold",
-                default=0.82,
-                type=float,
-                help="Set minimum confidence score between 0.00 and 1.00")
-parser.add_argument("--do_transcribe",
-                default=False,
-                 action="store_true",
-                help="Input folder of audio files")
-parser.add_argument("--do_scoring",
-                 default=False,
-                 action="store_true",
-                 help="Text to speech using Microsoft Speech API")
-parser.add_argument("--do_synthesize",
-                 default=False,
-                 action="store_true",
-                 help="Text to speech using Microsoft Speech API")
-parser.add_argument("--do_evaluate",
-                 default=False,
-                 action="store_true",
-                 help="Evaluate speech transcriptions")
-parser.add_argument("--do_lufile",
-                 default=False,
-                 action="store_true",
-                 help="Create LU-file")
-args = parser.parse_args()
+args = get_params(parser)
 
 # Set arguments
 fname = args.input
@@ -79,11 +38,11 @@ do_transcribe = args.do_transcribe
 do_evaluate = args.do_evaluate
 do_lufile = args.do_lufile
 
-# Get and set params
-pa.get_params()
+# Get config
+pa.get_config()
 
 if __name__ == '__main__':
-    logging.warning('[INFO] - STARTING SPEECHTOOL')
+    logging.info('[INFO] - STARTING SPEECHTOOL')
     # Case management
     try:
         if any([do_scoring, do_synthesize, do_transcribe, do_evaluate]):
@@ -92,9 +51,10 @@ if __name__ == '__main__':
                 shutil.copyfile(fname, f'{output_folder}{case}input/{os.path.basename(fname)}')
             logging.info(f'[INFO] - Created case {case} and copied input files to case folder')
         else:
-            sys.exit('[ERROR] - Please activate at least one of the following modes: --do_synthesize, --do_transcribe, --do_scoring, --do_evaluate')
+            logging.error('[ERROR] - Please activate at least one of the following modes: --do_synthesize, --do_transcribe, --do_scoring, --do_evaluate (see --help for further information)!')
+            sys.exit()
     except Exception as e:
-        logging.info(f'[ERROR] -> {e}')
+        logging.error(f'[ERROR] -> {e}')
 
     # File reader
     if os.path.exists(f'{output_folder}{case}input/{os.path.basename(fname)}'):
@@ -103,14 +63,14 @@ if __name__ == '__main__':
     # TTS
     if do_synthesize:
         logging.info('[INFO] - Starting text-to-speech synthetization')
-        df = tts.batchSynthesize(df, pa.synth_key, pa.language, pa.font, pa.region_synth, pa.resource_name, output_folder, case)
+        df = tts.batch_synthesize(df, pa.synth_key, pa.language, pa.font, pa.region_synth, pa.resource_name, output_folder, case)
         logging.info(f'[INFO] - Finished text-to-speech synthetization of {len(df)} utterances')
 
     # STT
     if do_transcribe:
         if audio_files != "":
             logging.warning('[STATUS] - Starting with speech-to-text conversion')
-            stt.batchTranscribe(audio_files, output_folder, case, pa.region_speech, pa.speech_key, pa.endpoint)
+            stt.batch_transcribe(audio_files, output_folder, case, pa.region_speech, pa.speech_key, pa.endpoint)
             transcription = pd.read_csv(f'{output_folder}{case}transcriptions.txt', sep="\t", names=['audio', 'rec'], encoding='utf-8', header=None, index_col=None)
             #if 'audio' in list(df.columns):
             #    df = pd.merge(left=df, right=transcription, how='left', on='audio')
@@ -127,11 +87,11 @@ if __name__ == '__main__':
         else:
             logging.error('[ERROR] - Cannot do evaluation, please verify that you both have "ref" and "rec" in your data!')
 
-    # LUIS
+    # LUIS Scoring
     if do_scoring and 'intent' in list(df.columns):
         if mode == 'score':
             logging.warning('[STATUS] - Starting with LUIS scoring')
-            data = sl.scoreLUIS(df, mode, pa.app_id, pa.luis_endpoint, pa.key, pa.tres, pa.slot)
+            data = sl.score_endpoint(df, mode, pa.app_id, pa.luis_endpoint, pa.key, pa.tres, pa.slot)
             data.to_csv(output_file, sep='\t', encoding='utf-8', index=False)
         elif mode == 'eval':
             logging.warning('[STATUS] - Starting with LUIS eval')

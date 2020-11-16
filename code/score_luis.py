@@ -17,7 +17,7 @@ import configparser
 import time
 
 # Define scoring function
-def scoreLUIS(df, mode, app_id, endpoint, key, tres, slot='production'):
+def score_endpoint(df, mode, app_id, endpoint, key, tres, slot='production'):
     """Scores or loads a LUIS scoring file to assess the model quality and delivers insights
     Args:
         df: input data frame
@@ -33,17 +33,15 @@ def scoreLUIS(df, mode, app_id, endpoint, key, tres, slot='production'):
     predictions = []
     scores = []
     drops = []
-    logging.warn(f'[START] - STARTED LUIS MODEL SCORING of {len(df)} utterances ... ')
+    logging.info(f'[START] - STARTED LUIS MODEL SCORING of {len(df)} utterances ... ')
     for index, row in df.iterrows():
         try:
             # Uncomment this if you are using the old url version having the region name as endpoint
             # endpoint_url = f'{endpoint}.api.cognitive.microsoft.com'
             # Below, you see the most current version of the api having the prediction resource name as endpoint
             endpoint_url = f'{endpoint}.cognitiveservices.azure.com'
-            headers = {
-            }
-            params ={
-
+            headers = {}
+            params = {
                 'query': row['text'],
                 'timezoneOffset': '0',
                 'verbose': 'true',
@@ -66,7 +64,7 @@ def scoreLUIS(df, mode, app_id, endpoint, key, tres, slot='production'):
                     drop = "None"
                 else:
                     drop = topIntent
-                logging.warn(f"[INFO] {str(index+1)}/{len(df)} -> '{row['text']}' -> Original: {row['intent']}, Pred: {topIntent} ({topScore}, drop? {topIntent != row['intent']})")
+                logging.info(f"[INFO] {str(index+1)}/{len(df)} -> '{row['text']}' -> Original: {row['intent']}, Pred: {topIntent} ({topScore}, drop? {topIntent != row['intent']})")
             predictions.append(topIntent)
             scores.append(topScore)
             drops.append(drop)
@@ -80,3 +78,9 @@ def scoreLUIS(df, mode, app_id, endpoint, key, tres, slot='production'):
         df['score'] = scores
         df['drop'] = drops
     return df
+
+def main():
+    return None
+
+if __name__ == '__main__':
+    main()
