@@ -19,7 +19,7 @@ Before getting your hands on the toolkits, make sure your local computer is equi
 
 After making sure these are all available on your system, the environment can be set up.
 
-### Setup of Conda-environment
+### Setup of virtual environment
 1. Open your PowerShell or open VSCode
 1. Change the directory to your preferred workspace (using `cd`)
 1. Download the repository as a ZIP-archive and unpack your file locally to the respective folder
@@ -65,12 +65,12 @@ There are two approaches how to do this. You can either bring a pre-defined data
 
 The file will then be written to the input folder of the repository with the following notation:<br>`[yyyy-mm-dd-]-stratify-test.txt`
 
-Use this as input parameter for the `speechTools.py`.later on.
+Use this as input parameter for the `main.py`.later on.
 
 __INFO:__ if you do not need to get a sample from the data and just take the whole one as test set, just skip this and continue with the step below!
 
 ### Scoring of LUIS Test Data Set
-This section helps you to start your LUIS scoring with help of `speechTools.py`. With the command line or IDE of your choice, navigate to the root directory of the Data Science repository. Among others, you can pass the following parameters (the others are not covered by this documentation as they are not needed):
+This section helps you to start your LUIS scoring with help of `main.py`. With the command line or IDE of your choice, navigate to the root directory of the Data Science repository. Among others, you can pass the following parameters (the others are not covered by this documentation as they are not needed):
 
 ```
 --input INPUT           give the whole path to tab-delimited file
@@ -80,12 +80,12 @@ This section helps you to start your LUIS scoring with help of `speechTools.py`.
 --do_scoring            Text to speech using Microsoft Speech API
 ```
 
-1. Make sure your conda environment is activated, otherwise do by <br>`conda activate txttools`
+1. Make sure your virtual environment is activated, otherwise do by <br>`venv/Scripts/activate`
 1. Put your tab-delimited scoring file into the `input` folder of the repository and make sure that it has the columns `intent` and `text`. Otherwise, the script will not find the correct values.
 1. Execute the following command:<br>
-`python code/speechTools.py --input input/scoringfile.txt --do_scoring`<br>
+`python code/main.py --input input/scoringfile.txt --do_scoring`<br>
 The default treshold value for the LUIS scores is `0.82`, but you can choose a custom one by additionally passing `--treshold 0.91`, e.g.:<br>
-`python code/speechTools.py --input input/scoringfile.txt --do_scoring --treshold 0.91`<br>If you want to avoid the drop, just pass `--treshold 0`.
+`python code/main.py --input input/scoringfile.txt --do_scoring --treshold 0.91`<br>If you want to avoid the drop, just pass `--treshold 0`.
 1. The scoring may take a while and you will receive some log information in your command line. For every utterance, you will see logs which prediction the LUIS model returned. If you only get back the message `prediction` in every row, there is something wrong with the keys and you should cancel the scoring with `ctrl + c`
 1. When the scoring is finished, you will get a classification report and a confusion matrix, which provides you an overview on the model performance based on the given test data set. There will be two of them: one with the drop defined by the `--treshold` and the other one without considering the drops.
 1. After finishing, you will find the output files in the `output` directory (which you find in the parent folder above the repository). In this folder, there is an `input` folder, containing the input file of the scoring round. In the case folder itself, you will find a `[date]-case.txt` file with the respective scorings, e.g. `2020-07-23-case`.
