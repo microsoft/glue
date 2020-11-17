@@ -26,7 +26,7 @@ def create_case(mode, output_folder, subfolders):
         output_file: name of text output file
     """
     # Create Case
-    case = f"{datetime.today().strftime('%Y-%m-%d')}-case/"
+    case = f"{datetime.today().strftime('%Y-%m-%d_%H-%M-%S')}-case/"
     output_file = f"{output_folder}{case}{datetime.today().strftime('%Y-%m-%d')}-case.txt"
     os.makedirs(output_folder + case, exist_ok=True)
     for folder in subfolders.split(","):
@@ -43,7 +43,7 @@ def write_transcription(output_folder, case, text):
     with open(f"{output_folder}{case}transcriptions.txt", "a", encoding='utf-8-sig') as transfile:
         transfile.write(f'{text}\n')
         transfile.close()
-    logging.warning(f'[INFO] - Written to transcript file.')         
+    #logging.info(f'[INFO] - Written to transcript file.')         
 
 def unravel_xls(fname):
     df = pd.read_csv(fname, sep="\t", encoding="utf-8", index_col=None)

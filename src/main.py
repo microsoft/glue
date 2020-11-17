@@ -10,14 +10,16 @@ import sys
 import configparser
 import shutil
 import pandas as pd
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+
+# 
+import evaluate as ev
 import helper as he
 import score_luis as sl
 import speech_transcribe as stt
 import synthesize_text as tts
-import evaluate as ev
 import collect_params as pa
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
 
 ''' COMMAND EXAMPLES '''
 # python .\code\main.py --do_synthesize --input input/scoringfile.txt
@@ -30,7 +32,7 @@ args = pa.get_params(parser)
 fname = args.input
 mode = args.mode
 subfolder = args.subfolder
-tres = args.treshold
+treshold = args.treshold
 audio_files = args.audio_files
 do_synthesize = args.do_synthesize
 do_scoring = args.do_scoring
@@ -40,6 +42,9 @@ do_lufile = args.do_lufile
 
 # Get config
 pa.get_config()
+
+# Set logger
+logging.getLogger().setLevel(logging.INFO)
 
 if __name__ == '__main__':
     logging.info('[INFO] - STARTING SPEECHTOOL')
@@ -58,15 +63,15 @@ if __name__ == '__main__':
 
     # File reader
     try:
-        df = pd.read_csv(f'{output_folder}{case}input/{os.path.basename(fname)}', sep='\t', encoding='utf-8', index_col=None)
+        df = pd.read_csv(f'{output_folder}{case}input/{os.path.basename(fname)}', sep=';', encoding='utf-8', index_col=None)
     except FileNotFoundError as e:
-        sys.exit(f'[ERROR] - Please pass an input file!')
+        logging.error(f'[ERROR] - Please pass an input file!')
 
     # TTS
     if do_synthesize:
-        logging.info('[INFO] - Starting text-to-speech synthetization')
+        logging.info('[STATUS] - Starting text-to-speech synthetization')
         df = tts.batch_synthesize(df, pa.synth_key, pa.language, pa.font, pa.region_synth, pa.resource_name, output_folder, case)
-        logging.info(f'[INFO] - Finished text-to-speech synthetization of {len(df)} utterances')
+        logging.info(f'[STATUS] - Finished text-to-speech synthetization of {len(df)} utterances')
 
     # STT
     if do_transcribe:
@@ -74,8 +79,8 @@ if __name__ == '__main__':
             logging.info('[STATUS] - Starting with speech-to-text conversion')
             stt.batch_transcribe(audio_files, output_folder, case, pa.region_speech, pa.speech_key, pa.endpoint)
             transcription = pd.read_csv(f'{output_folder}{case}transcriptions.txt', sep="\t", names=['audio', 'rec'], encoding='utf-8', header=None, index_col=None)
-            #if 'audio' in list(df.columns):
-            #    df = pd.merge(left=df, right=transcription, how='left', on='audio')
+            if 'audio' in list(df.columns):
+                df = pd.merge(left=df, right=transcription, how='left', on='audio')
 
     # Speech Evaluation
     if do_evaluate:
@@ -93,7 +98,7 @@ if __name__ == '__main__':
     if do_scoring and 'intent' in list(df.columns):
         if mode == 'score':
             logging.info('[STATUS] - Starting with LUIS scoring')
-            data = sl.score_endpoint(df, mode, pa.app_id, pa.luis_endpoint, pa.key, pa.tres, pa.slot)
+            data = sl.score_endpoint(df, mode, pa.app_id, pa.luis_endpoint, pa.key, pa.slot, treshold)
             data.to_csv(output_file, sep='\t', encoding='utf-8', index=False)
         elif mode == 'eval':
             logging.info('[STATUS] - Starting with LUIS eval')
@@ -101,7 +106,7 @@ if __name__ == '__main__':
         # Classification Report
         print('[OUTPUT] - CLASSIFICATION REPORT (without reset by treshold):')
         print(classification_report(data['intent'], data['prediction']))
-        print(f'[OUTPUT] - AFTER RESET BY TRESHOLD ({tres}):')
+        print(f'[OUTPUT] - AFTER RESET BY TRESHOLD ({treshold}):')
         print(classification_report(data['intent'], data['drop']))
         print('[OUTPUT] - CONFUSION MATRIX:')
         print(confusion_matrix(data['intent'], data['prediction']))
@@ -109,7 +114,7 @@ if __name__ == '__main__':
     # Write transcript file
     try:
         #df.to_csv(f'{output_folder}{case}transcriptions.txt', sep="\t", encoding="utf-8", index=False)
-        logging.warning(f'[INFO] - Wrote transcription file to case.')
-        logging.warning(f'[STATUS] - All set!')
+        logging.info(f'[INFO] - Wrote transcription file to case.')
+        logging.info(f'[STATUS] - All set!')
     except Exception as e:
-        logging.warning(f'[ERROR] - An error has occured -> {e}.')
+        logging.error(f'[ERROR] - An error has occured -> {e}.')

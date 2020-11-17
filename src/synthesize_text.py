@@ -60,12 +60,12 @@ class TextToSpeech(object):
         }
         response = requests.post(constructed_url, headers=headers, data=self.tts)
         if response.status_code == 200:
-            fname = f"{output_folder}{case}generated/{datetime.today().strftime('%Y-%m-%d')}_{language}_{font}_{random.randint(10000,99999)}.wav"
+            fname = f"{output_folder}{case}generated/{datetime.today().strftime('%Y-%m-%d')}_{language}_{font}_{str(uuid.uuid4())}.wav"
             with open(fname, "wb") as audio:
                 audio.write(response.content)
             return os.path.basename(fname)
         else:
-            sys.exit(f"[ERROR] - Status code: {str(response.status_code)} -> something went wrong, please check your subscription key and headers.")
+            logging.error(f"[ERROR] - Status code: {str(response.status_code)} -> something went wrong, please check your subscription key and headers.")
 
 def batch_synthesize(df, subscription_key, language, font, region, resource_name, output_folder, case, custom=True, tel=True):
     """Synthesize text snippets to audio files
@@ -88,9 +88,9 @@ def batch_synthesize(df, subscription_key, language, font, region, resource_name
             if tel:
                 os.makedirs(f'{output_folder}{case}noise/', exist_ok=True)
                 telephone_filter(output_folder, case, fname)          
-            logging.warning(f'[INFO] - Synthesized {fname}')
+            logging.info(f'[INFO] - Synthesized {fname}')
         except Exception as e:
-            logging.warning(f'[ERROR] - Synthetization of {row["text"]} failed -> {e}')
+            logging.error(f'[ERROR] - Synthetization of {row["text"]} failed -> {e}')
             fname = "nan"
         audio_synth.append(fname)
     df['audio_synth'] = audio_synth

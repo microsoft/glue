@@ -23,7 +23,7 @@ def get_params(parser):
                     type=str,
                     help="Input folders, pass comma-separated if multiple ones")
     parser.add_argument("--treshold",
-                    default=0.82,
+                    default=0.85,
                     type=float,
                     help="Set minimum confidence score between 0.00 and 1.00")
     parser.add_argument("--do_transcribe",
@@ -75,3 +75,9 @@ def get_config():
         font = config['synth']['font']
     except Exception as e:
         sys.exit(f'[EXCEPT] - Config file could not be loaded -> {e}.')
+
+def main():
+    return None
+
+if __name__ == '__main__':
+    main()

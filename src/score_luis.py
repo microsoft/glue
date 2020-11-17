@@ -5,8 +5,6 @@
 import logging
 import requests
 import json
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
 import pandas as pd
 import sys
 from datetime import datetime
@@ -15,16 +13,19 @@ import shutil
 import os
 import configparser
 import time
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 
 # Define scoring function
-def score_endpoint(df, mode, app_id, endpoint, key, tres, slot='production'):
+def score_endpoint(df, mode, app_id, endpoint, key, slot='production', treshold=0.85):
     """Scores or loads a LUIS scoring file to assess the model quality and delivers insights
     Args:
         df: input data frame
         mode: choice between scoring and 
         appId: LUIS app ID
         key: LUIS subscription key
-        tres: minimum confidence score for LUIS result, between 0.00 and 1.00
+        slot: Staging slot, production or staging, default on production
+        treshold: minimum confidence score for LUIS result, between 0.00 and 1.00, default on 0.85
     Returns:
         df: scoring data frame with predicted intents and scores
     Raises:
@@ -60,7 +61,7 @@ def score_endpoint(df, mode, app_id, endpoint, key, tres, slot='production'):
                 topIntent = data['prediction']['topIntent']
                 topScore = data['prediction']['intents'][topIntent]['score']
                 # TODO - second and third best confidence
-                if topScore < tres: 
+                if topScore < treshold: 
                     drop = "None"
                 else:
                     drop = topIntent
