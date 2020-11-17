@@ -113,7 +113,7 @@ if __name__ == '__main__':
 
     # Write transcript file
     try:
-        #df.to_csv(f'{output_folder}{case}transcriptions.txt', sep="\t", encoding="utf-8", index=False)
+        df.to_csv(f'{output_folder}{case}transcriptions_full.txt', sep="\t", encoding="utf-8", index=False)
         logging.info(f'[INFO] - Wrote transcription file to case.')
         logging.info(f'[STATUS] - All set!')
     except Exception as e:

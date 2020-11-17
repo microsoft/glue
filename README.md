@@ -12,7 +12,6 @@ This toolkit is based on multiple, free and/or open source software components. 
 ### Prerequisites
 Before getting your hands on the toolkits, make sure your local computer is equipped with the following frameworks and base packages:
 - [Python](https://www.python.org/downloads/windows/) (required, Version 3.8 is recommended)
-- [Anaconda](https://www.anaconda.com/distribution/) (required) __or__ [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (recommended)
 - [VSCode](https://code.visualstudio.com/docs/?dv=win) (recommended)
   - alternatively, you can also run the scripts using PowerShell or PyCharm
 - [git](https://git-scm.com/downloads) (recommended, alternatively download the repository as zip)
@@ -22,16 +21,16 @@ After making sure these are all available on your system, the environment can be
 
 ### Setup of Conda-environment
 1. Open your PowerShell or open VSCode
-2. Change the directory to your preferred workspace (using `cd`)
-3. Download the repository as a ZIP-archive and unpack your file locally to the respective folder
-4. Enter the root folder of your repository
-5. Set up the Conda environment using the yaml file<br> `conda env create -f environment.yml`
-6. After successfully installing the yaml-file, your environment is set up and you can go ahead. See the following section how to activate it.
-7. In any case, you should activate your `txttool` conda environment to make sure all the required packages are loaded. Submit this command in your preferred workspace:<br>`conda activate txttool`<br>
+1. Change the directory to your preferred workspace (using `cd`)
+1. Download the repository as a ZIP-archive and unpack your file locally to the respective folder
+1. Enter the root folder of your repository
+1. Set up the virtual environment<br>
+`python -m venv venv`
+1. Activate the virtual environment<br> `venv\Scripts\activate`
+1. Install the requirements<br>
+`pip install -r requirements.txt`
+1. After successfully installing the requirements-file, your environment is set up and you can go ahead. 
 Afterwards, you should be able to see the activated environment in the command line:<br>`(txttool)`
-8. (Optional) For installing the kernel to Jupyter Hub in order to use the notebooks, do the following steps:<br>
-`conda install ipykernel --name txttool`<br>
-`python -m ipykernel install --user --name stk --display-name "Python (txttool)"`
 
 ### Get your keys
 In the root directory, you will find a file named `config.sample.ini`. This is the file where all the LUIS keys have to be set. First, create a copy of this file and rename it to `config.ini`. You only need the keys for the services you use during your experiment. However, keep the structure of the `config.ini`-file as it is to avoid errors. The toolkit will just set the variable values as _none_, but will throw an error when the keys cannot be found.
