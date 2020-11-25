@@ -52,7 +52,7 @@ if __name__ == '__main__':
     try:
         if any([do_scoring, do_synthesize, do_transcribe, do_evaluate]):
             output_folder, case, output_file = he.create_case(mode, pa.output_folder, subfolder)
-            if do_synthesize: 
+            if do_synthesize or do_scoring: 
                 shutil.copyfile(fname, f'{output_folder}{case}input/{os.path.basename(fname)}')
             logging.info(f'[INFO] - Created case {case} and copied input files to case folder')
         else:
@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     # File reader
     try:
-        df = pd.read_csv(f'{output_folder}{case}input/{os.path.basename(fname)}', sep=';', encoding='utf-8', index_col=None)
+        df = pd.read_csv(f'{output_folder}{case}input/{os.path.basename(fname)}', sep='\t', encoding='utf-8', index_col=None)
     except FileNotFoundError as e:
         logging.error(f'[ERROR] - Please pass an input file!')
 
