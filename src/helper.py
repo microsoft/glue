@@ -14,10 +14,9 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # Helper Functions
-def create_case(mode, output_folder, subfolders):
+def create_case(output_folder, subfolders):
     """ Create case for project
     Args:
-        mode: mode of the run
         output_folder: directory of output folder
         subfolders: list of folders to be created as subfolders
     Returns:
@@ -26,24 +25,24 @@ def create_case(mode, output_folder, subfolders):
         output_file: name of text output file
     """
     # Create Case
-    case = f"{datetime.today().strftime('%Y-%m-%d_%H-%M-%S')}-case/"
-    output_file = f"{output_folder}{case}{datetime.today().strftime('%Y-%m-%d')}-case.txt"
-    os.makedirs(output_folder + case, exist_ok=True)
+    case = f"{datetime.today().strftime('%Y-%m-%d_%H-%M-%S')}"
+    output_file = f"{output_folder}/{case}/{datetime.today().strftime('%Y-%m-%d')}.txt"
+    os.makedirs(f"{output_folder}/{case}", exist_ok=True)
     for folder in subfolders.split(","):
-        os.makedirs(f"{output_folder}{case}{folder}", exist_ok=True)
+        os.makedirs(f"{output_folder}/{case}/{folder}", exist_ok=True)
     return output_folder, case, output_file
 
 # General Function
-def write_transcription(output_folder, case, text):
-    ''' Write transcriptions '''
-    if not os.path.exists(f'{output_folder}{case}transcriptions.txt'):
-        transfile = codecs.open(f'{output_folder}{case}transcriptions.txt', 'w', encoding='utf-8-sig')
-        transfile.close()
-        logging.warning(f'[INFO] - Created transcript file with utf-8 bom encoding.')
-    with open(f"{output_folder}{case}transcriptions.txt", "a", encoding='utf-8-sig') as transfile:
-        transfile.write(f'{text}\n')
-        transfile.close()
-    #logging.info(f'[INFO] - Written to transcript file.')         
+#def write_transcription(output_folder, case, text):
+#    ''' Write transcriptions '''
+#    if not os.path.exists(f'{output_folder}{case}transcriptions.txt'):
+#        transfile = codecs.open(f'{output_folder}{case}transcriptions.txt', 'w', encoding='utf-8-sig')
+#        transfile.close()
+#        logging.warning(f'[INFO] - Created transcript file with utf-8 bom encoding.')
+#    with open(f"{output_folder}{case}transcriptions.txt", "a", encoding='utf-8-sig') as transfile:
+#        transfile.write(f'{text}\n')
+#        transfile.close()
+#    #logging.info(f'[INFO] - Written to transcript file.')         
 
 def unravel_xls(fname):
     df = pd.read_csv(fname, sep="\t", encoding="utf-8", index_col=None)

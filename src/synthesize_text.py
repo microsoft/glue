@@ -11,20 +11,16 @@ import sys
 import re
 import os
 import configparser
+import pandas as pd
 from datetime import datetime
 from pydub import AudioSegment
 from scipy.signal import lfilter, butter
 from scipy.io.wavfile import read, write
 from numpy import array, int16
+import params as pa
 
-# Get config file
-sys.path.append('./')
-config = configparser.ConfigParser()
-try:
-    config.read('config.ini')
-    AudioSegment.converter = config['driver']['path']
-except Exception as e:
-    logging.error(f'[ERROR] - {e}')
+# Load and set configuration parameters
+pa.get_config()
 
 ''' MICROSOFT SPEECH API '''
 class TextToSpeech(object):
@@ -45,7 +41,7 @@ class TextToSpeech(object):
         response = requests.post(fetch_token_url, headers=headers)
         self.access_token = str(response.text)
 
-    def save_audio(self, region, resource_name, output_folder, case, language, font):
+    def save_audio(self, region, resource_name, output_directory, language, font):
         '''
         Save generated audio to file
         '''
@@ -53,48 +49,19 @@ class TextToSpeech(object):
         path = 'cognitiveservices/v1'
         constructed_url = base_url + path
         headers = {
-            'Authorization': 'Bearer ' + self.access_token,
+            'Authorization': f'Bearer {self.access_token}',
             'Content-Type': 'application/ssml+xml',
             'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm',
             'User-Agent': resource_name
         }
         response = requests.post(constructed_url, headers=headers, data=self.tts)
         if response.status_code == 200:
-            fname = f"{output_folder}{case}generated/{datetime.today().strftime('%Y-%m-%d')}_{language}_{font}_{str(uuid.uuid4())}.wav"
+            fname = f"{output_directory}/tts_generated/{datetime.today().strftime('%Y-%m-%d')}_{language}_{font}_{str(uuid.uuid4())}.wav"
             with open(fname, "wb") as audio:
                 audio.write(response.content)
             return os.path.basename(fname)
         else:
             logging.error(f"[ERROR] - Status code: {str(response.status_code)} -> something went wrong, please check your subscription key and headers.")
-
-def batch_synthesize(df, subscription_key, language, font, region, resource_name, output_folder, case, custom=True, tel=True):
-    """Synthesize text snippets to audio files
-    Args:
-        param1: 
-        param2: 
-    Returns:
-        The return value. 
-    """
-    os.makedirs(f'{output_folder}{case}generated/', exist_ok=True)
-    audio_synth = []
-    for index, row in df.iterrows():
-        try:
-            app = TextToSpeech(subscription_key, language, font, region, row['text'])
-            app.get_token(region, subscription_key)
-            fname = app.save_audio(region, resource_name, output_folder, case, language, font)
-            if custom:
-                os.makedirs(f'{output_folder}{case}converted/', exist_ok=True)
-                custom_speech(output_folder, case, fname, 8000, 0, None)
-            if tel:
-                os.makedirs(f'{output_folder}{case}noise/', exist_ok=True)
-                telephone_filter(output_folder, case, fname)          
-            logging.info(f'[INFO] - Synthesized {fname}')
-        except Exception as e:
-            logging.error(f'[ERROR] - Synthetization of {row["text"]} failed -> {e}')
-            fname = "nan"
-        audio_synth.append(fname)
-    df['audio_synth'] = audio_synth
-    return df
 
 ''' PRE AND POSTPROCESS '''
 # Remove XML/SSML Tags
@@ -104,14 +71,14 @@ def remove_tags(text):
     '''
     return re.compile(r'<[^>]+>').sub('', text)
 
-def custom_speech(output_folder, case, fname, rate, crop_start, crop_end):
+def custom_speech(output_directory, fname, rate, crop_start, crop_end):
     '''
     Convert to Microsoft Speech Service format
     '''
-    rec = AudioSegment.from_wav(f"{output_folder}{case}generated/{fname}").set_frame_rate(rate).set_sample_width(2)
+    rec = AudioSegment.from_wav(f"{output_directory}/tts_generated/{fname}").set_frame_rate(rate).set_sample_width(2)
     rec = rec.set_channels(1)
     rec = rec[crop_start:crop_end]
-    file_converted = f"{output_folder}{case}converted/{fname}"
+    file_converted = f"{output_directory}/tts_converted/{fname}"
     rec.export(file_converted, 
                 format="wav",
                 bitrate="192k")
@@ -135,19 +102,38 @@ def bandpass_filter(data, low_freq, high_freq, fs, order=5):
     y = lfilter(b, a, data)
     return y
 
-def telephone_filter(output_folder, case, fname):
+def telephone_filter(output_directory, fname):
     '''
     Apply telephone-like filter on the generated training data
     '''
-    fs,audio = read(f"{output_folder}{case}converted/{fname}")
+    fs, audio = read(f"{output_directory}/tts_converted/{fname}")
     low_freq = 300.0
     high_freq = 3000.0
     filtered_signal = bandpass_filter(audio, low_freq, high_freq, fs, order=6)
-    fname = f'{output_folder}{case}noise/{fname}'
+    fname = f'{output_directory}/tts_telephone/{fname}'
     write(fname, fs, array(filtered_signal, dtype=int16))
 
-def main():
-    return None
+def main(df, output_directory, custom=True, telephone=True):
+    os.makedirs(output_directory + "/tts_generated/", exist_ok=True)
+    audio_synth = []
+    for index, row in df.iterrows():
+        try:
+            app = TextToSpeech(pa.tts_key, pa.tts_language, pa.tts_font, pa.tts_region, row['text'])
+            app.get_token(pa.tts_region, pa.tts_key)
+            fname = app.save_audio(pa.tts_region, pa.tts_resource_name, output_directory, pa.tts_language, pa.tts_font)
+            if custom:
+                os.makedirs(f'{output_directory}/tts_converted/', exist_ok=True)
+                custom_speech(output_directory, fname, 8000, 0, None)
+            if telephone:
+                os.makedirs(f'{output_directory}/tts_telephone/', exist_ok=True)
+                telephone_filter(output_directory, fname)          
+            logging.info(f'[INFO] - Synthesized {fname}')
+        except Exception as e:
+            logging.error(f'[ERROR] - Synthetization of "{row["text"]}" failed -> {e}')
+            fname = "nan"
+        audio_synth.append(fname)
+    df['audio_synth'] = audio_synth
+    return df
 
 if __name__ == '__main__':
-    main()
+    main(pd.DataFrame({'text': ['Ich möchte diesen Teppicht nicht kaufen', 'Was geht los da rein?']}), "output/test")

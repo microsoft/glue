@@ -8,12 +8,8 @@ def get_params(parser):
     '''
     parser.add_argument("--input",
                     type=str,
-                    default="input/testset-example.txt",
+                    default="input/example_testset_flights.txt",
                     help="give the whole path to tab-delimited file")
-    parser.add_argument("--mode",
-                    default="score",
-                    type=str,
-                    help="Mode, either score or eval")
     parser.add_argument("--subfolder",
                     default="input",
                     type=str,
@@ -56,23 +52,23 @@ def get_config():
     # Get config file
     sys.path.append('./')
     config = configparser.ConfigParser()
-    global output_folder, app_id, key, region_luis, luis_endpoint, slot, speech_key, endpoint, region_speech, synth_key, region_synth, resource_name, language, font
+    global output_folder, luis_appid, luis_key, luis_region, luis_endpoint, luis_slot, stt_key, stt_endpoint, stt_region, tts_key, tts_region, tts_resource_name, tts_language, tts_font
     try:
         config.read('config.ini')
         output_folder = config['dir']['output_folder']
-        app_id = config['luis']['app_id']
-        key = config['luis']['key']
-        region_luis = config['luis']['region']
+        luis_appid = config['luis']['app_id']
+        luis_key = config['luis']['key']
+        luis_region = config['luis']['region']
         luis_endpoint = config['luis']['endpoint']
-        slot = config['luis']['slot']
-        speech_key = config['speech']['key']
-        endpoint = config['speech']['endpoint']
-        region_speech = config['speech']['region']
-        synth_key = config['synth']['key']
-        region_synth = config['synth']['region']
-        resource_name = config['synth']['resource_name']
-        language = config['synth']['language']
-        font = config['synth']['font']
+        luis_slot = config['luis']['slot']
+        stt_key = config['speech']['key']
+        stt_endpoint = config['speech']['endpoint']
+        stt_region = config['speech']['region']
+        tts_key = config['synth']['key']
+        tts_region = config['synth']['region']
+        tts_resource_name = config['synth']['resource_name']
+        tts_language = config['synth']['language']
+        tts_font = config['synth']['font']
     except Exception as e:
         sys.exit(f'[EXCEPT] - Config file could not be loaded -> {e}.')
 
