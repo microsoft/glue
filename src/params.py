@@ -56,13 +56,6 @@ def get_config():
     try:
         config.read('config.ini')
         output_folder = config['dir']['output_folder']
-        luis_appid = config['luis']['app_id']
-        luis_key = config['luis']['key']
-        luis_region = config['luis']['region']
-        luis_endpoint = config['luis']['endpoint']
-        luis_slot = config['luis']['slot']
-        luis_treshold = config['luis']['treshold']
-        luis_treshold = 1 if luis_treshold == '' else luis_treshold
         stt_key = config['stt']['key']
         stt_endpoint = config['stt']['endpoint']
         stt_region = config['stt']['region']
@@ -71,6 +64,13 @@ def get_config():
         tts_resource_name = config['tts']['resource_name']
         tts_language = config['tts']['language']
         tts_font = config['tts']['font']
+        luis_appid = config['luis']['app_id']
+        luis_key = config['luis']['key']
+        luis_region = config['luis']['region']
+        luis_endpoint = config['luis']['endpoint']
+        luis_slot = config['luis']['slot']
+        luis_treshold = config['luis']['treshold']
+        luis_treshold = 0 if luis_treshold == '' else luis_treshold
     except Exception as e:
         sys.exit(f'[EXCEPT] - Config file could not be loaded -> {e}.')
 

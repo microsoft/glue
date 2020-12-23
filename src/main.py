@@ -99,6 +99,7 @@ if __name__ == '__main__':
     # LUIS Scoring
     if do_scoring:
         logging.info('[STATUS] - Starting with LUIS scoring')
+        logging.info(f'[INFO] - Set LUIS treshold to {pa.luis_treshold}')
         if 'intent' in list(df_reference.columns):
             luis_scoring = luis.main(df_reference)
             luis_scoring.to_csv(f'{output_folder}/{case}/luis_scoring.txt', sep = '\t', encoding = 'utf-8', index=False)

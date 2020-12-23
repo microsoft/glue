@@ -1,7 +1,7 @@
 ''' LUIS SCORING SCRIPT '''
 ''' tiwalz@microsoft.com '''
 
-# Import required packages
+# Import standard packages
 import logging
 import requests
 import json
@@ -14,6 +14,8 @@ import os
 import time
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
+
+# Import custom modules
 import params as pa
 
 # Load and set configuration parameters
@@ -58,8 +60,8 @@ def luis_classification_report(df):
     logging.info(classification_report(df['intent'], df['prediction']))
     logging.info(f'[OUTPUT] - AFTER RESET BY TRESHOLD ({pa.luis_treshold}):')
     logging.info(classification_report(df['intent'], df['prediction_drop']))
-    logging.info('[OUTPUT] - CONFUSION MATRIX:\n')
-    logging.info(confusion_matrix(df['intent'], df['prediction']))
+    logging.info('[OUTPUT] - CONFUSION MATRIX:')
+    logging.info(f'\n{confusion_matrix(df["intent"], df["prediction"])}')
 
 def main(df):
     # Set lists for results
@@ -73,7 +75,7 @@ def main(df):
             # Extract relevant information from results
             top_intent = data['prediction']['topIntent']
             top_score = data['prediction']['intents'][top_intent]['score']
-            # Evaluat scores based on treshold and set None-intent if too low
+            # Evaluate scores based on treshold and set None-intent if too low
             if top_score < pa.luis_treshold: 
                 drop = "None"
             else:
