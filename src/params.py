@@ -52,7 +52,7 @@ def get_config():
     # Get config file
     sys.path.append('./')
     config = configparser.ConfigParser()
-    global output_folder, luis_appid, luis_key, luis_region, luis_endpoint, luis_slot, stt_key, stt_endpoint, stt_region, tts_key, tts_region, tts_resource_name, tts_language, tts_font
+    global output_folder, luis_appid, luis_key, luis_region, luis_endpoint, luis_slot, luis_treshold, stt_key, stt_endpoint, stt_region, tts_key, tts_region, tts_resource_name, tts_language, tts_font
     try:
         config.read('config.ini')
         output_folder = config['dir']['output_folder']
@@ -61,14 +61,16 @@ def get_config():
         luis_region = config['luis']['region']
         luis_endpoint = config['luis']['endpoint']
         luis_slot = config['luis']['slot']
-        stt_key = config['speech']['key']
-        stt_endpoint = config['speech']['endpoint']
-        stt_region = config['speech']['region']
-        tts_key = config['synth']['key']
-        tts_region = config['synth']['region']
-        tts_resource_name = config['synth']['resource_name']
-        tts_language = config['synth']['language']
-        tts_font = config['synth']['font']
+        luis_treshold = config['luis']['treshold']
+        luis_treshold = 1 if luis_treshold == '' else luis_treshold
+        stt_key = config['stt']['key']
+        stt_endpoint = config['stt']['endpoint']
+        stt_region = config['stt']['region']
+        tts_key = config['tts']['key']
+        tts_region = config['tts']['region']
+        tts_resource_name = config['tts']['resource_name']
+        tts_language = config['tts']['language']
+        tts_font = config['tts']['font']
     except Exception as e:
         sys.exit(f'[EXCEPT] - Config file could not be loaded -> {e}.')
 

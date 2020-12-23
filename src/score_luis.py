@@ -11,7 +11,6 @@ from datetime import datetime
 import argparse
 import shutil
 import os
-import configparser
 import time
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
@@ -54,14 +53,15 @@ def request_luis(text):
     return r.json()
 
 def luis_classification_report(df):
-    print('[OUTPUT] - CLASSIFICATION REPORT (without reset by treshold):')
-    print(classification_report(df['intent'], df['prediction']))
-    print(f'[OUTPUT] - AFTER RESET BY TRESHOLD ({treshold}):')
-    print(classification_report(df['intent'], df['drop']))
-    print('[OUTPUT] - CONFUSION MATRIX:')
-    print(confusion_matrix(df['intent'], df['prediction']))
+    logging.info('[STATUS] - Starting to create classification report')
+    logging.info('[OUTPUT] - CLASSIFICATION REPORT (without reset by treshold):')
+    logging.info(classification_report(df['intent'], df['prediction']))
+    logging.info(f'[OUTPUT] - AFTER RESET BY TRESHOLD ({pa.luis_treshold}):')
+    logging.info(classification_report(df['intent'], df['prediction_drop']))
+    logging.info('[OUTPUT] - CONFUSION MATRIX:\n')
+    logging.info(confusion_matrix(df['intent'], df['prediction']))
 
-def main(df, treshold=0.85, mode="score"):
+def main(df):
     # Set lists for results
     predictions = []
     scores = []
@@ -74,7 +74,7 @@ def main(df, treshold=0.85, mode="score"):
             top_intent = data['prediction']['topIntent']
             top_score = data['prediction']['intents'][top_intent]['score']
             # Evaluat scores based on treshold and set None-intent if too low
-            if top_score < treshold: 
+            if top_score < pa.luis_treshold: 
                 drop = "None"
             else:
                 drop = top_intent

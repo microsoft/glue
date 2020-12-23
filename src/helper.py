@@ -26,11 +26,11 @@ def create_case(output_folder, subfolders):
     """
     # Create Case
     case = f"{datetime.today().strftime('%Y-%m-%d_%H-%M-%S')}"
-    output_file = f"{output_folder}/{case}/{datetime.today().strftime('%Y-%m-%d')}.txt"
+    #output_file = f"{output_folder}/{case}/{datetime.today().strftime('%Y-%m-%d')}.txt"
     os.makedirs(f"{output_folder}/{case}", exist_ok=True)
     for folder in subfolders.split(","):
         os.makedirs(f"{output_folder}/{case}/{folder}", exist_ok=True)
-    return output_folder, case, output_file
+    return output_folder, case
 
 # General Function
 #def write_transcription(output_folder, case, text):

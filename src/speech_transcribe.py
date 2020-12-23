@@ -34,8 +34,8 @@ def request_endpoint(audio, speech_config, output_directory, lexical):
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config = speech_config, audio_config = audio_config)
     result = speech_recognizer.recognize_once()
     filename = audio[audio.rindex('\\')+1:]
-    process_recognition(result, filename, output_directory, lexical)
-    return result, filename
+    text = process_recognition(result, filename, output_directory, lexical)
+    return text, filename
 
 def process_recognition(result, filename, output_directory, lexical):
     """
@@ -43,10 +43,10 @@ def process_recognition(result, filename, output_directory, lexical):
     """
     if result.reason == speechsdk.ResultReason.RecognizedSpeech:
         if lexical:
-            text = f"{filename}\t{format(result.text)}\t{json.loads(result.json)['NBest'][0]['Lexical']}"
+            text = f"{format(result.text)}\t{json.loads(result.json)['NBest'][0]['Lexical']}"
         else:
-            text = f"{filename}\t{format(result.text)}"
-        logging.warning(f"[INFO] - Recognition successful: {filename} -> {result.text}")
+            text = f"{format(result.text)}"
+        logging.info(f"[INFO] - Recognition successful: {filename} -> {result.text}")
     elif result.reason == speechsdk.ResultReason.NoMatch:
         logging.warning(filename + "\t" + f"No speech could be recognized: {result.no_match_details}")
         text = ""
@@ -56,7 +56,7 @@ def process_recognition(result, filename, output_directory, lexical):
         if cancellation_details.reason == speechsdk.CancellationReason.Error:
             logging.error(f"Error details: {cancellation_details.error_details}")
         text = ""
-    write_transcription(output_directory, text)
+    return text
 
 # General Function
 def write_transcription(output_directory, text):
@@ -83,10 +83,14 @@ def main(speech_files, output_directory, lexical = False, enable_proxy = False, 
     if pa.stt_endpoint != "": 
         speech_config.endpoint_id = pa.stt_endpoint
     logging.info(f'[INFO] - Starting to transcribe {len(next(os.walk(speech_files))[2])} audio files')
+    results = []
+    filenames = []
     for audio in glob.iglob(f'{speech_files}*av'):
         result, filename = request_endpoint(audio, speech_config, output_directory, lexical)
+        results.append(result)
+        filenames.append(filename)
     # Check the result
-    return result, filename
+    return zip(filenames, results)
 
 if __name__ == '__main__':
     main("input/audio/", "output/test/")
