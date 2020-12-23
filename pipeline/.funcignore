@@ -1,9 +1,0 @@
-.git*
-.vscode
-local.settings.json
-test.py
-venv
-.venv
-config.ini
-.python_packages
-README.md
