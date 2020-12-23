@@ -35,7 +35,6 @@ do_synthesize = args.do_synthesize
 do_scoring = args.do_scoring
 do_transcribe = args.do_transcribe
 do_evaluate = args.do_evaluate
-do_lufile = args.do_lufile
 
 # Get config
 pa.get_config()
@@ -54,9 +53,9 @@ if __name__ == '__main__':
             shutil.copyfile(fname, f'{output_folder}/{case}/input/{os.path.basename(fname)}')
             df_reference = pd.read_csv(f'{output_folder}/{case}/input/{os.path.basename(fname)}', sep=';', encoding='utf-8', index_col=None)
             logging.info(f'[INFO] - Copied input file(s) to case folder')
-        except FileNotFoundError as fnf:
+        except Exception as e:
             if do_synthesize or do_scoring:
-                logging.error('[ERROR] - Could not find input file, but it is required for --do_transcribe and/or --do_scoring')
+                logging.error(f'[ERROR] - Could not find input file, but it is required for --do_transcribe and/or --do_scoring -> {e}')
                 sys.exit()
             else:
                 logging.warning('[WARNING] - Could not find input file, but we can continue here')
@@ -74,9 +73,9 @@ if __name__ == '__main__':
 
     # STT
     if do_transcribe:
-        if audio_files != "":
+        if audio_files != None:
             logging.info('[STATUS] - Starting with speech-to-text conversion')
-            stt_results = stt.main(audio_files, f'{output_folder}/{case}')
+            stt_results = stt.main(f'{audio_files}/', f'{output_folder}/{case}')
             transcription = pd.DataFrame(list(stt_results), columns=['audio', 'rec'])
             logging.debug(transcription)
             transcription.to_csv(f'{output_folder}/{case}/tts_transcriptions.txt', sep = "\t", header = None, index=False)
@@ -86,6 +85,7 @@ if __name__ == '__main__':
                 logging.info(f'[STATUS] - Merged imported reference transcriptions and recognitions')
         else:
             logging.error('[ERROR] - It seems like you did not pass a path to audio files, cannot do transcriptions')
+            sys.exit()
 
     # Speech Evaluation
     if do_evaluate:

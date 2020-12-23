@@ -8,14 +8,14 @@ def get_params(parser):
     '''
     parser.add_argument("--input",
                     type=str,
-                    default="input/example_testset_flights.txt",
+                    #default="input/example_testset_flights.txt",
                     help="give the whole path to tab-delimited file")
     parser.add_argument("--subfolder",
                     default="input",
                     type=str,
                     help="Input folders, pass comma-separated if multiple ones")
     parser.add_argument("--audio_files",
-                    default="input/audio/",
+                    #default="input/audio/",
                     type=str,
                     help="Input folders, pass comma-separated if multiple ones")
     parser.add_argument("--treshold",
@@ -25,11 +25,11 @@ def get_params(parser):
     parser.add_argument("--do_transcribe",
                     default=False,
                     action="store_true",
-                    help="Input folder of audio files")
+                    help="Speech to Text using Microsoft Speech Service")
     parser.add_argument("--do_scoring",
                     default=False,
                     action="store_true",
-                    help="Text to speech using Microsoft Speech API")
+                    help="Model testing using LUIS API")
     parser.add_argument("--do_synthesize",
                     default=False,
                     action="store_true",
@@ -38,10 +38,6 @@ def get_params(parser):
                     default=False,
                     action="store_true",
                     help="Evaluate speech transcriptions")
-    parser.add_argument("--do_lufile",
-                    default=False,
-                    action="store_true",
-                    help="Create LU-file")
     args = parser.parse_args()
     return args
 
