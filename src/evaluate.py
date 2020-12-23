@@ -1,10 +1,11 @@
-from __future__ import division
-
+''' SPEECH-TO-TEXT USING MICROSOFT SPEECH API '''
+''' tiwalz@microsoft.com '''
 from functools import reduce
 from collections import defaultdict
 from edit_distance import SequenceMatcher
 from termcolor import colored
 import string
+import pandas as pd
 
 class EvaluateTranscription():
     """Calculate various metrics for the speech transcription service.
@@ -264,5 +265,14 @@ class EvaluateTranscription():
             print(f'WER: {wer:0.3%} ({error_count} / {ref_token_count})')
             print(f'WRR: {wrr:0.3%} ({match_count} / {ref_token_count})')
             print(f'SER: {ser:0.3%} ({sent_error_count} / {self.counter})')
-
             return wer, wrr, ser
+
+def main(df):
+    df.text = df.text.fillna("")
+    df.rec = df.rec.fillna("")
+    eva = EvaluateTranscription()
+    eva.calculate_metrics(df.text.values, df.rec.values, label=df.index.values, print_verbosiy=2)
+    eva.print_errors(min_count=1)
+
+if __name__ == '__main__':
+    main(pd.DataFrame({'text': ['I would like to book a flight to Singapore.', 'I need to cancel my flight to Stuttgart.'], 'rec': ['I would like to book a flight to Singapore.', 'I needa cancel my flight too Stuttgart.']}))

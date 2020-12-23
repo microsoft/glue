@@ -107,3 +107,7 @@ GitHub.sublime-settings
 
 # Config
 config.ini
+
+# Working directories
+input/
+output/

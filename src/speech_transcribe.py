@@ -9,27 +9,15 @@ import glob
 import sys
 import json
 import logging
+import codecs
 import helper as he
 import azure.cognitiveservices.speech as speechsdk
+import params as pa
 
-# Function for Standard Model
-def batch_transcribe(speech_files, output_folder, case, service_region, speech_key, endpoint_id = "", enable_proxy = False, lexical = False, *argv):
-    """
-    Batch-transcribe audio files using speech-to-text
-    """
-    speech_config = speechsdk.SpeechConfig(subscription = speech_key, region = service_region)
-    if enable_proxy:
-        speech_config.set_proxy(argv[0], argv[1], argv[2], argv[3])
-    # Detailed result, with lexical etc.
-    speech_config.set_service_property(name='format', value='detailed', channel=speechsdk.ServicePropertyChannel.UriQueryParameter)
-    if endpoint_id != "": speech_config.endpoint_id = endpoint_id
-    logging.info(f'[INFO] - Starting to transcribe {len(next(os.walk(speech_files))[2])} audio files')
-    for audio in glob.iglob(f'{speech_files}*av'):
-        result, filename = request_endpoint(audio, speech_config, output_folder, case, lexical)
-    # Check the result
-    return result, filename
+# Load and set configuration parameters
+pa.get_config()
 
-def request_endpoint(audio, speech_config, output_folder, case, lexical):
+def request_endpoint(audio, speech_config, output_directory, lexical):
     """Request the speech service endpoint
     Args:
         audio: input data frame
@@ -46,18 +34,18 @@ def request_endpoint(audio, speech_config, output_folder, case, lexical):
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config = speech_config, audio_config = audio_config)
     result = speech_recognizer.recognize_once()
     filename = audio[audio.rindex('\\')+1:]
-    process_recognition(result, filename, output_folder, case, lexical)
-    return result, filename
+    text = process_recognition(result, filename, output_directory, lexical)
+    return text, filename
 
-def process_recognition(result, filename, output_folder, case, lexical):
+def process_recognition(result, filename, output_directory, lexical):
     """
     Process recognition received from the speech service
     """
     if result.reason == speechsdk.ResultReason.RecognizedSpeech:
         if lexical:
-            text = f"{filename}\t{format(result.text)}\t{json.loads(result.json)['NBest'][0]['Lexical']}"
+            text = f"{format(result.text)}\t{json.loads(result.json)['NBest'][0]['Lexical']}"
         else:
-            text = f"{filename}\t{format(result.text)}"
+            text = f"{format(result.text)}"
         logging.info(f"[INFO] - Recognition successful: {filename} -> {result.text}")
     elif result.reason == speechsdk.ResultReason.NoMatch:
         logging.warning(filename + "\t" + f"No speech could be recognized: {result.no_match_details}")
@@ -68,4 +56,41 @@ def process_recognition(result, filename, output_folder, case, lexical):
         if cancellation_details.reason == speechsdk.CancellationReason.Error:
             logging.error(f"Error details: {cancellation_details.error_details}")
         text = ""
-    he.write_transcription(output_folder, case, text)
+    return text
+
+# General Function
+def write_transcription(output_directory, text):
+    ''' Write transcriptions '''
+    if not os.path.exists(f'{output_directory}/transcriptions.txt'):
+        transfile = codecs.open(f'{output_directory}/transcriptions.txt', 'w', encoding='utf-8-sig')
+        transfile.close()
+        logging.warning(f'[INFO] - Created transcript file with utf-8 bom encoding.')
+    with open(f"{output_directory}/transcriptions.txt", "a", encoding='utf-8-sig') as transfile:
+        transfile.write(f'{text}\n')
+        transfile.close()
+
+def main(speech_files, output_directory, lexical = False, enable_proxy = False, *argv):
+    """
+    Batch-transcribe audio files using speech-to-text
+    """
+    speech_config = speechsdk.SpeechConfig(subscription = pa.stt_key, region = pa.stt_region)
+    # If necessary, you can enable a proxy here: 
+    # set_proxy(hostname: str, port: str, username: str, password: str)
+    if enable_proxy: 
+        speech_config.set_proxy(argv[0], argv[1], argv[2], argv[3])
+    # Set speech service properties, requesting the detailed response format to make it compatible with lexical format, if wanted
+    speech_config.set_service_property(name='format', value='detailed', channel=speechsdk.ServicePropertyChannel.UriQueryParameter)
+    if pa.stt_endpoint != "": 
+        speech_config.endpoint_id = pa.stt_endpoint
+    logging.info(f'[INFO] - Starting to transcribe {len(next(os.walk(speech_files))[2])} audio files')
+    results = []
+    filenames = []
+    for audio in glob.iglob(f'{speech_files}*av'):
+        result, filename = request_endpoint(audio, speech_config, output_directory, lexical)
+        results.append(result)
+        filenames.append(filename)
+    # Check the result
+    return zip(filenames, results)
+
+if __name__ == '__main__':
+    main("input/audio/", "output/test/")
