@@ -1,5 +1,7 @@
-# Speech Toolkit
-The speech toolkit is a lightweight, Python-based collection of scripts to support you with [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/) text and speech use cases, especially at the following tasks:
+![GLUE](assets/img/glue_logo.png)
+
+GLUE a lightweight, Python-based collection of scripts to support you at succeeding with speech and text use-cases based on [Microsoft Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/). It not only allows you to batch-process data, rather glues together the services of your choice in an end-to-end pipeline.
+
 - Batch-transcribe audio files to text transcripts using [Microsoft Speech to Text Service](https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/)
 - Batch-synthesize text data using [Microsoft Text to Speech Service](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/)
 - Batch-translate text data using [Microsoft Translator](https://azure.microsoft.com/en-us/services/cognitive-services/translator/)
