@@ -1,7 +1,7 @@
 ![GLUE](assets/img/glue_logo.png)
 
 ## About GLUE
-GLUE a lightweight, Python-based collection of scripts to support you at succeeding with speech and text use-cases based on [Microsoft Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/). It not only allows you to batch-process data, rather glues together the services of your choice in one place and ensures an end-to-end view on the training and testing process.
+GLUE is a lightweight, Python-based collection of scripts to support you at succeeding with speech and text use-cases based on [Microsoft Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/). It not only allows you to batch-process data, rather glues together the services of your choice in one place and ensures an end-to-end view on the training and testing process.
 
 ## Modules
 GLUE consists of multiple modules, which either can be executed separately or ran as a central pipeline:
@@ -76,7 +76,7 @@ This section describes the single components of GLUE, which can either be ran au
 `tts.py`
 - Batch-synthetization of text strings using [Microsoft Text to Speech API](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/).
 - Supports Speech Synthesis Markup Language (SSML) to fine-tune and customize the pronunciation, as described in the [documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-synthesis-markup?tabs=python).
-- Writes audio files to 
+- Retrieves high-quality audio file from the API and converts it to the Microsoft speech format as well as a version underlaid by the noise of a telephone line
 - Functionality is limited to the languages and fonts listed on the [language support](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support#text-to-speech) page.
 - Make sure the voice of your choice is available in the respective Azure region ([see documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#standard-and-neural-voices)).
 
