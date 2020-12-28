@@ -14,11 +14,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # Helper Functions
-def create_case(output_folder, subfolders):
+def create_case(output_folder):
     """ Create case for project
     Args:
         output_folder: directory of output folder
-        subfolders: list of folders to be created as subfolders
     Returns:
         output_folder: directory of output folder
         case: name of the created case
@@ -27,8 +26,6 @@ def create_case(output_folder, subfolders):
     # Create Case
     case = f"{datetime.today().strftime('%Y-%m-%d_%H-%M-%S')}"
     os.makedirs(f"{output_folder}/{case}", exist_ok=True)
-    for folder in subfolders.split(","):
-        os.makedirs(f"{output_folder}/{case}/{folder}", exist_ok=True)
     return output_folder, case
 
 def create_df(fname):

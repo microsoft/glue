@@ -3,21 +3,21 @@
 ''' Supports Text-To-Speech (TTS), Speech-To-Text (STT) and LUIS-Scoring '''
 
 # Import standard packages
-import logging
-import argparse
 import os
 import sys
-import configparser
 import shutil
+import logging
+import argparse
+import configparser
 import pandas as pd
 
 # Import custom modules
+import luis
+import stt
+import tts
 import params as pa
 import helper as he
 import evaluate as eval
-import score_luis as luis
-import speech_transcribe as stt
-import synthesize_text as tts
 
 ''' COMMAND EXAMPLES '''
 # python .\src\main.py --do_synthesize --input input/scoringfile.txt
@@ -28,9 +28,8 @@ args = pa.get_params(parser)
 
 # Set arguments
 fname = args.input
-subfolder = args.subfolder
 luis_treshold = args.treshold
-audio_files = args.audio_files
+audio_files = args.audio
 do_synthesize = args.do_synthesize
 do_scoring = args.do_scoring
 do_transcribe = args.do_transcribe
@@ -45,9 +44,9 @@ logging.getLogger().setLevel(logging.INFO)
 if __name__ == '__main__':
     logging.info('[INFO] - Starting Cognitive Services Tools - v0.1')
 
-    # Case management
+    # Case Management
     if any([do_scoring, do_synthesize, do_transcribe, do_evaluate]):
-        output_folder, case = he.create_case(pa.output_folder, subfolder)
+        output_folder, case = he.create_case(pa.output_folder)
         logging.info(f'[INFO] - Created case {case}')
         try:
             shutil.copyfile(fname, f'{output_folder}/{case}/input/{os.path.basename(fname)}')

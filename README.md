@@ -1,61 +1,127 @@
 ![GLUE](assets/img/glue_logo.png)
 
-GLUE a lightweight, Python-based collection of scripts to support you at succeeding with speech and text use-cases based on [Microsoft Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/). It not only allows you to batch-process data, rather glues together the services of your choice in an end-to-end pipeline.
+## About GLUE
+GLUE a lightweight, Python-based collection of scripts to support you at succeeding with speech and text use-cases based on [Microsoft Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/). It not only allows you to batch-process data, rather glues together the services of your choice in one place and ensures an end-to-end view on the training and testing process.
 
-- Batch-transcribe audio files to text transcripts using [Microsoft Speech to Text Service](https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/)
-- Batch-synthesize text data using [Microsoft Text to Speech Service](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/)
+## Modules
+GLUE consists of multiple modules, which either can be executed separately or ran as a central pipeline:
+- Batch-transcribe audio files to text transcripts using [Microsoft Speech to Text Service](https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/) (STT)
+- Batch-synthesize text data using [Microsoft Text to Speech Service](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/) (TTS)
+- Batch-evaluate reference transcriptions and recognitions
+
+- Batch-score text strings on an existing, pre-trained [Microsoft LUIS](https://luis.ai)-model
+
+TBD:
 - Batch-translate text data using [Microsoft Translator](https://azure.microsoft.com/en-us/services/cognitive-services/translator/)
-- Batch-score text strings on a [Microsoft LUIS](https://luis.ai)-model
-- [to extract LUIS files from Excel sheets and with that create test data sets to be scored using a LUIS endpoint.]
 
-## Know before you go
-This toolkit is based on multiple, free and/or open source software components. This section helps you to check whether you are all set for using it. 
+## Getting Started
+This section describes how you get started with GLUE and which requirements need to be fulfilled by your working environment.
 
 ### Prerequisites
 Before getting your hands on the toolkits, make sure your local computer is equipped with the following frameworks and base packages:
 - [Python](https://www.python.org/downloads/windows/) (required, Version 3.8 is recommended)
-- [VSCode](https://code.visualstudio.com/docs/?dv=win) (recommended)
-  - alternatively, you can also run the scripts using PowerShell or PyCharm
-- [git](https://git-scm.com/downloads) (recommended, alternatively download the repository as zip)
-- Internet access for installing your environment and scoring the files
+- [VSCode](https://code.visualstudio.com/docs/?dv=win) (recommended), but you can also run the scripts using PowerShell, Bash etc.
+- Stable connection for installing your environment and scoring the files
 
-After making sure these are all available on your system, the environment can be set up.
+### Setup of Virtual Environment
+1. Open a command line of your choice (PowerShell, Bash)
+2. Change the directory to your preferred workspace (using `cd`)
+3. Clone the repository (alternatively, download the repository as a zip-archive and unpack your file locally to the respective folder)
+```
+git clone https://github.com/microsoft/glue
+```
+4. Enter the root folder of the cloned repository
+```
+cd glue
+```
+5. Set up the virtual environment
+``` 
+python -m venv .venv
+```
+6. Activate the virtual environment
+```bash
+# Windows: 
+.venv\Scripts\activate
+# Linux: 
+.venv/bin/activate
+```
+7. Install the requirements 
+```
+pip install -r requirements.txt
+```
+8. (optional) If you want to use Jupyter Notebooks, you can register your activated environment using the command below
+```
+python -m ipykernel install --user --name glue --display-name "Python (glue)"
+```
+After successfully installing the requirements-file, your environment is set up and you can go ahead with the next step.
 
-### Setup of virtual environment
-1. Open your PowerShell or open VSCode
-1. Change the directory to your preferred workspace (using `cd`)
-1. Download the repository as a ZIP-archive and unpack your file locally to the respective folder
-1. Enter the root folder of your repository
-1. Set up the virtual environment<br>
-`python -m venv venv`
-1. Activate the virtual environment<br> `venv\Scripts\activate`
-1. Install the requirements<br>
-`pip install -r requirements.txt`
-1. After successfully installing the requirements-file, your environment is set up and you can go ahead. 
-Afterwards, you should be able to see the activated environment in the command line:<br>`(txttool)`
+### API Keys
+In the root directory of the repository, you can find a file named `config.sample.ini`. This is the file where the API keys and some other essential confirguation parameters have to be set, depending on which services you would like to use. First, create a copy of `config.sample.ini` and rename it to `config.ini` in the same directory. You only need the keys for the services you use during your experiment. However, keep the structure of the `config.ini`-file as it is to avoid errors. The toolkit will just set the values as empty, but will throw an error when the keys cannot be found at all.
 
-### Get your keys
-In the root directory, you will find a file named `config.sample.ini`. This is the file where all the LUIS keys have to be set. First, create a copy of this file and rename it to `config.ini`. You only need the keys for the services you use during your experiment. However, keep the structure of the `config.ini`-file as it is to avoid errors. The toolkit will just set the variable values as _none_, but will throw an error when the keys cannot be found.
+An instruction on how to get the keys can be found [here](GetYourKeys.md).
 
-An instruction on how to get the keys can be found [here](getyourkeys.md).
+### Input Parameters
+The following table shows and describes the available modes along with their input parameters as well as dependencies.
 
-## How to use
+| __Mode__           | __Command line parameter__ | __Description__                                                         | __Dependencies__                                                                                                                                                                               |   |
+|--------------------|----------------------------|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| __TTS__            | `--do_synthesize`          | Activate text-to-speech synthetization                                  | Requires csv file with `text`-column, see `--audio_files`                                                                                                                                      |   |
+| __STT__            | `--do_transcribe`          | Activate speech-to-text processing                                      | Requires audio files, see `--audio_files`                                                                                                                                                      |   |
+| __STT__            | `--audio_files`            | Path to folder with audio files                                         | Audio files have to be provided as WAV-file with the parameters described [here](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-custom-speech-test-and-train) |   |
+| __STT-Evaluation__ | `--do_evaluate`            | Activate evaluation of transcriptions based on reference transcriptions | Requires csv-file with `text`-column and intent names                                                                                                                                          |   |
+| __LUIS__           | `--do_scoring`             | Activate LUIS model scoring                                             | Requires csv-file with `intent` and `text` columns                                                                                                                                             |   |
+| __STT / TTS__      | `--input`                  | Path to comma-separated text input file                                 |                                                                                                                                                                                                |   |
 
-### File guidelines
-There are some rules how the input files have to look like:
-- tab-delimited file (If you only have an Excel sheet, you can create it using Excel -> Save as -> .txt (tab-delimited))
+The requirements for the input files (`--input` and `--audio`)
+
+## GLUE-Modules
+This section describes the single components of GLUE, which can either be ran autonomously or, ideally, using the central orchestrator.
+
+`glue.py`
+- Central application orchestrator of the toolkit.
+- Glues together the single modules in one place as needed.
+- Reads input files and writes output files.
+
+`stt.py`
+- Batch-transcription of audio files using [Microsoft Speech to Text API](https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/).
+- Allows baseline models as well as custom endpoints.
+- Functionality is limited to the languages and locales listed on the [language support](hhttps://docs.microsoft.com/de-de/azure/cognitive-services/speech-service/language-support#speech-to-text) page.
+
+`tts.py`
+- Batch-synthetization of text strings using [Microsoft Text to Speech API](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/).
+- Supports Speech Synthesis Markup Language (SSML) to fine-tune and customize the pronunciation, as described in the [documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-synthesis-markup?tabs=python).
+- Functionality is limited to the languages and fonts listed on the [language support](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support#text-to-speech) page.
+- Make sure the voice of your choice is available in the respective Azure region ([see documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#standard-and-neural-voices)).
+
+`luis.py`
+- Batch-scoring of intent-text combinations using an existing LUIS model
+  -  See the following [quickstart documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/luis-get-started-create-app) in case you need some inspiration for your first LUIS-app.
+- Configureable scoring treshold, if predictions only want to be accepted given a certain confidence score returned by the API.
+- Writes scoring report as comma-separated file.
+- Returns classification report and confusion matrix based on [scikit-learn](https://github.com/scikit-learn/scikit-learn).
+
+`evaluate.py`
+- Evaluation of transcription results by comparing them with reference transcripts.
+- Calculates metrics such as [Word Error Rate (WER)](https://en.wikipedia.org/wiki/Word_error_rate), Sentence Error Rate (SER), Word Recognition Rate (WRR).
+- Implementation based on [github.com/belambert/asr-evaluation](https://github.com/belambert/asr-evaluation).
+- See some hints on [how to improve your Custom Speech accuracy](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-custom-speech-evaluate-data).
+
+`params.py`
+- Collects API and configuration parameters from the command line (ArgumentParser) and the `config.ini`.
+
+`helper.py`
+- Collection of helper functions which do not have a purpose on their own, rather complementing the orchestrator and keeping the code neat and clean.
+
+### Input File Guidelines
+Depending on your use-case, you have to provide an input text file and/or audio files. In these cases, you have to pass the path to the respective input file of folder via the command line. There are some rules how the input files have to look like.
+
+-
+- Comma-separated file (If you only have an Excel sheet, you can create it using Excel: (_Save as_ -> comma-separated)
 - UTF-8 encoding (to make sure it has the correct encoding, open it with a text editor such as [Notepad++](https://notepad-plus-plus.org/downloads/) -> Encoding -> Convert to UTF-8)
 - Column names with the respective values dependent on the mode
 - of columns _intent_ (ground-truth LUIS-intent) and _text_ (utterance of the text, max length of 500 characters)
 - We recommend you to put the input file in the subfolder `input`.
 
-|                 | __"intent"-column__ | __"text"-column__ | __"Audio File"-folder__ |
-|-----------------|---------------------|-------------------|-------------------------|
-| --do_synthesize |                     | X                 |                         |
-| --do_transcribe |                     |                   | x                       |
-| --do_evaluate   |                     | X                 |                         |
-| --do_scoring    | X                   |                   |                         |
-| --audio_files   |                     |                   | X                       |
 
 You can find an example file [here](input/testset-example.txt).
 
@@ -118,3 +184,6 @@ To get deeper insights into the classification performance, there is a Jupyter n
 1. Change the file name in the `Import data` section. If you want to reference to the file in the output folder, change it to `../../output/[date-of-case]-case/[date-of-case]-case.txt`.
 1. Execute all the fields - this might take a while especially during the plotting phase of the confusion matrix
 1. If you want to store the evaluation report, you can do this by "File -> Export -> .html" and open it with any modern internet browser
+
+## Limitations
+This toolkit is the right starting point for your bring-your-own data use cases. However, it does not provide automated training runs.

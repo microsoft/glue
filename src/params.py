@@ -5,52 +5,54 @@ import sys
 def get_params(parser):
     '''
     Collect arguments from command line
+    Args:
+        parser: ArgumentParser-object
+    Returns:
+        args: object with parsed arguments
     '''
     parser.add_argument("--input",
                     type=str,
-                    #default="input/example_testset_flights.txt",
-                    help="give the whole path to tab-delimited file")
+                    help="Path to comma-separated text input file")
     parser.add_argument("--subfolder",
                     default="input",
                     type=str,
                     help="Input folders, pass comma-separated if multiple ones")
-    parser.add_argument("--audio_files",
-                    #default="input/audio/",
+    parser.add_argument("--audio",
                     type=str,
-                    help="Input folders, pass comma-separated if multiple ones")
-    parser.add_argument("--treshold",
-                    default=0.85,
-                    type=float,
-                    help="Set minimum confidence score between 0.00 and 1.00")
+                    help="Path to folder with audio files")
     parser.add_argument("--do_transcribe",
                     default=False,
                     action="store_true",
-                    help="Speech to Text using Microsoft Speech Service")
+                    help="Activate speech-to-text processing")
     parser.add_argument("--do_scoring",
                     default=False,
                     action="store_true",
-                    help="Model testing using LUIS API")
+                    help="Activate LUIS model scoring")
     parser.add_argument("--do_synthesize",
                     default=False,
                     action="store_true",
-                    help="Text to speech using Microsoft Speech API")
+                    help="Activate text-to-speech synthetization")
     parser.add_argument("--do_evaluate",
                     default=False,
                     action="store_true",
-                    help="Evaluate speech transcriptions")
+                    help="Activate evaluation of transcriptions based on reference transcriptions")
     args = parser.parse_args()
     return args
 
-def get_config():
+def get_config(fname_config='config.ini'):
     '''
     Collect parameters from config file
+    Args:
+        fname_config: file name of config file
+    Returns:
+        Sets parsed arguments as global variables
     '''
     # Get config file
     sys.path.append('./')
     config = configparser.ConfigParser()
     global output_folder, luis_appid, luis_key, luis_region, luis_endpoint, luis_slot, luis_treshold, stt_key, stt_endpoint, stt_region, tts_key, tts_region, tts_resource_name, tts_language, tts_font
     try:
-        config.read('config.ini')
+        config.read(fname_config)
         output_folder = config['dir']['output_folder']
         stt_key = config['stt']['key']
         stt_endpoint = config['stt']['endpoint']
