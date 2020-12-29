@@ -3,42 +3,46 @@
 ## About GLUE
 GLUE is a lightweight, Python-based collection of scripts to support you at succeeding with speech and text use-cases based on [Microsoft Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/). It not only allows you to batch-process data, rather glues together the services of your choice in one place and ensures an end-to-end view on the training and testing process.
 
-## Modules
+### Modules
 GLUE consists of multiple modules, which either can be executed separately or ran as a central pipeline:
-- Batch-transcribe audio files to text transcripts using [Microsoft Speech to Text Service](https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/) (STT)
-- Batch-synthesize text data using [Microsoft Text to Speech Service](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/) (TTS)
-- Batch-evaluate reference transcriptions and recognitions
+- Batch-transcribe audio files to text transcripts using [Microsoft Speech to Text Service](https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/) (STT).
+- Batch-synthesize text data using [Microsoft Text to Speech Service](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/) (TTS).
+- Batch-evaluate reference transcriptions and recognitions.
+- Batch-score text strings on an existing, pre-trained [Microsoft LUIS](https://luis.ai)-model.
 
-- Batch-score text strings on an existing, pre-trained [Microsoft LUIS](https://luis.ai)-model
+WIP:
+- Batch-translate text data using [Microsoft Translator](https://azure.microsoft.com/en-us/services/cognitive-services/translator/).
 
-TBD:
-- Batch-translate text data using [Microsoft Translator](https://azure.microsoft.com/en-us/services/cognitive-services/translator/)
+### Use-Cases (among others)
+The toolkit has been built based on our experience from the field and is a great add-on, but not limited, to the following use-case: 
+- Automatized generation of synthetic speech-model training data
+- Scoring of STT-transcriptions on an existing LUIS-model
 
 ## Getting Started
 This section describes how you get started with GLUE and which requirements need to be fulfilled by your working environment.
 
 ### Prerequisites
 Before getting your hands on the toolkits, make sure your local computer is equipped with the following frameworks and base packages:
-- [Python](https://www.python.org/downloads/windows/) (required, Version 3.8 is recommended)
-- [VSCode](https://code.visualstudio.com/docs/?dv=win) (recommended), but you can also run the scripts using PowerShell, Bash etc.
-- Stable connection for installing your environment and scoring the files
+- [Python](https://www.python.org/downloads/) (required, Version 3.8 is recommended).
+- [VSCode](https://code.visualstudio.com/) (recommended), but you can also run the scripts using PowerShell, Bash etc.
+- Stable connection for installing your environment and scoring the files.
 
 ### Setup of Virtual Environment
-1. Open a command line of your choice (PowerShell, Bash)
-2. Change the directory to your preferred workspace (using `cd`)
-3. Clone the repository (alternatively, download the repository as a zip-archive and unpack your file locally to the respective folder)
+1. Open a command line of your choice (PowerShell, Bash).
+2. Change the directory to your preferred workspace (using `cd`).
+3. Clone the repository (alternatively, download the repository. as a zip-archive and unpack your file locally to the respective folder).
 ```
 git clone https://github.com/microsoft/glue
 ```
-4. Enter the root folder of the cloned repository
+4. Enter the root folder of the cloned repository.
 ```
 cd glue
 ```
-5. Set up the virtual environment
+5. Set up the virtual environment.
 ``` 
 python -m venv .venv
 ```
-6. Activate the virtual environment
+6. Activate the virtual environment.
 ```bash
 # Windows: 
 .venv\Scripts\activate
@@ -128,19 +132,98 @@ You can find an [example text file](input/testset-example.txt) as well as [examp
 The following section describes how to run the individual modules via the orchtestrator.
 
 ### Scenario 1: Speech-to-Text (STT)
+This scenario describes how you can batch-transcribe audio files using GLUE. A potential use case can be that you do not have reference transcriptions to the audio files yet and want to accelerate the transcription-process, by "pre-labeling" the data. The recognitions might not be perfect, but it helps you to have a much better time by providing a starting point.
+
+#### Pre-requisites:
+- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
+- Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
+- See example files [here](#TODO).
+
+#### Run GLUE
+1. `cd` to the root folder of GLUE.
+2. Make sure your `.venv` is activated.
+3. Run the following command:
+```python
+python src/glue.py --audio C:/audio_files/ --do_transcribe
+```
+4. Wait for the run to finish.
+
+#### Output
+GLUE will create an output folder as below:
+```
+- case: [YYYYMMDD]-[UUID]/
+ | -- stt_transcriptions.txt (tab-delimited file with audio file names and transcriptions)
+```
 
 ### Scenario 2: Text-to-Speech (TTS)
+This scenario describes how you can batch-synthesize text data using GLUE. A potential use case can be that you want to create synthetic training data for your speech model, as you do not have enough speakers to create acoustic training material. The use case may be callcenter-related, which is why you need some tweaked data in order to simulate a realistic setup.
+
+#### Pre-requisites
+- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md)).
+- Textual input file with a `text` column and utterances to be synthesized.
+- See an example file [here](#TODO).
+
+#### Run GLUE
+1. `cd` to the root folder of GLUE.
+2. Make sure your `.venv` is activated.
+3. Run the following command:
+```python
+python src/glue.py --input ../input-files/text.csv --do_synthesize
+```
+4. Wait for the run to finish.
+
+#### Output
+GLUE will create an output folder as below:
+```
+- case: [YYYYMMDD]-[UUID]/
+  | -- input/
+    | -- [input text file].csv
+  | -- tts_converted
+    | -- [converted audio files]
+    | -- [converted audio files]
+  | -- tts_generated
+    | -- [generated audio files]
+    | -- [generated audio files]
+  | -- tts_telephone
+    | -- [modified audio files]
+    | -- [modified audio files]
+ | -- tts_transcriptions.txt (tab-delimited file with audio file names and transcriptions)
+```
 
 ### Scenario 3: LUIS-Scoring
-The following table shows the structure of the scoring file and gives you an example how predictions are handled, also when the confidence score is low.
-| intent | text | prediction | score | drop |
+This scenario shows how you can use GLUE to batch-score textual data on a LUIS-endpoint.
+
+#### Pre-requisites
+- LUIS app and the respective keys (see [Get Your Keys](GetYourKeys.md)).
+  - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/example-luis-app.lu) and import it to your resource. 
+- Textual input file with a `intent` AND `text` column and utterances to be synthesized.
+- See an example file [here](#TODO).
+
+#### Run GLUE
+1. `cd` to the root folder of GLUE.
+2. Make sure your `.venv` is activated.
+3. Run the following command:
+```python
+python src/glue.py --input /home/files/luis-scoring.csv --do_scoring
+```
+4. Wait for the run to finish.
+
+#### Output
+GLUE will create an output folder as below:
+```
+- case: [YYYYMMDD]-[UUID]/
+  | -- input/
+    | -- [input text file].csv
+ | -- luis_scoring.txt (tab-delimited file with audio file names and transcriptions)
+```
+
+In your command line, you will see a print of a [confusion matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) as well as a [classification report](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html). These reports cannot be written to a file, however they are based on the output file `luis-scoring.txt` and you may use the Jupyter notebook to load them again and gain deep insights into the classification performance. The following table shows the structure of the scoring file `luis_scoring.txt` and provides you an example how predictions are handled, also when the confidence score is low.
+| intent | text | prediction | score | prediction_drop |
 | --- | --- | --- | --- | --- |
-| Intent name based on reference Excel file | Raw text string | Predicted intent by LUIS app | Certainty score of LUIS model, between 0 and 1 | Predicted intent by LUIS app, _None_-intent in case of dropped value (when below the confidence score e.g. of 0.82) |
+| _Intent name based on reference Excel file_ | _Raw text string_ | _Predicted intent by LUIS app_ | _Certainty score of LUIS model, between 0 and 1_ | _Predicted intent by LUIS app, _None_-intent in case of dropped value (when below the confidence score e.g. of 0.82)_ |
 | Book_Flight | I would like to book a flight to Frankfurt. |	Book_Flight |	0.9450068 | Book_Flight |
 | Flight_Change | Please rebook my flight to Singapore, please | Change_Flight | 0.9112311 | Flight_Change |
 | Flight_Change |	I would like to change my flight. |	Flight_Cancel |	0.5517158 |	None |
-
-
 
 ## Limitations
 This toolkit is the right starting point for your bring-your-own data use cases. However, it does not provide automated training runs.

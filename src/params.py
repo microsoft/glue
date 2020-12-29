@@ -67,7 +67,7 @@ def get_config(fname_config='config.ini'):
         luis_region = config['luis']['region']
         luis_endpoint = config['luis']['endpoint']
         luis_slot = config['luis']['slot']
-        luis_treshold = config['luis']['treshold']
+        luis_treshold = float(config['luis']['treshold'])
         luis_treshold = 0 if luis_treshold == '' else luis_treshold
     except Exception as e:
         sys.exit(f'[EXCEPT] - Config file could not be loaded -> {e}.')

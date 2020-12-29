@@ -28,27 +28,28 @@ args = pa.get_params(parser)
 
 # Set arguments
 fname = args.input
-luis_treshold = args.treshold
+#luis_treshold = args.treshold
 audio_files = args.audio
 do_synthesize = args.do_synthesize
 do_scoring = args.do_scoring
 do_transcribe = args.do_transcribe
 do_evaluate = args.do_evaluate
 
-# Get config
+# Get config from file
 pa.get_config()
 
-# Set logger
+# Set logging level to INFO
 logging.getLogger().setLevel(logging.INFO)
 
 if __name__ == '__main__':
-    logging.info('[INFO] - Starting Cognitive Services Tools - v0.1')
+    logging.info('[INFO] - Starting GLUE - v0.1')
 
     # Case Management
     if any([do_scoring, do_synthesize, do_transcribe, do_evaluate]):
         output_folder, case = he.create_case(pa.output_folder)
         logging.info(f'[INFO] - Created case {case}')
         try:
+            os.makedirs(f"{output_folder}/{case}/input", exist_ok=True)
             shutil.copyfile(fname, f'{output_folder}/{case}/input/{os.path.basename(fname)}')
             df_reference = pd.read_csv(f'{output_folder}/{case}/input/{os.path.basename(fname)}', sep=';', encoding='utf-8', index_col=None)
             logging.info(f'[INFO] - Copied input file(s) to case folder')
@@ -67,7 +68,7 @@ if __name__ == '__main__':
     if do_synthesize:
         logging.info(f'[STATUS] - Starting text-to-speech synthetization of {len(df_reference)} utterances')
         df_reference = tts.main(df_reference, f'{output_folder}/{case}', pa.stt_endpoint)
-        df_reference[['audio_synth', 'text']].to_csv(f'{output_folder}/{case}/stt_transcription.txt', sep = "\t", header = None, index = False)
+        df_reference[['audio_synth', 'text']].to_csv(f'{output_folder}/{case}/tts_transcription.txt', sep = "\t", header = None, index = False)
         logging.info(f'[STATUS] - Finished text-to-speech synthetization of {len(df_reference)} utterances')
 
     # STT
@@ -77,11 +78,13 @@ if __name__ == '__main__':
             stt_results = stt.main(f'{audio_files}/', f'{output_folder}/{case}')
             transcription = pd.DataFrame(list(stt_results), columns=['audio', 'rec'])
             logging.debug(transcription)
-            transcription.to_csv(f'{output_folder}/{case}/tts_transcriptions.txt', sep = "\t", header = None, index=False)
+            transcription.to_csv(f'{output_folder}/{case}/stt_transcriptions.txt', sep = "\t", header = None, index=False)
             # Merge 
             if 'audio' in list(df_reference.columns):
                 df_reference = pd.merge(left = df_reference, right = transcription, how = 'left', on = 'audio')
                 logging.info(f'[STATUS] - Merged imported reference transcriptions and recognitions')
+                df_reference.to_csv(f'{output_folder}/{case}/transcriptions_full.txt', sep = '\t', encoding = 'utf-8', index = False)
+                logging.info(f'[STATUS] - Wrote transcription file to case folder')
         else:
             logging.error('[ERROR] - It seems like you did not pass a path to audio files, cannot do transcriptions')
             sys.exit()
@@ -105,10 +108,5 @@ if __name__ == '__main__':
         else:
             logging.error('[ERROR] - Cannot do LUIS scoring, please verify that you have an "intent"-column in your data.')   
 
-    # Write transcript file
-    try:
-        df_reference.to_csv(f'{output_folder}/{case}/transcriptions_full.txt', sep = '\t', encoding = 'utf-8', index = False)
-        logging.info(f'[STATUS] - Wrote transcription file to case folder')
-        logging.info(f'[STATUS] - Finished with the run {case}!')
-    except Exception as e:
-        logging.error(f'[ERROR] - An error has occured -> {e}')
+    # Finish run
+    logging.info(f'[STATUS] - Finished with the run {case}!')

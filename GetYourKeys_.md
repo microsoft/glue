@@ -1,5 +1,5 @@
 # Get your keys
-This documentation helps you to find the right keys for Azure Cognitive Services in order to use the toolkit.
+This documentation helps you to find the right keys for Azure Cognitive Services in order to use GLUE.
 
 ## Text to Speech
 - Go to the [Azure portal](https://portal.azure.com), open the Cognitive Service resource you want to use

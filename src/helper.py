@@ -4,6 +4,7 @@
 # Import standard packages
 from datetime import datetime
 import os
+import uuid
 import argparse
 import shutil
 import glob
@@ -24,7 +25,7 @@ def create_case(output_folder):
         output_file: name of text output file
     """
     # Create Case
-    case = f"{datetime.today().strftime('%Y-%m-%d_%H-%M-%S')}"
+    case = f"{datetime.today().strftime('%Y%m%d')}-{uuid.uuid4().hex}"
     os.makedirs(f"{output_folder}/{case}", exist_ok=True)
     return output_folder, case
 
