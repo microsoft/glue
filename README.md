@@ -1,4 +1,4 @@
-![GLUE](assets/img/glue_logo.png)
+<img src="assets/img/glue_logo.png" alt="GLUE" width="400px">
 
 ## About GLUE
 GLUE is a lightweight, Python-based collection of scripts to support you at succeeding with speech and text use-cases based on [Microsoft Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/). It not only allows you to batch-process data, rather glues together the services of your choice in one place and ensures an end-to-end view on the training and testing process.
@@ -250,6 +250,8 @@ GLUE will create an output folder as below:
     | -- [input text file].csv
  | -- transcriptions_full.txt (tab-delimited file with merged columns of the current run)
 ```
+
+In your command line, you will see an output of the evaluation algorithms per sentence as well as an overall summary in case you used multiple utterances. These evaluations are based on the `text` and `rec` columns. As the command line output is only temporary, we recommend you to use the Jupyter Notebook resulting from this run.
 
 ### Scenario 5: Speech to Text and Evaluation
 This scenario describes how you can batch-transcribe audio files and compare these recognitions with a ground-truth reference transcription using GLUE. A potential use case can be that you want to assess the quality of your speech model and figure out potential recognition problems, which you may counteract by custom model training.

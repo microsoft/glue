@@ -48,7 +48,6 @@ def create_df(fname):
             else:
                 continue
         df = pd.DataFrame({'intent': intents, 'text': texts})
-    #df.to_csv('out_df.txt', sep='\t', encoding='utf-8', index=None)
     return df
 
 def write_lu(luis_file):
@@ -69,3 +68,7 @@ def write_lu(luis_file):
             line = f"- {str(row['text'])}\n"
             file.writelines(line.lower())
     file.close()
+
+def transform_notebook():
+    #TODO
+    return None
