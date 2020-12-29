@@ -128,7 +128,7 @@ Depending on your use-case described in the table above, you may have to provide
 
 You can find an [example text file](input/testset-example.txt) as well as [example audio files]() following the respective links.
 
-## Run Modules
+## How to use GLUE
 The following section describes how to run the individual modules via the orchtestrator.
 
 ### Scenario 1: Speech-to-Text (STT)
@@ -143,7 +143,7 @@ This scenario describes how you can batch-transcribe audio files using GLUE. A p
 1. `cd` to the root folder of GLUE.
 2. Make sure your `.venv` is activated.
 3. Run the following command:
-```python
+```bash
 python src/glue.py --audio C:/audio_files/ --do_transcribe
 ```
 4. Wait for the run to finish.
@@ -167,7 +167,7 @@ This scenario describes how you can batch-synthesize text data using GLUE. A pot
 1. `cd` to the root folder of GLUE.
 2. Make sure your `.venv` is activated.
 3. Run the following command:
-```python
+```bash
 python src/glue.py --input ../input-files/text.csv --do_synthesize
 ```
 4. Wait for the run to finish.
@@ -196,14 +196,14 @@ This scenario shows how you can use GLUE to batch-score textual data on a LUIS-e
 #### Pre-requisites
 - LUIS app and the respective keys (see [Get Your Keys](GetYourKeys.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/example-luis-app.lu) and import it to your resource. 
-- Textual input file with a `intent` AND `text` column and utterances to be synthesized.
+- Textual input file with an `intent` AND `text` column.
 - See an example file [here](#TODO).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
 2. Make sure your `.venv` is activated.
 3. Run the following command:
-```python
+```bash
 python src/glue.py --input /home/files/luis-scoring.csv --do_scoring
 ```
 4. Wait for the run to finish.
@@ -224,6 +224,60 @@ In your command line, you will see a print of a [confusion matrix](https://sciki
 | Book_Flight | I would like to book a flight to Frankfurt. |	Book_Flight |	0.9450068 | Book_Flight |
 | Flight_Change | Please rebook my flight to Singapore, please | Change_Flight | 0.9112311 | Flight_Change |
 | Flight_Change |	I would like to change my flight. |	Flight_Cancel |	0.5517158 |	None |
+
+### Scenario 4: Evaluation
+This scenario describes how you can compare already existing recognitions with a ground-truth reference transcription using GLUE. A potential use case can be that you want to assess the quality of your speech model and figure out potential recognition problems, which you may counteract by custom model training. In this case, you have to provide already existing recognitions to the tool.
+
+#### Pre-requisites:
+- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
+- Textual input file with an `text` column with reference transcriptions as well as a `rec` column with recognitions.
+- See example files [here](#TODO).
+
+#### Run GLUE
+1. `cd` to the root folder of GLUE.
+2. Make sure your `.venv` is activated.
+3. Run the following command:
+```bash
+python src/glue.py --input ../input/transcriptions.txt --do_evaluate
+```
+4. Wait for the run to finish.
+
+#### Output
+GLUE will create an output folder as below:
+```
+- case: [YYYYMMDD]-[UUID]/
+ | -- input/
+    | -- [input text file].csv
+ | -- transcriptions_full.txt (tab-delimited file with merged columns of the current run)
+```
+
+### Scenario 5: Speech to Text and Evaluation
+This scenario describes how you can batch-transcribe audio files and compare these recognitions with a ground-truth reference transcription using GLUE. A potential use case can be that you want to assess the quality of your speech model and figure out potential recognition problems, which you may counteract by custom model training.
+
+#### Pre-requisites:
+- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
+- Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
+- Textual input file with an `audio` column for reference audio file names AND the respective `text` column with reference transcriptions.
+- See example files [here](#TODO).
+
+#### Run GLUE
+1. `cd` to the root folder of GLUE.
+2. Make sure your `.venv` is activated.
+3. Run the following command:
+```bash
+python src/glue.py --audio C:/audio_files/ --input C:/audio_files/transcriptions.txt --do_transcribe --do_evaluate
+```
+4. Wait for the run to finish.
+
+#### Output
+GLUE will create an output folder as below:
+```
+- case: [YYYYMMDD]-[UUID]/
+ | -- input/
+    | -- [input text file].csv
+ | -- stt_transcriptions.txt (tab-delimited file with audio file names and transcriptions)
+ | -- transcriptions_full.txt (tab-delimited file with merged columns of the current run)
+```
 
 ## Limitations
 This toolkit is the right starting point for your bring-your-own data use cases. However, it does not provide automated training runs.

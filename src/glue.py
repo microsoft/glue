@@ -28,7 +28,6 @@ args = pa.get_params(parser)
 
 # Set arguments
 fname = args.input
-#luis_treshold = args.treshold
 audio_files = args.audio
 do_synthesize = args.do_synthesize
 do_scoring = args.do_scoring
