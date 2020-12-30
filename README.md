@@ -1,7 +1,7 @@
 <img src="assets/img/glue_logo.png" alt="GLUE" width="400px">
 
 ## About GLUE
-GLUE is a lightweight, Python-based collection of scripts to support you at succeeding with speech and text use-cases based on [Microsoft Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/). It not only allows you to batch-process data, rather glues together the services of your choice in one place and ensures an end-to-end view on the training and testing process.
+GLUE is a lightweight, Python-based collection of scripts to support you at succeeding with speech and text use-cases based on [Microsoft Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/). It not only allows you to batch-process data, but also glues together the services of your choice in one place and ensures an end-to-end view on the training and testing process.
 
 ### Modules
 GLUE consists of multiple modules, which either can be executed separately or ran as a central pipeline:
@@ -126,10 +126,10 @@ Depending on your use-case described in the table above, you may have to provide
 - of columns _intent_ (ground-truth LUIS-intent) and _text_ (utterance of the text, max length of 500 characters).
 - We recommend you to put the input file in the subfolder `input`.
 
-You can find an [example text file](input/testset-example.txt) as well as [example audio files]() following the respective links.
+You can find an [example text file](example/input/testset-example.txt) as well as [example audio files]() following the respective links.
 
 ## How to use GLUE
-The following section describes how to run the individual modules via the orchtestrator.
+The following section describes how to run the individual modules via the orchestrator.
 
 ### Scenario 1: Speech-to-Text (STT)
 This scenario describes how you can batch-transcribe audio files using GLUE. A potential use case can be that you do not have reference transcriptions to the audio files yet and want to accelerate the transcription-process, by "pre-labeling" the data. The recognitions might not be perfect, but it helps you to have a much better time by providing a starting point.
@@ -206,7 +206,7 @@ This scenario shows how you can use GLUE to batch-score textual data on a LUIS-e
 ```bash
 python src/glue.py --input /home/files/luis-scoring.csv --do_scoring
 ```
-4. Wait for the run to finish.
+4. Wait for the run to finish and see the command line outputs.
 
 #### Output
 GLUE will create an output folder as below:
@@ -240,7 +240,7 @@ This scenario describes how you can compare already existing recognitions with a
 ```bash
 python src/glue.py --input ../input/transcriptions.txt --do_evaluate
 ```
-4. Wait for the run to finish.
+4. Wait for the run to finish and see the command line outputs.
 
 #### Output
 GLUE will create an output folder as below:
@@ -269,7 +269,7 @@ This scenario describes how you can batch-transcribe audio files and compare the
 ```bash
 python src/glue.py --audio C:/audio_files/ --input C:/audio_files/transcriptions.txt --do_transcribe --do_evaluate
 ```
-4. Wait for the run to finish.
+4. Wait for the run to finish and see the command line outputs.
 
 #### Output
 GLUE will create an output folder as below:

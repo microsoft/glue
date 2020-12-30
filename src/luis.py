@@ -54,16 +54,16 @@ def request_luis(text):
     logging.debug(json.dumps(json.loads(r.text), indent=2))
     return r.json()
 
-def luis_classification_report(df):
+def luis_classification_report(df, col):
     logging.info('[STATUS] - Starting to create classification report')
     logging.info('[OUTPUT] - CLASSIFICATION REPORT (without reset by treshold):')
-    logging.info(classification_report(df['intent'], df['prediction']))
+    logging.info(classification_report(df['intent'], df[f'prediction_{col}']))
     logging.info(f'[OUTPUT] - AFTER RESET BY TRESHOLD ({pa.luis_treshold}):')
-    logging.info(classification_report(df['intent'], df['prediction_drop']))
+    logging.info(classification_report(df['intent'], df[f'prediction_drop_{col}']))
     logging.info('[OUTPUT] - CONFUSION MATRIX:')
-    logging.info(f'\n{confusion_matrix(df["intent"], df["prediction"])}')
+    logging.info(f'\n{confusion_matrix(df["intent"], df[f"prediction_{col}"])}')
 
-def main(df):
+def main(df, col):
     # Set lists for results
     predictions = []
     scores = []
@@ -71,21 +71,23 @@ def main(df):
     # Loop through text rows, predict and process values
     for index, row in df.iterrows():
         try:
-            data = request_luis(row['text'])
+            # Send LUIS request
+            data = request_luis(row[col])
             # Extract relevant information from results
             top_intent = data['prediction']['topIntent']
             top_score = data['prediction']['intents'][top_intent]['score']
-            # Evaluate scores based on treshold and set None-intent if too low
+            # Evaluate scores based on treshold and set None-intent if confidence is too low
             if top_score < pa.luis_treshold: 
                 drop = "None"
             else:
                 drop = top_intent
-            logging.info(f"[INFO] {str(index+1)}/{len(df)} -> '{row['text']}' -> Original: {row['intent']}, Pred: {top_intent} ({top_score}, drop? {top_intent != row['intent']})")
+            logging.info(f"[INFO] {str(index+1)}/{len(df)} -> '{row[col]}' -> Original: {row['intent']}, Pred: {top_intent} ({top_score}, drop? {top_intent != row['intent']})")
             # Apennd scores and predictions to lists
             predictions.append(top_intent)
             scores.append(top_score)
             prediction_drop.append(drop)
-            # Go to sleep for half a second
+            # Go to sleep for half a second to avoid excess requests
+            # You may disable this if your quota is sufficient
             time.sleep(0.5)
         except Exception as e:
             logging.error(f'[ERROR] - Request failed -> {e}')
@@ -93,11 +95,11 @@ def main(df):
             scores.append("nan")
             prediction_drop.append("nan")
     # Append lists as columns to data frame
-    df['prediction'] = predictions
-    df['score'] = scores
-    df['prediction_drop'] = prediction_drop
+    df[f'prediction_{col}'] = predictions
+    df[f'score_{col}'] = scores
+    df[f'prediction_drop_{col}'] = prediction_drop
     # Create and print classification report
-    luis_classification_report(df)
+    luis_classification_report(df, col)
     return df
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
-''' NLP TOOLS FOR MICROSOFT COGNITIVE SERVICES '''
+''' GLUE - THE TOOLKIT FOR MICROSOFT COGNITIVE SERVICES '''
 ''' tiwalz@microsoft.com '''
-''' Supports Text-To-Speech (TTS), Speech-To-Text (STT) and LUIS-Scoring '''
+''' Supports Text-To-Speech (TTS), Speech-To-Text (STT), Evaluation, LUIS-Scoring and Translation '''
 
 # Import standard packages
 import os
@@ -101,11 +101,17 @@ if __name__ == '__main__':
     if do_scoring:
         logging.info('[STATUS] - Starting with LUIS scoring')
         logging.info(f'[INFO] - Set LUIS treshold to {pa.luis_treshold}')
-        if 'intent' in list(df_reference.columns):
-            luis_scoring = luis.main(df_reference)
-            luis_scoring.to_csv(f'{output_folder}/{case}/luis_scoring.txt', sep = '\t', encoding = 'utf-8', index=False)
+        if 'intent' in list(df_reference.columns) and not 'rec' in list(df_reference.columns):
+            luis_scoring = luis.main(df_reference, 'text')
+        elif all(['intent' in list(df_reference.columns), 'rec' in list(df_reference.columns)]):
+            luis_scoring = luis.main(df_reference, 'text')
+            luis_scoring = luis.main(df_reference, 'rec')
+        elif 'intent' in list(df_reference.columns) and not 'text' in list(df_reference.columns):
+            luis_scoring = luis.main(df_reference, 'rec')
         else:
-            logging.error('[ERROR] - Cannot do LUIS scoring, please verify that you have an "intent"-column in your data.')   
+            logging.error('[ERROR] - Cannot do LUIS scoring, please verify that you have an "intent"-column in your data.')
+        # Write to output file   
+        luis_scoring.to_csv(f'{output_folder}/{case}/luis_scoring.txt', sep = '\t', encoding = 'utf-8', index=False)
 
     # Finish run
     logging.info(f'[STATUS] - Finished with the run {case}!')
