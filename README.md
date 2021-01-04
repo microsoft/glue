@@ -15,8 +15,9 @@ WIP:
 
 ### Use-Cases (among others)
 The toolkit has been built based on our experience from the field and is a great add-on, but not limited, to the following use-case: 
-- Automatized generation of synthetic speech-model training data
-- Scoring of STT-transcriptions on an existing LUIS-model
+- Automatized generation of synthetic speech-model training data.
+- Batch-transcription of audio files and evaluation given an existing reference transcript.
+- Scoring of STT-transcriptions on an existing LUIS-model.
 
 ## Getting Started
 This section describes how you get started with GLUE and which requirements need to be fulfilled by your working environment.
@@ -80,7 +81,7 @@ This section describes the single components of GLUE, which can either be ran au
 `tts.py`
 - Batch-synthetization of text strings using [Microsoft Text to Speech API](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/).
 - Supports Speech Synthesis Markup Language (SSML) to fine-tune and customize the pronunciation, as described in the [documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-synthesis-markup?tabs=python).
-- Retrieves high-quality audio file from the API and converts it to the Microsoft speech format as well as a version underlaid by the noise of a telephone line
+- Retrieves high-quality audio file from the API and converts it to the Microsoft speech format as well as a version underlaid by the noise of a telephone line.
 - Functionality is limited to the languages and fonts listed on the [language support](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support#text-to-speech) page.
 - Make sure the voice of your choice is available in the respective Azure region ([see documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#standard-and-neural-voices)).
 
@@ -120,13 +121,26 @@ The following table shows and describes the available modes along with their inp
 
 ### Input File Guidelines
 Depending on your use-case described in the table above, you may have to provide an input text file and/or audio files. In these cases, you have to pass the path to the respective input file of folder via command line. Following guidelines exist for these input files:
-- Comma-separated values (csv) file (if you only have an Excel sheet, you can export it as csv-file: (_Save as_ -> comma-separated)
+- Comma-separated values (csv) file (if you only have an Excel sheet, you can export it as csv-file: (_Save as_ -> _CSV UTF-8 (Comma delimited (*.csv))_)
 - UTF-8 encoding (to make sure it has the correct encoding, open it with a text editor such as [Notepad++](https://notepad-plus-plus.org/downloads/) -> Encoding -> Convert to UTF-8).
-- Column names (depending on the module, `text` or `text` and `intent`).
-- of columns _intent_ (ground-truth LUIS-intent) and _text_ (utterance of the text, max length of 500 characters).
-- We recommend you to put the input file in the subfolder `input`.
+- Column names (depending on the module it may be a mix of the following: `text` (utterance of the text, max length of 500 characters) and/or `intent` (ground-truth LUIS-intent) and/or `audio`).
+- We recommend you to put the input file in a subfolder called `input`, but you can choose arbitrary here.
 
-You can find an [example text file](example/input/testset-example.txt) as well as [example audio files]() following the respective links.
+You can find an [example text files](assets/examples/) as well as [example audio files](assets/examples/audio) following the respective links.
+
+### Output
+GLUE creates multiple folders and files of different types, depending on the modes you want it to run. The overview table below shows you which folders and files it may cover. Folders end with a `/`, files wend with a file ending (e.g. _.csv_). The _X_ in the respective mode columns indicate, given which mode the output files and folders are created.
+
+| __File / Folder__           | STT | TTS | LUIS | Eval |
+|-----------------------------|-----|-----|------|------|
+| __luis_scoring.csv__        |     |     |   X  |      |
+| __stt_transcriptions.txt__  |  X  |     |      |      |
+| __tts_transcriptions.txt__  |     |  X  |      |      |
+| __transcriptions_full.csv__ |  X  |  X  |      |      |
+| __input/__                  |     |  X  |   X  |   X  |
+| __tts_converted/__          |     |  X  |      |      |
+| __tts_generated/__          |     |  X  |      |      |
+| __tts_telephone/__          |     |  X  |      |      |
 
 ## How to use GLUE
 The following section describes how to run the individual modules via the orchestrator.
@@ -136,8 +150,8 @@ This scenario describes how you can batch-transcribe audio files using GLUE. A p
 
 #### Pre-requisites:
 - Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
-- Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
-- See example files [here](#TODO).
+- Audio files in .wav-format in a separate folder, as all wave files in the directory will be collected
+- See example audio files [here](assets/examples/audio).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
@@ -160,8 +174,8 @@ This scenario describes how you can batch-synthesize text data using GLUE. A pot
 
 #### Pre-requisites
 - Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md)).
-- Textual input file with a `text` column and utterances to be synthesized.
-- See an example file [here](#TODO).
+- Textual, comma-separated input file with a `text` column and utterances to be synthesized.
+- See an example input file [here](assets/examples/example_tts.csv).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
@@ -197,14 +211,14 @@ This scenario shows how you can use GLUE to batch-score textual data on a LUIS-e
 - LUIS app and the respective keys (see [Get Your Keys](GetYourKeys.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/example-luis-app.lu) and import it to your resource. 
 - Textual input file with an `intent` AND `text` column.
-- See an example file [here](#TODO).
+- See an example input file [here](assets/examples/example_luis.csv).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
 2. Make sure your `.venv` is activated.
 3. Run the following command:
 ```bash
-python src/glue.py --input /home/files/luis-scoring.csv --do_scoring
+python src/glue.py --input /home/files/luis-utterances.csv --do_scoring
 ```
 4. Wait for the run to finish and see the command line outputs.
 
@@ -214,16 +228,18 @@ GLUE will create an output folder as below:
 - case: [YYYYMMDD]-[UUID]/
   | -- input/
     | -- [input text file].csv
- | -- luis_scoring.txt (tab-delimited file with audio file names and transcriptions)
+ | -- luis_scoring.csv (comma-separated file with audio file names and transcriptions)
 ```
 
-In your command line, you will see a print of a [confusion matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) as well as a [classification report](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html). These reports cannot be written to a file, however they are based on the output file `luis-scoring.txt` and you may use the Jupyter notebook to load them again and gain deep insights into the classification performance. The following table shows the structure of the scoring file `luis_scoring.txt` and provides you an example how predictions are handled, also when the confidence score is low.
-| intent | text | prediction | score | prediction_drop |
-| --- | --- | --- | --- | --- |
+In your command line, you will see a print of a [confusion matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) as well as a [classification report](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html). These reports cannot be written to a file, however they are based on the output file `luis-scoring.txt` and you may use the Jupyter notebook to load them again and gain deep insights into the classification performance. The following table shows the structure of the scoring file `luis_scoring.csv` and provides you an example how predictions are handled, also when the confidence score is low.
+| intent | text | prediction_text | score_text | prediction_drop_text |
+|-|-|-|-|-|
 | _Intent name based on reference Excel file_ | _Raw text string_ | _Predicted intent by LUIS app_ | _Certainty score of LUIS model, between 0 and 1_ | _Predicted intent by LUIS app, _None_-intent in case of dropped value (when below the confidence score e.g. of 0.82)_ |
-| Book_Flight | I would like to book a flight to Frankfurt. |	Book_Flight |	0.9450068 | Book_Flight |
-| Flight_Change | Please rebook my flight to Singapore, please | Change_Flight | 0.9112311 | Flight_Change |
-| Flight_Change |	I would like to change my flight. |	Flight_Cancel |	0.5517158 |	None |
+| BookFlight | I would like to book a flight to Frankfurt. | BookFlight | 0.9450068 | BookFlight |
+| CancelFlight | I want to cancel my journey to Kuala Lumpur. | CancelFlight | 0.8340548 | CancelFlight |
+| ChangeFlight | I would like to change my flight to Singapore. | ChangeFlight | 0.9112311 | ChangeFlight |
+| ChangeFlight | I would like to book a seat on my flight to Stuttgart. | BookFlight | 0.5517158 | None |
+
 
 ### Scenario 4: Evaluation
 This scenario describes how you can compare already existing recognitions with a ground-truth reference transcription using GLUE. A potential use case can be that you want to assess the quality of your speech model and figure out potential recognition problems, which you may counteract by custom model training. In this case, you have to provide already existing recognitions to the tool.
@@ -231,7 +247,7 @@ This scenario describes how you can compare already existing recognitions with a
 #### Pre-requisites:
 - Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
 - Textual input file with an `text` column with reference transcriptions as well as a `rec` column with recognitions.
-- See example files [here](#TODO).
+- See an example input file [here](assets/examples/example_eval.csv).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
@@ -248,7 +264,7 @@ GLUE will create an output folder as below:
 - case: [YYYYMMDD]-[UUID]/
  | -- input/
     | -- [input text file].csv
- | -- transcriptions_full.txt (tab-delimited file with merged columns of the current run)
+ | -- transcriptions_full.csv (comma-separated file with merged columns of the current run)
 ```
 
 In your command line, you will see an output of the evaluation algorithms per sentence as well as an overall summary in case you used multiple utterances. These evaluations are based on the `text` and `rec` columns. As the command line output is only temporary, we recommend you to use the Jupyter Notebook resulting from this run.
@@ -260,7 +276,7 @@ This scenario describes how you can batch-transcribe audio files and compare the
 - Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
 - Textual input file with an `audio` column for reference audio file names AND the respective `text` column with reference transcriptions.
-- See example files [here](#TODO).
+- See an example input file [here](assets/examples/example_stt_eval.csv) and example audio files [here](assets/examples/audio).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
@@ -278,8 +294,93 @@ GLUE will create an output folder as below:
  | -- input/
     | -- [input text file].csv
  | -- stt_transcriptions.txt (tab-delimited file with audio file names and transcriptions)
- | -- transcriptions_full.txt (tab-delimited file with merged columns of the current run)
+ | -- transcriptions_full.csv (comma-separated file with merged columns of the current run)
 ```
+
+### Scenario 6: Speech to Text, Evaluation and LUIS-Scoring
+This scenario describes how you can batch-transcribe audio files, compare these recognitions with a ground-truth reference transcription and score both version on a LUIS-endpoint using GLUE. A potential use case can be that you want to assess the quality of your speech model, figure out potential recognition problems and also compare the impact on a LUIS model using STT in between.
+
+#### Pre-requisites:
+- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
+- LUIS app and the respective keys (see [Get Your Keys](GetYourKeys.md)).
+  - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/example-luis-app.lu) and import it to your resource. 
+- Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
+- Textual input file with an `audio` column for reference audio file names AND `intent` for the LUIS class AND the respective `text` column with reference transcriptions.
+- See an example input file [here](assets/examples/example_stt_eval_luis.csv) and example audio files [here](assets/examples/audio).
+
+#### Run GLUE
+1. `cd` to the root folder of GLUE.
+2. Make sure your `.venv` is activated.
+3. Run the following command:
+```bash
+python src/glue.py --audio C:/audio_files/ --input C:/audio_files/transcriptions.txt --do_transcribe --do_evaluate --do_scoring
+```
+4. Wait for the run to finish and see the command line outputs.
+
+#### Output
+GLUE will create an output folder as below:
+```
+- case: [YYYYMMDD]-[UUID]/
+ | -- input/
+    | -- [input text file].csv
+ | -- luis_scoring.csv (comma-separated file with audio file names and transcriptions)
+ | -- stt_transcriptions.txt (tab-delimited file with audio file names and transcriptions)
+ | -- transcriptions_full.csv (comma-separated file with merged columns of the current run)
+```
+
+In your command line, you will see a print of a [confusion matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) as well as a [classification report](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html). These reports cannot be written to a file, however they are based on the output file `luis-scoring.txt` and you may use the Jupyter notebook to load them again and gain deep insights into the classification performance. The following table shows the structure of the scoring file `luis_scoring.csv` and provides you an example how predictions are handled, also when the confidence score is low.
+Compared to scenario 3, where only the reference text was scored, the `luis-scoring.txt`-file will have more columns this time. Each of the columns `prediction_`, `score_`, `prediction_drop_` will have a `text` (reference transcript) and `rec` (recognition) version. This is supposed to help you evaluating the differences in LUIS recognition given different inputs. Intent predictions and scores may differ given irregularities in transcribing audio files. We invented some transcription issues, which you see below, _highlighted_ in column _rec_.
+| intent | text | rec | prediction_{text/rec} | score_{text/rec} | prediction_drop_{text/rec} |
+|-|-|-|-|-|-|
+| _Intent name based on reference Excel file_ | _Raw text string_ | STT recognition | _Predicted intent by LUIS app_ | _Certainty score of LUIS model, between 0 and 1_ | _Predicted intent by LUIS app, _None_-intent in case of dropped value (when below the confidence score e.g. of 0.82)_ |
+| BookFlight | I would like to book a flight to Frankfurt. | I would like to book a _fight_ to Frankfurt. | BookFlight | 0.9450068 | BookFlight |
+| CancelFlight | I want to cancel my journey to Kuala Lumpur. | I _wanna_ cancel my journey to kualalumpur. | CancelFlight | 0.8340548 | CancelFlight |
+| ChangeFlight | I would like to change my flight to Singapore. | Would like to change _mum_ flight to Singapore. | ChangeFlight | 0.9112311 | ChangeFlight |
+| ChangeFlight | I would like to book a seat on my flight to Stuttgart. | I would like to book a _suite_ on my flight to Stuttgart. | BookFlight | 0.5517158 | None |
+
+### Scenario 7: Speech to Text and LUIS-Scoring
+This scenario describes how you can batch-transcribe audio files and score both version on a LUIS-endpoint using GLUE. A potential use case can be that you want to assess the quality of your LUIS model using STT as a reference and in case you do not have a reference transcription. However, you need an `intent` column for every input audio file.
+
+#### Pre-requisites:
+- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
+- LUIS app and the respective keys (see [Get Your Keys](GetYourKeys.md)).
+  - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/example-luis-app.lu) and import it to your resource. 
+- Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
+- Textual input file with an `audio` column for reference audio file names AND `intent` for the LUIS class.
+- See an example input file [here](assets/examples/example-stt-luis.csv).
+
+#### Run GLUE
+1. `cd` to the root folder of GLUE.
+2. Make sure your `.venv` is activated.
+3. Run the following command:
+```bash
+python src/glue.py --audio C:/audio_files/ --input C:/audio_files/transcriptions.txt --do_transcribe --do_scoring
+```
+4. Wait for the run to finish and see the command line outputs.
+
+#### Output
+GLUE will create an output folder as below:
+```
+- case: [YYYYMMDD]-[UUID]/
+ | -- input/
+    | -- [input text file].csv
+ | -- luis_scoring.csv (comma-separated file with audio file names and transcriptions)
+ | -- stt_transcriptions.txt (tab-delimited file with audio file names and transcriptions)
+ | -- transcriptions_full.csv (comma-separated file with merged columns of the current run)
+```
+
+In your command line, you will see a print of a [confusion matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) as well as a [classification report](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html). These reports cannot be written to a file, however they are based on the output file `luis-scoring.txt` and you may use the Jupyter notebook to load them again and gain deep insights into the classification performance. The following table shows the structure of the scoring file `luis_scoring.csv` and provides you an example how predictions are handled, also when the confidence score is low.
+Compared to scenario 3, where only the reference utterances were scored, the columns `prediction_`, `score_`, `prediction_drop_` of `luis_scoring.csv`-file will end with `rec` (recognition) instead of `text` (reference transcript) in this case.
+
+| intent | text | prediction_rec | score_rec | prediction_drop_rec |
+|-|-|-|-|-|
+| _Intent name based on reference Excel file_ | _STT result_ | _Predicted intent by LUIS app_ | _Certainty score of LUIS model, between 0 and 1_ | _Predicted intent by LUIS app, _None_-intent in case of dropped value (when below the confidence score e.g. of 0.82)_ |
+| BookFlight | I would like to book a fight to Frankfurt. | BookFlight | 0.8750068 | BookFlight |
+| CancelFlight | I want to cancel my journey to kualalumpur. | CancelFlight | 0.7140548 | None |
+| ChangeFlight | Would like to change my flight to Singapore. | ChangeFlight | 0.8992311 | ChangeFlight |
+| ChangeFlight | I would like to book a suite on my flight to Stuttgart. | BookFlight | 0.3917158 | None |
+
+We can see that the recognition scores have decreased, so this may have an impact on the overall recognition rate.
 
 ## Limitations
 This toolkit is the right starting point for your bring-your-own data use cases. However, it does not provide automated training runs.
