@@ -28,8 +28,8 @@ Before getting your hands on the toolkits, make sure your local computer is equi
 - [VSCode](https://code.visualstudio.com/) (recommended), but you can also run the scripts using PowerShell, Bash etc.
 - Stable connection for installing your environment and scoring the files.
 - [ffmpeg](https://github.com/BtbN/FFmpeg-Builds/releases) for audio file conversion (only for TTS use cases).
-  - If you are using Windows, download it from [here](https://ffmpeg.org/download.html#build-windows)
-  - In case you are using Linux, you can install it using a package manager, such as `apt-get install ffmpeg`
+  - If you are using Windows, download it from [here](https://ffmpeg.org/download.html#build-windows) and see the description [here](GETYOURKEYS.md).
+  - In case you are using Linux, you can install it via command line using a package manager, such as `apt-get install ffmpeg`.
 
 ### Setup of Virtual Environment
 1. Open a command line of your choice (PowerShell, Bash).
