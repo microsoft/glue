@@ -1,0 +1,64 @@
+
+> LUIS application information
+> !# @app.name = Airline
+> !# @app.desc = Conversational app for flight booking and inquiry
+> !# @app.versionId = 0.1
+> !# @app.culture = en-us
+> !# @app.luis_schema_version = 7.0.0
+> !# @app.tokenizerVersion = 1.0.0
+
+
+> # Intent definitions
+
+# Book_Flight
+- a ticket to {@Airport={@City=berlin} {@Airport_Name=tegel}} please
+- could you book a flight to {@Airport={@City=stuttgart}} on 2nd of april for me?
+- i want a flight to {@Airport={@City=seattle}}
+- i would like to book a flight to {@Airport={@City=frankfurt}}.
+- no, i want to fly to {@Airport={@City=frankfurt am main}}, not to {@Airport={@City=frankfurt} {@Airport_Name=hahn}}
+
+
+# Cancel_Flight
+- cancel flight to {@Airport={@City=paris} {@Airport_Name=orly}}
+- cancellation of flight to {@Airport={@City=singapore} {@Airport_Name=changi}}.
+- i need to cancel my flight to {@Airport={@City=tokyo} {@Airport_Name=haneda}}
+- i want to cancel my journey to {@Airport={@City=kuala lumpur}}.
+- please cancel my flight to {@Airport={@City=seoul}}
+
+
+# Change_Flight
+- change flight to {@Airport={@City=berlin} {@Airport_Name=schoenefeld}}.
+- change my flight from {@Airport={@City=moscow} {@Airport_Name=sheremetyevo}} to {@Airport={@City=moscow} {@Airport_Name=domodedovo}}
+- i need to change my flight from {@Airport={@City=seoul} {@Airport_Name=gimpo}} to {@Airport={@City=seoul} {@Airport_Name=incheon}}
+- i would like to change my flight.
+- please rebook my flight to {@Airport={@City=singapore}}, please.
+
+
+# None
+- how are you doing
+- i want to speak to a human
+- what can you do
+- whats the weather like today
+
+
+> # Entity definitions
+
+@ ml Airport
+    - @ ml City
+    - @ ml Airport_Name
+
+
+
+> # PREBUILT Entity definitions
+
+@ prebuilt datetimeV2
+
+
+> # Phrase list definitions
+
+
+> # List entities
+
+> # RegEx entities
+
+

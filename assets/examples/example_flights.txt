@@ -1,4 +1,0 @@
-intent	text	prediction	score	drop
-Book_Flight	I would like to book a flight to Frankfurt.	Book_Flight	0.9450068	Book_Flight
-Change_Flight	Please rebook my flight to Singapore, please	Change_Flight	0.9112311	Change_Flight
-Change_Flight   I would like to change my flight.	Cancel_Flight	0.5517158	None

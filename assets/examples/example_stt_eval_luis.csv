@@ -1,0 +1,5 @@
+﻿audio,intent,text
+BookFlight.wav,BookFlight,I would like to book a flight to Frankfurt.
+CancelFlight.wav,CancelFlight,I want to cancel my journey to Kuala Lumpur
+ChangeFlight.wav,ChangeFlight,I would like to change my flight to Singapore.
+BookSeat.wav,BookSeat,I would like to book a seat on my flight to Stuttgart.
