@@ -111,12 +111,12 @@ The following table shows and describes the available modes along with their inp
 
 | __Mode__           | __Command line parameter__ | __Description__                                                         | __Dependencies__                                                                                                                                                                               |
 |--------------------|----------------------------|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __TTS__            | `--do_synthesize`          | Activate text-to-speech synthetization                                  | Requires csv file with `text`-column, see `--audio_files`                                                                                                                                      |
-| __STT__            | `--do_transcribe`          | Activate speech-to-text processing                                      | Requires audio files, see `--audio_files`                                                                                                                                                      |
-| __STT__            | `--audio_files`            | Path to folder with audio files                                         | Audio files have to be provided as WAV-file with the parameters described [here](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-custom-speech-test-and-train) |
-| __STT-Evaluation__ | `--do_evaluate`            | Activate evaluation of transcriptions based on reference transcriptions | Requires csv-file with `text`-column and intent names                                                                                                                                          |
-| __LUIS__           | `--do_scoring`             | Activate LUIS model scoring                                             | Requires csv-file with `intent` (ground truth of LUIS intent) and `text` columns (max. 500 characters due to LUIS limitation, gets cut if > 500 characters)                                                                                                                                             |
-| __STT / TTS__      | `--input`                  | Path to comma-separated text input file                                 |                                                                                                                                                                                                |
+| __TTS__            | `--do_synthesize`          | Activate text-to-speech synthetization.                                  | Requires csv file with `text`-column, see `--audio_files`.                                                                                                                                      |
+| __STT__            | `--do_transcribe`          | Activate speech-to-text processing.                                      | Requires audio files, see `--audio_files`.                                                                                                                                                      |
+| __STT__            | `--audio_files`            | Path to folder with audio files.                                         | Audio files have to be provided as WAV-file with the parameters described [here](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-custom-speech-test-and-train). |
+| __STT-Evaluation__ | `--do_evaluate`            | Activate evaluation of transcriptions based on reference transcriptions. | Requires csv-file with `text`-column and intent names.                                                                                                                                          |
+| __LUIS__           | `--do_scoring`             | Activate LUIS model scoring.                                             | Requires csv-file with `intent` (ground truth of LUIS intent) and `text` columns (max. 500 characters due to LUIS limitation, gets cut if > 500 characters).                                                                                                                                             |
+| __STT / TTS__      | `--input`                  | Path to comma-separated text input file.                                 |                                                                                                                                                                                                |
 
 
 ### Input File Guidelines
@@ -131,16 +131,16 @@ You can find an [example text files](assets/examples/input) as well as [example 
 ### Output
 GLUE creates multiple folders and files of different types, depending on the modes you want it to run. The overview table below shows you which folders and files it may cover. Folders end with a `/`, files wend with a file ending (e.g. _.csv_). The _X_ in the respective mode columns indicate, given which mode the output files and folders are created.
 
-| __File / Folder__           | STT | TTS | LUIS | Eval |
-|-----------------------------|-----|-----|------|------|
-| __luis_scoring.csv__        |     |     |   X  |      |
-| __stt_transcriptions.txt__  |  X  |     |      |      |
-| __tts_transcriptions.txt__  |     |  X  |      |      |
-| __transcriptions_full.csv__ |  X  |  X  |      |      |
-| __input/__                  |     |  X  |   X  |   X  |
-| __tts_converted/__          |     |  X  |      |      |
-| __tts_generated/__          |     |  X  |      |      |
-| __tts_telephone/__          |     |  X  |      |      |
+| __File / Folder__           | STT | TTS | LUIS | Eval | Comment |
+|-----------------------------|-----|-----|------|------|------|
+| __luis_scoring.csv__        |     |     |   X  |      | Comma-separated file with audio file names and transcriptions.     |
+| __stt_transcriptions.txt__  |  X  |     |      |      | Tab-delimited file with audio file names and transcriptions. |
+| __tts_transcriptions.txt__  |     |  X  |      |      | Tab-delimited file with audio file names and transcriptions.|
+| __transcriptions_full.csv__ |  X  |  X  |      |      | Comma-separated file with merged columns of the current run.  |
+| __input/__                  |     |  X  |   X  |   X  | Folder with duplicate of input file.     |
+| __tts_converted/__          |     |  X  |      |      | Folder with TTS-results in Microsoft Speech-optimized format.     |
+| __tts_generated/__          |     |  X  |      |      | Folder with raw, high-quality TTS-results.     |
+| __tts_telephone/__          |     |  X  |      |      | Folder with TTS-results in Microsoft Speech-optimized format, underlaid with telephone line sound.     |
 
 ## How to use GLUE
 The following section describes how to run the individual modules via the orchestrator.
