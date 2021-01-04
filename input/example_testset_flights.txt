@@ -1,5 +1,0 @@
-audio;intent;text
-Book_Flight.wav;Book_Flight;I would like to book a flight to Frankfurt.
-Rebook_Flight.wav;Change_Flight;Please rebook my flight to Singapore, please.
-Change_Flight.wav;Change_Flight;I would like to change my flight.
-Cancel_Flight.wav;Cancel_Flight;I want to cancel my journey to Kuala Lumpur.
