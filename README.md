@@ -28,7 +28,7 @@ Before getting your hands on the toolkits, make sure your local computer is equi
 - [VSCode](https://code.visualstudio.com/) (recommended), but you can also run the scripts using PowerShell, Bash etc.
 - Stable connection for installing your environment and scoring the files.
 - [ffmpeg](https://github.com/BtbN/FFmpeg-Builds/releases) for audio file conversion (only for TTS use cases).
-  - If you are using Windows, download it from [here](https://ffmpeg.org/download.html#build-windows) and see the description [here](GETYOURKEYS.md).
+  - If you are using Windows, download it from [here](https://ffmpeg.org/download.html#build-windows) and see the description [here](GET_YOUR_KEYS.md).
   - In case you are using Linux, you can install it via command line using a package manager, such as `apt-get install ffmpeg`.
 
 ### Setup of Virtual Environment
@@ -66,7 +66,7 @@ After successfully installing the requirements-file, your environment is set up 
 ### API Keys
 In the root directory of the repository, you can find a file named `config.sample.ini`. This is the file where the API keys and some other essential confirguation parameters have to be set, depending on which services you would like to use. First, create a copy of `config.sample.ini` and rename it to `config.ini` in the same directory. You only need the keys for the services you use during your experiment. However, keep the structure of the `config.ini`-file as it is to avoid errors. The toolkit will just set the values as empty, but will throw an error when the keys cannot be found at all.
 
-An instruction on how to get the keys can be found [here](GETYOURKEYS.md).
+An instruction on how to get the keys can be found [here](GET_YOUR_KEYS.md).
 
 ## GLUE-Modules
 This section describes the single components of GLUE, which can either be ran autonomously or, ideally, using the central orchestrator.
@@ -176,7 +176,7 @@ GLUE will create an output folder as below:
 This scenario describes how you can batch-synthesize text data using GLUE. A potential use case can be that you want to create synthetic training data for your speech model, as you do not have enough speakers to create acoustic training material. The use case may be callcenter-related, which is why you need some tweaked data in order to simulate a realistic setup.
 
 #### Pre-requisites
-- Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md)).
+- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md)).
 - Textual, comma-separated input file with a `text` column and utterances to be synthesized.
 - See an example input file [here](assets/examples/input_files/example_tts.csv).
 
@@ -211,7 +211,7 @@ GLUE will create an output folder as below:
 This scenario shows how you can use GLUE to batch-score textual data on a LUIS-endpoint.
 
 #### Pre-requisites
-- LUIS app and the respective keys (see [Get Your Keys](GETYOURKEYS.md)).
+- LUIS app and the respective keys (see [Get Your Keys](GET_YOUR_KEYS.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input_files/example-luis-app.lu) and import it to your resource. 
 - Textual input file with an `intent` AND `text` column.
 - See an example input file [here](assets/examples/input_files/example_luis.csv).
@@ -248,7 +248,7 @@ In your command line, you will see a print of a [confusion matrix](https://sciki
 This scenario describes how you can compare already existing recognitions with a ground-truth reference transcription using GLUE. A potential use case can be that you want to assess the quality of your speech model and figure out potential recognition problems, which you may counteract by custom model training. In this case, you have to provide already existing recognitions to the tool.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
+- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md))
 - Textual input file with an `text` column with reference transcriptions as well as a `rec` column with recognitions.
 - See an example input file [here](assets/examples/input_files/example_eval.csv).
 
@@ -276,7 +276,7 @@ In your command line, you will see an output of the evaluation algorithms per se
 This scenario describes how you can batch-transcribe audio files and compare these recognitions with a ground-truth reference transcription using GLUE. A potential use case can be that you want to assess the quality of your speech model and figure out potential recognition problems, which you may counteract by custom model training.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
+- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md))
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
 - Textual input file with an `audio` column for reference audio file names AND the respective `text` column with reference transcriptions.
 - See an example input file [here](assets/examples/input_files/example_stt_eval.csv) and example audio files [here](assets/examples/input_files/audio//).
@@ -304,8 +304,8 @@ GLUE will create an output folder as below:
 This scenario describes how you can batch-transcribe audio files, compare these recognitions with a ground-truth reference transcription and score both version on a LUIS-endpoint using GLUE. A potential use case can be that you want to assess the quality of your speech model, figure out potential recognition problems and also compare the impact on a LUIS model using STT in between.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
-- LUIS app and the respective keys (see [Get Your Keys](GETYOURKEYS.md)).
+- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md))
+- LUIS app and the respective keys (see [Get Your Keys](GET_YOUR_KEYS.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input_files/example-luis-app.lu) and import it to your resource. 
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
 - Textual input file with an `audio` column for reference audio file names AND `intent` for the LUIS class AND the respective `text` column with reference transcriptions.
@@ -345,8 +345,8 @@ Compared to scenario 3, where only the reference text was scored, the `luis-scor
 This scenario describes how you can batch-transcribe audio files and score both version on a LUIS-endpoint using GLUE. A potential use case can be that you want to assess the quality of your LUIS model using STT as a reference and in case you do not have a reference transcription. However, you need an `intent` column for every input audio file.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
-- LUIS app and the respective keys (see [Get Your Keys](GETYOURKEYS.md)).
+- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md))
+- LUIS app and the respective keys (see [Get Your Keys](GET_YOUR_KEYS.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input_files/example-luis-app.lu) and import it to your resource. 
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
 - Textual input file with an `audio` column for reference audio file names AND `intent` for the LUIS class.
@@ -387,3 +387,16 @@ We can see that the recognition scores have decreased, so this may have an impac
 
 ## Limitations
 > This toolkit is the right starting point for your bring-your-own data use cases. However, it does not provide automated training runs and does not ensure an improvement of the performance on your task. It helps you to do end-to-end testing and gain the right insights on how to improve the quality on your use-case.
+
+## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
+the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+
+When you submit a pull request, a CLA bot will automatically determine whether you need to provide
+a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
+provided by the bot. You will only need to do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
