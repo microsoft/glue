@@ -21,6 +21,7 @@ The toolkit has been built based on our experience from the field and is a great
 
 ## Getting Started
 This section describes how you get started with GLUE and which requirements need to be fulfilled by your working environment.
+If you would like to add your own features and maintain the code in a private repository, you may use the _Template_ function (hit the green button _Use this template_ on the top left).
 
 ### Prerequisites
 Before getting your hands on the toolkits, make sure your local computer is equipped with the following frameworks and base packages:
