@@ -50,7 +50,7 @@ if __name__ == '__main__':
         try:
             os.makedirs(f"{output_folder}/{case}/input", exist_ok=True)
             shutil.copyfile(fname, f'{output_folder}/{case}/input/{os.path.basename(fname)}')
-            df_reference = pd.read_csv(f'{output_folder}/{case}/input/{os.path.basename(fname)}', sep=';', encoding='utf-8', index_col=None)
+            df_reference = pd.read_csv(f'{output_folder}/{case}/input/{os.path.basename(fname)}', sep=',', encoding='utf-8', index_col=None)
             logging.info(f'[INFO] - Copied input file(s) to case folder')
         except Exception as e:
             if do_synthesize or do_scoring:
@@ -75,14 +75,14 @@ if __name__ == '__main__':
         if audio_files != None:
             logging.info('[STATUS] - Starting with speech-to-text conversion')
             stt_results = stt.main(f'{audio_files}/', f'{output_folder}/{case}')
-            transcription = pd.DataFrame(list(stt_results), columns=['audio', 'rec'])
+            df_transcription = pd.DataFrame(list(stt_results), columns=['audio', 'rec'])
             logging.debug(transcription)
-            transcription.to_csv(f'{output_folder}/{case}/stt_transcriptions.txt', sep = "\t", header = None, index=False)
-            # Merge 
+            df_transcription.to_csv(f'{output_folder}/{case}/stt_transcriptions.txt', sep = '\t', header = None, index=False)
+            # Merge reference transcriptions with recognition on audio file names
             if 'audio' in list(df_reference.columns):
-                df_reference = pd.merge(left = df_reference, right = transcription, how = 'left', on = 'audio')
+                df_reference = pd.merge(left = df_reference, right = df_transcription, how = 'left', on = 'audio')
                 logging.info(f'[STATUS] - Merged imported reference transcriptions and recognitions')
-                df_reference.to_csv(f'{output_folder}/{case}/transcriptions_full.txt', sep = '\t', encoding = 'utf-8', index = False)
+                df_reference.to_csv(f'{output_folder}/{case}/transcriptions_full.csv', sep = ';', encoding = 'utf-8', index = False)
                 logging.info(f'[STATUS] - Wrote transcription file to case folder')
         else:
             logging.error('[ERROR] - It seems like you did not pass a path to audio files, cannot do transcriptions')
@@ -111,7 +111,7 @@ if __name__ == '__main__':
         else:
             logging.error('[ERROR] - Cannot do LUIS scoring, please verify that you have an "intent"-column in your data.')
         # Write to output file   
-        luis_scoring.to_csv(f'{output_folder}/{case}/luis_scoring.txt', sep = '\t', encoding = 'utf-8', index=False)
+        luis_scoring.to_csv(f'{output_folder}/{case}/luis_scoring.csv', sep = ';', encoding = 'utf-8', index=False)
 
     # Finish run
     logging.info(f'[STATUS] - Finished with the run {case}!')
