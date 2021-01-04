@@ -1,6 +1,6 @@
 ''' GLUE - THE TOOLKIT FOR MICROSOFT COGNITIVE SERVICES '''
 ''' tiwalz@microsoft.com '''
-''' Supports Text-To-Speech (TTS), Speech-To-Text (STT), Evaluation, LUIS-Scoring and Translation '''
+''' Supports Text-To-Speech (TTS), Speech-To-Text (STT), Evaluation, LUIS-Scoring '''
 
 # Import standard packages
 import os
@@ -20,7 +20,7 @@ import helper as he
 import evaluate as eval
 
 ''' COMMAND EXAMPLES '''
-# python .\src\main.py --do_synthesize --input input/scoringfile.txt
+# python .\src\glue.py --do_synthesize --input input/scoringfile.txt
 
 # Parse arguments
 parser = argparse.ArgumentParser()
