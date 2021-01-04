@@ -386,4 +386,4 @@ Compared to scenario 3, where only the reference utterances were scored, the col
 We can see that the recognition scores have decreased, so this may have an impact on the overall recognition rate.
 
 ## Limitations
-This toolkit is the right starting point for your bring-your-own data use cases. However, it does not provide automated training runs.
+> This toolkit is the right starting point for your bring-your-own data use cases. However, it does not provide automated training runs and does not ensure an improvement of the performance on your task. It helps you to do end-to-end testing and gain the right insights on how to improve the quality on your use-case.
