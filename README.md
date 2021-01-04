@@ -176,7 +176,7 @@ GLUE will create an output folder as below:
 This scenario describes how you can batch-synthesize text data using GLUE. A potential use case can be that you want to create synthetic training data for your speech model, as you do not have enough speakers to create acoustic training material. The use case may be callcenter-related, which is why you need some tweaked data in order to simulate a realistic setup.
 
 #### Pre-requisites
-- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md)).
+- Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md)).
 - Textual, comma-separated input file with a `text` column and utterances to be synthesized.
 - See an example input file [here](assets/examples/input/example_tts.csv).
 
@@ -211,7 +211,7 @@ GLUE will create an output folder as below:
 This scenario shows how you can use GLUE to batch-score textual data on a LUIS-endpoint.
 
 #### Pre-requisites
-- LUIS app and the respective keys (see [Get Your Keys](GetYourKeys.md)).
+- LUIS app and the respective keys (see [Get Your Keys](GETYOURKEYS.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input/example-luis-app.lu) and import it to your resource. 
 - Textual input file with an `intent` AND `text` column.
 - See an example input file [here](assets/examples/input/example_luis.csv).
@@ -248,7 +248,7 @@ In your command line, you will see a print of a [confusion matrix](https://sciki
 This scenario describes how you can compare already existing recognitions with a ground-truth reference transcription using GLUE. A potential use case can be that you want to assess the quality of your speech model and figure out potential recognition problems, which you may counteract by custom model training. In this case, you have to provide already existing recognitions to the tool.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
+- Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
 - Textual input file with an `text` column with reference transcriptions as well as a `rec` column with recognitions.
 - See an example input file [here](assets/examples/input/example_eval.csv).
 
@@ -276,7 +276,7 @@ In your command line, you will see an output of the evaluation algorithms per se
 This scenario describes how you can batch-transcribe audio files and compare these recognitions with a ground-truth reference transcription using GLUE. A potential use case can be that you want to assess the quality of your speech model and figure out potential recognition problems, which you may counteract by custom model training.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
+- Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
 - Textual input file with an `audio` column for reference audio file names AND the respective `text` column with reference transcriptions.
 - See an example input file [here](assets/examples/input/example_stt_eval.csv) and example audio files [here](assets/examples/input/audio).
@@ -304,8 +304,8 @@ GLUE will create an output folder as below:
 This scenario describes how you can batch-transcribe audio files, compare these recognitions with a ground-truth reference transcription and score both version on a LUIS-endpoint using GLUE. A potential use case can be that you want to assess the quality of your speech model, figure out potential recognition problems and also compare the impact on a LUIS model using STT in between.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
-- LUIS app and the respective keys (see [Get Your Keys](GetYourKeys.md)).
+- Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
+- LUIS app and the respective keys (see [Get Your Keys](GETYOURKEYS.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input/example-luis-app.lu) and import it to your resource. 
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
 - Textual input file with an `audio` column for reference audio file names AND `intent` for the LUIS class AND the respective `text` column with reference transcriptions.
@@ -345,8 +345,8 @@ Compared to scenario 3, where only the reference text was scored, the `luis-scor
 This scenario describes how you can batch-transcribe audio files and score both version on a LUIS-endpoint using GLUE. A potential use case can be that you want to assess the quality of your LUIS model using STT as a reference and in case you do not have a reference transcription. However, you need an `intent` column for every input audio file.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
-- LUIS app and the respective keys (see [Get Your Keys](GetYourKeys.md)).
+- Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
+- LUIS app and the respective keys (see [Get Your Keys](GETYOURKEYS.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input/example-luis-app.lu) and import it to your resource. 
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
 - Textual input file with an `audio` column for reference audio file names AND `intent` for the LUIS class.
