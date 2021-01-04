@@ -10,7 +10,7 @@
 
 > # Intent definitions
 
-# Book_Flight
+# BookFlight
 - a ticket to {@Airport={@City=berlin} {@Airport_Name=tegel}} please
 - could you book a flight to {@Airport={@City=stuttgart}} on 2nd of april for me?
 - i want a flight to {@Airport={@City=seattle}}
@@ -18,7 +18,15 @@
 - no, i want to fly to {@Airport={@City=frankfurt am main}}, not to {@Airport={@City=frankfurt} {@Airport_Name=hahn}}
 
 
-# Cancel_Flight
+# BookSeat
+- book a seat as close as possible to the galley on my flight to {@Airport={@City=doha}}
+- book a seat for me on my preferred seat.
+- i need a special seat on my flight
+- i want to have a window seat
+- i would like to book a seat on my flight to {@Airport={@City=stuttgart}}
+
+
+# CancelFlight
 - cancel flight to {@Airport={@City=paris} {@Airport_Name=orly}}
 - cancellation of flight to {@Airport={@City=singapore} {@Airport_Name=changi}}.
 - i need to cancel my flight to {@Airport={@City=tokyo} {@Airport_Name=haneda}}
@@ -26,12 +34,20 @@
 - please cancel my flight to {@Airport={@City=seoul}}
 
 
-# Change_Flight
+# ChangeFlight
 - change flight to {@Airport={@City=berlin} {@Airport_Name=schoenefeld}}.
 - change my flight from {@Airport={@City=moscow} {@Airport_Name=sheremetyevo}} to {@Airport={@City=moscow} {@Airport_Name=domodedovo}}
 - i need to change my flight from {@Airport={@City=seoul} {@Airport_Name=gimpo}} to {@Airport={@City=seoul} {@Airport_Name=incheon}}
 - i would like to change my flight.
 - please rebook my flight to {@Airport={@City=singapore}}, please.
+
+
+# DepartureInfo
+- could you check whether my flight has a delay?
+- i need the status of my flight {@FlightNumber={@Carrier=ms} {@Number=1975}}
+- is my flight on time?
+- what is the status of my flight {@FlightNumber={@Carrier=xo} {@Number=1773}}
+- when does {@FlightNumber={@Carrier=sq} {@Number=208}} depart?
 
 
 # None
@@ -46,6 +62,11 @@
 @ ml Airport
     - @ ml City
     - @ ml Airport_Name
+
+
+@ ml FlightNumber
+    - @ ml Carrier
+    - @ ml Number
 
 
 
