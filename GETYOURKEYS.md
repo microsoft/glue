@@ -1,7 +1,7 @@
 # Get your Keys
 This documentation helps you to find the right keys for Azure Cognitive Services in order to use GLUE.
 
-## Text to Speech
+## Text to Speech (TTS)
 - Go to the [Azure portal](https://portal.azure.com), open the Cognitive Service resource you want to use
 - Be aware that not every voice is available in every Azure region
 ![Microsoft Speech Service portal](assets/img/speech-portal.PNG)
@@ -14,7 +14,7 @@ language=
 font=
 ```
 
-## Speech to Text / Speech Service
+## Speech to Text (STT)
 - Go to the [Microsoft Speech Service portal](https://speech.microsoft.com), open your respective case and follow the breadcrumbs as illustrated below
 - Copy the values from the highlighted fields
 - In case you are not using a custom endpoint, it is sufficient to copy the subscription key as well as the region from your Azure Cogntitive Service resource in the [Azure portal](https://portal.azure.com)
@@ -45,4 +45,24 @@ endpoint=
 region=
 slot=
 treshold=0
+```
+
+## ffmpeg
+In this section, we describe how to set up FFMPEG in case you do TTS.
+
+### Windows
+- Download the latest version of [ffmpeg](https://ffmpeg.org/download.html#build-windows).
+- Extract the archive locally and copy the file `bin/ffpmeg.exe` to a location of your choice, e.g. to the `assets` folder of GLUE.
+- Finally, copy the path and insert it in your config.ini as below.
+```
+[driver]
+path=C:/glue/assets/ffmpeg.exe
+```
+
+### Ubuntu / Linux
+- Open your command line.
+- Make sure you have enough access rights to execute a `sudo` command or use the command line as root (not recommended).
+- Install `ffmpeg` using the `apt-get` package manager.
+```
+apt-get install ffmpeg
 ```

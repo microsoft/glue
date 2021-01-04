@@ -27,6 +27,9 @@ Before getting your hands on the toolkits, make sure your local computer is equi
 - [Python](https://www.python.org/downloads/) (required, Version 3.8 is recommended).
 - [VSCode](https://code.visualstudio.com/) (recommended), but you can also run the scripts using PowerShell, Bash etc.
 - Stable connection for installing your environment and scoring the files.
+- [ffmpeg](https://github.com/BtbN/FFmpeg-Builds/releases) for audio file conversion (only for TTS use cases).
+  - If you are using Windows, download it from [here](https://ffmpeg.org/download.html#build-windows)
+  - In case you are using Linux, you can install it using a package manager, such as `apt-get install ffmpeg`
 
 ### Setup of Virtual Environment
 1. Open a command line of your choice (PowerShell, Bash).
@@ -63,7 +66,7 @@ After successfully installing the requirements-file, your environment is set up 
 ### API Keys
 In the root directory of the repository, you can find a file named `config.sample.ini`. This is the file where the API keys and some other essential confirguation parameters have to be set, depending on which services you would like to use. First, create a copy of `config.sample.ini` and rename it to `config.ini` in the same directory. You only need the keys for the services you use during your experiment. However, keep the structure of the `config.ini`-file as it is to avoid errors. The toolkit will just set the values as empty, but will throw an error when the keys cannot be found at all.
 
-An instruction on how to get the keys can be found [here](GetYourKeys.md).
+An instruction on how to get the keys can be found [here](GETYOURKEYS.md).
 
 ## GLUE-Modules
 This section describes the single components of GLUE, which can either be ran autonomously or, ideally, using the central orchestrator.
@@ -149,7 +152,7 @@ The following section describes how to run the individual modules via the orches
 This scenario describes how you can batch-transcribe audio files using GLUE. A potential use case can be that you do not have reference transcriptions to the audio files yet and want to accelerate the transcription-process, by "pre-labeling" the data. The recognitions might not be perfect, but it helps you to have a much better time by providing a starting point.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GetYourKeys.md))
+- Azure Speech Service resource (see [Get Your Keys](GERYOURKEYS.md))
 - Audio files in .wav-format in a separate folder, as all wave files in the directory will be collected
 - See example audio files [here](assets/examples/input/audio).
 
