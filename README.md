@@ -129,7 +129,7 @@ Depending on your use-case described in the table above, you may have to provide
 - Column names (depending on the module it may be a mix of the following: `text` (utterance of the text, max length of 500 characters) and/or `intent` (ground-truth LUIS-intent) and/or `audio`).
 - We recommend you to put the input file in a subfolder called `input`, but you can choose arbitrary here.
 
-You can find an [example text files](assets/examples/input) as well as [example audio files](assets/examples/input/audio/) following the respective links.
+You can find an [example text files](assets/examples/input_files) as well as [example audio files](assets/examples/input_files/audio/) following the respective links.
 
 ### Output
 GLUE creates multiple folders and files of different types, depending on the modes you want it to run. The overview table below shows you which folders and files it may cover. Folders end with a `/`, files wend with a file ending (e.g. _.csv_). The _X_ in the respective mode columns indicate, given which mode the output files and folders are created.
@@ -154,7 +154,7 @@ This scenario describes how you can batch-transcribe audio files using GLUE. A p
 #### Pre-requisites:
 - Azure Speech Service resource (see [Get Your Keys](GERYOURKEYS.md))
 - Audio files in .wav-format in a separate folder, as all wave files in the directory will be collected
-- See example audio files [here](assets/examples/input/audio//).
+- See example audio files [here](assets/examples/input_files_files/audio/).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
@@ -178,7 +178,7 @@ This scenario describes how you can batch-synthesize text data using GLUE. A pot
 #### Pre-requisites
 - Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md)).
 - Textual, comma-separated input file with a `text` column and utterances to be synthesized.
-- See an example input file [here](assets/examples/input/example_tts.csv).
+- See an example input file [here](assets/examples/input_files/example_tts.csv).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
@@ -212,9 +212,9 @@ This scenario shows how you can use GLUE to batch-score textual data on a LUIS-e
 
 #### Pre-requisites
 - LUIS app and the respective keys (see [Get Your Keys](GETYOURKEYS.md)).
-  - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input/example-luis-app.lu) and import it to your resource. 
+  - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input_files/example-luis-app.lu) and import it to your resource. 
 - Textual input file with an `intent` AND `text` column.
-- See an example input file [here](assets/examples/input/example_luis.csv).
+- See an example input file [here](assets/examples/input_files/example_luis.csv).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
@@ -250,7 +250,7 @@ This scenario describes how you can compare already existing recognitions with a
 #### Pre-requisites:
 - Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
 - Textual input file with an `text` column with reference transcriptions as well as a `rec` column with recognitions.
-- See an example input file [here](assets/examples/input/example_eval.csv).
+- See an example input file [here](assets/examples/input_files/example_eval.csv).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
@@ -279,7 +279,7 @@ This scenario describes how you can batch-transcribe audio files and compare the
 - Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
 - Textual input file with an `audio` column for reference audio file names AND the respective `text` column with reference transcriptions.
-- See an example input file [here](assets/examples/input/example_stt_eval.csv) and example audio files [here](assets/examples/input/audio//).
+- See an example input file [here](assets/examples/input_files/example_stt_eval.csv) and example audio files [here](assets/examples/input_files/audio//).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
@@ -306,10 +306,10 @@ This scenario describes how you can batch-transcribe audio files, compare these 
 #### Pre-requisites:
 - Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
 - LUIS app and the respective keys (see [Get Your Keys](GETYOURKEYS.md)).
-  - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input/example-luis-app.lu) and import it to your resource. 
+  - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input_files/example-luis-app.lu) and import it to your resource. 
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
 - Textual input file with an `audio` column for reference audio file names AND `intent` for the LUIS class AND the respective `text` column with reference transcriptions.
-- See an example input file [here](assets/examples/input/example_stt_eval_luis.csv) and example audio files [here](assets/examples/input/input/audio//).
+- See an example input file [here](assets/examples/input_files/example_stt_eval_luis.csv) and example audio files [here](assets/examples/input_files/input/audio//).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
@@ -347,10 +347,10 @@ This scenario describes how you can batch-transcribe audio files and score both 
 #### Pre-requisites:
 - Azure Speech Service resource (see [Get Your Keys](GETYOURKEYS.md))
 - LUIS app and the respective keys (see [Get Your Keys](GETYOURKEYS.md)).
-  - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input/example-luis-app.lu) and import it to your resource. 
+  - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input_files/example-luis-app.lu) and import it to your resource. 
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
 - Textual input file with an `audio` column for reference audio file names AND `intent` for the LUIS class.
-- See an example input file [here](assets/examples/input/example-stt-luis.csv).
+- See an example input file [here](assets/examples/input_files/example-stt-luis.csv).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
