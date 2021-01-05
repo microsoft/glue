@@ -12,9 +12,9 @@ import configparser
 import pandas as pd
 
 # Import custom modules
-import luis
 import stt
 import tts
+import luis_scoring
 import params as pa
 import helper as he
 import evaluate as eval
