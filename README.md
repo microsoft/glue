@@ -14,7 +14,7 @@ WIP:
 - Batch-translate text data using [Microsoft Translator](https://azure.microsoft.com/en-us/services/cognitive-services/translator/).
 
 ### Use-Cases (among others)
-The toolkit has been built based on our experience from the field and is a great add-on, but not limited, to the following use-case: 
+The toolkit has been built based on our experience from the field and is a great add-on, but not limited, to the following use-cases: 
 - Automatized generation of synthetic speech-model training data.
 - Batch-transcription of audio files and evaluation given an existing reference transcript.
 - Scoring of STT-transcriptions on an existing LUIS-model.
@@ -58,8 +58,8 @@ python -m venv .venv
 ```
 pip install -r requirements.txt
 ```
-8. (optional) If you want to use Jupyter Notebooks, you can register your activated environment using the command below
-```
+8. (optional) If you want to use Jupyter Notebooks, you can register your activated environment using the command below.
+```bash
 python -m ipykernel install --user --name glue --display-name "Python (glue)"
 ```
 After successfully installing the requirements-file, your environment is set up and you can go ahead with the next step.
@@ -90,7 +90,7 @@ This section describes the single components of GLUE, which can either be ran au
 - Make sure the voice of your choice is available in the respective Azure region ([see documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#standard-and-neural-voices)).
 
 `luis.py`
-- Batch-scoring of intent-text combinations using an existing LUIS model
+- Batch-scoring of intent-text combinations using an existing LUIS model.
   -  See the following [quickstart documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/luis-get-started-create-app) in case you need some inspiration for your first LUIS-app.
 - Configureable scoring treshold, if predictions only want to be accepted given a certain confidence score returned by the API.
 - Writes scoring report as comma-separated file.
@@ -119,13 +119,13 @@ The following table shows and describes the available modes along with their inp
 | __STT__            | `--do_transcribe`          | Activate speech-to-text processing.                                      | Requires audio files, see `--audio_files`.                                                                                                                                                      |
 | __STT__            | `--audio_files`            | Path to folder with audio files.                                         | Audio files have to be provided as WAV-file with the parameters described [here](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-custom-speech-test-and-train). |
 | __STT-Evaluation__ | `--do_evaluate`            | Activate evaluation of transcriptions based on reference transcriptions. | Requires csv-file with `text`-column and intent names.                                                                                                                                          |
-| __LUIS__           | `--do_scoring`             | Activate LUIS model scoring.                                             | Requires csv-file with `intent` (ground truth of LUIS intent) and `text` columns (max. 500 characters due to LUIS limitation, gets cut if > 500 characters).                                                                                                                                             |
+| __LUIS__           | `--do_scoring`             | Activate LUIS model scoring.                                             | Requires csv-file with `intent` (ground truth of LUIS intent) and `text` columns (max. 500 characters due to LUIS limitation, gets cut if > 500 characters.                                                                                                                                             |
 | __STT / TTS__      | `--input`                  | Path to comma-separated text input file.                                 |                                                                                                                                                                                                |
 
 
 ### Input File Guidelines
 Depending on your use-case described in the table above, you may have to provide an input text file and/or audio files. In these cases, you have to pass the path to the respective input file of folder via command line. Following guidelines exist for these input files:
-- Comma-separated values (csv) file (if you only have an Excel sheet, you can export it as csv-file: (_Save as_ -> _CSV UTF-8 (Comma delimited (*.csv))_)
+- Comma-separated values (csv) file (if you only have an Excel sheet, you can export it as csv-file: (_Save as_ -> _CSV UTF-8 (Comma delimited (*.csv))_).
 - UTF-8 encoding (to make sure it has the correct encoding, open it with a text editor such as [Notepad++](https://notepad-plus-plus.org/downloads/) -> Encoding -> Convert to UTF-8).
 - Column names (depending on the module it may be a mix of the following: `text` (utterance of the text, max length of 500 characters) and/or `intent` (ground-truth LUIS-intent) and/or `audio`).
 - We recommend you to put the input file in a subfolder called `input`, but you can choose arbitrary here.
@@ -153,8 +153,8 @@ The following section describes how to run the individual modules via the orches
 This scenario describes how you can batch-transcribe audio files using GLUE. A potential use case can be that you do not have reference transcriptions to the audio files yet and want to accelerate the transcription-process, by "pre-labeling" the data. The recognitions might not be perfect, but it helps you to have a much better time by providing a starting point.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GERYOURKEYS.md))
-- Audio files in .wav-format in a separate folder, as all wave files in the directory will be collected
+- Azure Speech Service resource (see [Get Your Keys](GERYOURKEYS.md)).
+- Audio files in .wav-format in a separate folder, as all wave files in the directory will be collected.
 - See example audio files [here](assets/examples/input_files_files/audio/).
 
 #### Run GLUE
@@ -249,7 +249,7 @@ In your command line, you will see a print of a [confusion matrix](https://sciki
 This scenario describes how you can compare already existing recognitions with a ground-truth reference transcription using GLUE. A potential use case can be that you want to assess the quality of your speech model and figure out potential recognition problems, which you may counteract by custom model training. In this case, you have to provide already existing recognitions to the tool.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md))
+- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md)).
 - Textual input file with an `text` column with reference transcriptions as well as a `rec` column with recognitions.
 - See an example input file [here](assets/examples/input_files/example_eval.csv).
 
@@ -277,7 +277,7 @@ In your command line, you will see an output of the evaluation algorithms per se
 This scenario describes how you can batch-transcribe audio files and compare these recognitions with a ground-truth reference transcription using GLUE. A potential use case can be that you want to assess the quality of your speech model and figure out potential recognition problems, which you may counteract by custom model training.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md))
+- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md)).
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
 - Textual input file with an `audio` column for reference audio file names AND the respective `text` column with reference transcriptions.
 - See an example input file [here](assets/examples/input_files/example_stt_eval.csv) and example audio files [here](assets/examples/input_files/audio//).
@@ -305,7 +305,7 @@ GLUE will create an output folder as below:
 This scenario describes how you can batch-transcribe audio files, compare these recognitions with a ground-truth reference transcription and score both version on a LUIS-endpoint using GLUE. A potential use case can be that you want to assess the quality of your speech model, figure out potential recognition problems and also compare the impact on a LUIS model using STT in between.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md))
+- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md)).
 - LUIS app and the respective keys (see [Get Your Keys](GET_YOUR_KEYS.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input_files/example-luis-app.lu) and import it to your resource. 
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
@@ -346,7 +346,7 @@ Compared to scenario 3, where only the reference text was scored, the `luis-scor
 This scenario describes how you can batch-transcribe audio files and score both version on a LUIS-endpoint using GLUE. A potential use case can be that you want to assess the quality of your LUIS model using STT as a reference and in case you do not have a reference transcription. However, you need an `intent` column for every input audio file.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md))
+- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md)).
 - LUIS app and the respective keys (see [Get Your Keys](GET_YOUR_KEYS.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input_files/example-luis-app.lu) and import it to your resource. 
 - Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
