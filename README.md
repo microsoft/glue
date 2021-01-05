@@ -376,7 +376,7 @@ GLUE will create an output folder as below:
 In your command line, you will see a print of a [confusion matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) as well as a [classification report](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html). These reports cannot be written to a file, however they are based on the output file `luis-scoring.txt` and you may use the Jupyter notebook to load them again and gain deep insights into the classification performance. The following table shows the structure of the scoring file `luis_scoring.csv` and provides you an example how predictions are handled, also when the confidence score is low.
 Compared to scenario 3, where only the reference utterances were scored, the columns `prediction_`, `score_`, `prediction_drop_` of `luis_scoring.csv`-file will end with `rec` (recognition) instead of `text` (reference transcript) in this case.
 
-| intent | text | prediction_rec | score_rec | prediction_drop_rec |
+| intent | rec | prediction_rec | score_rec | prediction_drop_rec |
 |-|-|-|-|-|
 | _Intent name based on reference Excel file_ | _STT result_ | _Predicted intent by LUIS app_ | _Certainty score of LUIS model, between 0 and 1_ | _Predicted intent by LUIS app, _None_-intent in case of dropped value (when below the confidence score e.g. of 0.82)_ |
 | BookFlight | I would like to book a fight to Frankfurt. | BookFlight | 0.8750068 | BookFlight |
