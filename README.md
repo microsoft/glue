@@ -308,7 +308,7 @@ This scenario describes how you can batch-transcribe audio files, compare these 
 - Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md)).
 - LUIS app and the respective keys (see [Get Your Keys](GET_YOUR_KEYS.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input_files/example-luis-app.lu) and import it to your resource. 
-- Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
+- Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected.
 - Textual input file with an `audio` column for reference audio file names AND `intent` for the LUIS class AND the respective `text` column with reference transcriptions.
 - See an example input file [here](assets/examples/input_files/example_stt_eval_luis.csv) and example audio files [here](assets/examples/input_files/input/audio//).
 
@@ -349,7 +349,7 @@ This scenario describes how you can batch-transcribe audio files and score both 
 - Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md)).
 - LUIS app and the respective keys (see [Get Your Keys](GET_YOUR_KEYS.md)).
   - If you do not have a LUIS app yet, you can use our [example LUIS app for flight bookings](assets/examples/input_files/example-luis-app.lu) and import it to your resource. 
-- Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected
+- Audio files in .wav-format in a dedicated folder, as all wave files in the directory will be collected.
 - Textual input file with an `audio` column for reference audio file names AND `intent` for the LUIS class.
 - See an example input file [here](assets/examples/input_files/example-stt-luis.csv).
 
