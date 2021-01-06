@@ -42,7 +42,7 @@ class LUISGenerator():
         Returns:
             self.preprocessed_text: list of utterances with preprocessed entities.'''
         self.preprocessed_text = []
-        logging.info(f'[STATUS] - loaded {len(self.utterances)} rows.')
+        logging.info(f'[INFO] - loaded {len(self.utterances)} rows.')
         # Extract all entities
         for index, value in enumerate(self.utterances):
             orig = re.compile('\\{(.*?)\\}').findall(value)
@@ -58,7 +58,7 @@ class LUISGenerator():
                     value = subs[i].join(value.rsplit(orig[i], 1))
                     i -= 1
             self.preprocessed_text.append(value)
-        logging.info(f'[STATUS] - finished processing {len(self.utterances)} rows.')
+        logging.info(f'[INFO] - finished processing {len(self.utterances)} rows.')
         return self.preprocessed_text
     
     # List all possible entitites
@@ -81,7 +81,7 @@ class LUISGenerator():
 
         # Flatten List (as some rows have multiple entities) and drop duplicates from list
         self.tags_flat = list(dict.fromkeys(sorted([item for item in [item for sublist in self.tags_per_row for item in sublist]])))
-        logging.info(f"[STATUS] - detected {len(self.tags_flat)} different entities")
+        logging.info(f"[INFO] - detected {len(self.tags_flat)} different entities")
         return self.tags_per_row, self.tags_flat
     
     # Prepare 
@@ -143,18 +143,23 @@ class LUISGenerator():
             formatted = str(value).format(**self.return_values[index])
             formatted = formatted.replace('&?', '{').replace('?&','}').replace('%2', '').replace('%3', '').replace('%4', '')
             self.utterances_luis.append(formatted)
-        if self.intents == []:
+        if self.intents == None:
             return self.utterances_filled, self.utterances_luis
         else:
             return zip(self.intents, self.utterances_filled), zip(self.intents, self.utterances_luis)
         
-def transform_lu(zipped_list, lu_file="lu_file"):
+def transform_lu(zipped_list, lu_file="lu_file", write=True):
     '''Transforms zipped list (including intents and text) into lu-file. Drops exact duplicates as LUIS will not take them either way.
     Args:
         zipped_list: zipped list of utterances, consisting of intent list and utterance list.
         lu_file: file name of your lu-file, no file ending necessary, default "lu_file"
+        write: boolean, whether lu should be written to a file, default True
     Output:
         Writes lu-file to your working folder'''
+    if write:
+        logging.warning(f'Writing output to file "{lu_file}".')
+    else:
+        logging.warning('Writing no output file, just display.')
     compare = ""
     luis_file = pd.DataFrame(list(zipped_list), columns=['intent', 'text']).sort_values('intent').drop_duplicates('text')
     with open(f'{lu_file}.lu', 'w') as f:
@@ -162,15 +167,15 @@ def transform_lu(zipped_list, lu_file="lu_file"):
             if compare != row['intent']:
                 # Begin intent
                 line = f"\n# {row['intent']}"
-                #print(line, file = f)
+                if write: print(line, file = f)
                 print(line)
                 line = f"- {str(row['text'])}"
-                #print(line, file = f)
+                if write: print(line, file = f)
                 compare = row['intent']
                 print(line)
             else:
                 line = f"- {str(row['text'])}"
-                #print(line, file = f)
+                if write: print(line, file = f)
                 print(line)
 
 def main(utterances, values, intents):
