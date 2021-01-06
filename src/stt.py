@@ -20,15 +20,15 @@ pa.get_config()
 def request_endpoint(audio, speech_config, output_directory, lexical):
     """Request the speech service endpoint
     Args:
-        audio: input data frame
-        speech_config: choice between scoring and 
+        audio: Input data frame
+        speech_config: Choice between scoring and 
         output_folder: LUIS app ID
         case: LUIS subscription key
-        lexical: minimum confidence score for LUIS result, between 0.00 and 1.00
+        lexical: Minimum confidence score for LUIS result, between 0.00 and 1.00
     Returns:
-        df: scoring data frame with predicted intents and scores
+        df: Scoring data frame with predicted intents and scores
     Raises:
-        ConnectionError: if file is not found
+        ConnectionError: If file is not found
     """
     audio_config = speechsdk.audio.AudioConfig(filename = audio)
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config = speech_config, audio_config = audio_config)
@@ -38,8 +38,14 @@ def request_endpoint(audio, speech_config, output_directory, lexical):
     return text, filename
 
 def process_recognition(result, filename, output_directory, lexical):
-    """
-    Process recognition received from the speech service
+    """Process recognition received from the speech service
+    Args:
+        result: Result object returned by STT-service
+        filename: Filename for output file
+        output_directory: Output directory for the file
+        lexical: Boolean to enable extended lexical version of STT-result
+    Returns:
+        text: Processed recognition as string
     """
     if result.reason == speechsdk.ResultReason.RecognizedSpeech:
         if lexical:
@@ -60,7 +66,13 @@ def process_recognition(result, filename, output_directory, lexical):
 
 # General Function
 def write_transcription(output_directory, text):
-    ''' Write transcriptions '''
+    """Write transcription to file
+    Args:
+        text: Processed recognition as string
+        output_directory: Output directory for the file
+    Returns:
+        Writes output to file
+    """
     if not os.path.exists(f'{output_directory}/transcriptions.txt'):
         transfile = codecs.open(f'{output_directory}/transcriptions.txt', 'w', encoding='utf-8-sig')
         transfile.close()
@@ -70,8 +82,15 @@ def write_transcription(output_directory, text):
         transfile.close()
 
 def main(speech_files, output_directory, lexical = False, enable_proxy = False, *argv):
-    """
-    Batch-transcribe audio files using speech-to-text
+    """Main function for STT-functionality
+    Args:
+        speech_files: Directory of audio files to be transcribed
+        output_directory: Output directory for the file
+        lexical: Boolean to enable extended lexical version of STT-result
+        enable_proxy: Boolean to enable proxy function in case you need it
+        *argv: Proxy information if enable_proxy is True -> hostname: str, port: str, username: str, password: str
+    Returns:
+        zip(filenames, results): Zipped lists of filenames and STT-results as string
     """
     speech_config = speechsdk.SpeechConfig(subscription = pa.stt_key, region = pa.stt_region)
     # If necessary, you can enable a proxy here: 

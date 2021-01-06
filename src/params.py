@@ -3,13 +3,12 @@ import configparser
 import sys
 
 def get_params(parser):
-    '''
-    Collect arguments from command line
+    """Collect arguments from command line
     Args:
         parser: ArgumentParser-object
     Returns:
-        args: object with parsed arguments
-    '''
+        args: Object with parsed arguments
+    """
     parser.add_argument("--input",
                     type=str,
                     help="Path to comma-separated text input file")
@@ -40,13 +39,12 @@ def get_params(parser):
     return args
 
 def get_config(fname_config='config.ini'):
-    '''
-    Collect parameters from config file
+    """Collect parameters from config file
     Args:
         fname_config: file name of config file
     Returns:
         Sets parsed arguments as global variables
-    '''
+    """
     # Get config file
     sys.path.append('./')
     config = configparser.ConfigParser()

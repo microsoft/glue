@@ -31,9 +31,13 @@ class TextToSpeech(object):
         self.access_token = None
 
     def get_token(self, region, subscription_key):
-        '''
-        Get connection token to text to speech service
-        '''
+        """Get connection token to text to speech service
+        Args:
+            region: Name of the Azure region
+            subscription_key: Key of Azure resource
+        Returns:
+            self.access_token: Sets access token gathered from the API
+        """
         fetch_token_url = f"https://{region}.api.cognitive.microsoft.com/sts/v1.0/issueToken"
         headers = {
             'Ocp-Apim-Subscription-Key': self.subscription_key
@@ -42,9 +46,16 @@ class TextToSpeech(object):
         self.access_token = str(response.text)
 
     def save_audio(self, region, resource_name, output_directory, language, font):
-        '''
-        Save generated audio to file
-        '''
+        """Save generated audio to file
+        Args:
+            region: Name of the Azure region
+            resource_name: Name of the Azure resource
+            output_directory: Output directory for the file
+            language: Language code of the synthetization language, e.g. en-US
+            font: Name of the font, see documentation
+        Returns:
+            Saves audio to file
+        """
         base_url = f'https://{region}.tts.speech.microsoft.com/'
         path = 'cognitiveservices/v1'
         constructed_url = base_url + path
@@ -66,46 +77,72 @@ class TextToSpeech(object):
 ''' PRE AND POSTPROCESS '''
 # Remove XML/SSML Tags
 def remove_tags(text):
-    '''
-    Remove SSML tags from text strings
-    '''
+    """Remove SSML tags from text strings
+    Args:
+        text: Raw text with SSML tags
+    Returns:
+        text_cleaned: Text without SSML tags
+    """
     return re.compile(r'<[^>]+>').sub('', text)
 
 def custom_speech(output_directory, fname, rate, crop_start, crop_end):
-    '''
-    Convert to Microsoft Speech Service format
-    '''
+    """Convert to Microsoft Speech Service format
+    Args:
+        output_directory: Output directory for the file
+        fname: Filename for output file
+        rate: Frame rate
+        crop_start: Start of the audio file
+        crop_end: End of the audio file
+    Returns:
+        Writes audio stream to file
+    """
     rec = AudioSegment.from_wav(f"{output_directory}/tts_generated/{fname}").set_frame_rate(rate).set_sample_width(2)
     rec = rec.set_channels(1)
     rec = rec[crop_start:crop_end]
     file_converted = f"{output_directory}/tts_converted/{fname}"
-    rec.export(file_converted, 
-                format="wav",
-                bitrate="192k")
+    rec.export(file_converted, format="wav", bitrate="192k")
     del rec
 
-def bandpass_params(low_freq, high_freq, fs, order=5):
-    '''
-    Set bandpass params
-    '''
-    nyq = 0.5 * fs
+def bandpass_params(low_freq, high_freq, sample_rate, order=5):
+    """Set bandpass params
+    Args:
+        low_freq: Low frequency value
+        high_freq: High frequency value
+        sample_rate: Sample rate of audio
+        order: Order of the filter
+    Returns:
+        numerator: Fraction of audio 1
+        denominator: Fraction of audio 2
+    """
+    nyq = 0.5 * sample_rate
     low = low_freq / nyq
     high = high_freq / nyq
-    b, a = butter(order, [low, high], btype='band')
-    return b, a
+    numerator, denominator = butter(order, [low, high], btype='band')
+    return numerator, denominator
 
-def bandpass_filter(data, low_freq, high_freq, fs, order=5):
-    '''
-    Apply bandpass filter on the generated training data
-    '''
-    b, a = bandpass_params(low_freq, high_freq, fs, order=order)
-    y = lfilter(b, a, data)
-    return y
+def bandpass_filter(audio, low_freq, high_freq, sample_rate, order=5):
+    """Apply bandpass filter on the generated training data
+    Args:
+        audio: Audio file as object
+        low_freq: Low frequency value
+        high_freq: High frequency value
+        sample_rate: Sample rate of audio
+        order: Order of the filter
+    Returns:
+        filtered_audio: Filtered audio object
+    """
+    numerator, denominator = bandpass_params(low_freq, high_freq, sample_rate, order=order)
+    filtered_audio = lfilter(numerator, denominator, audio)
+    return filtered_audio
 
 def telephone_filter(output_directory, fname):
-    '''
-    Apply telephone-like filter on the generated training data
-    '''
+    """Apply telephone-like filter on the generated training data
+    Args:
+        output_directory: Output directory for the file
+        fname: Filename of audio file
+    Returns:
+        Writes output to file
+    """
     fs, audio = read(f"{output_directory}/tts_converted/{fname}")
     low_freq = 300.0
     high_freq = 3000.0
@@ -114,6 +151,17 @@ def telephone_filter(output_directory, fname):
     write(fname, fs, array(filtered_signal, dtype=int16))
 
 def main(df, output_directory, custom=True, telephone=True):
+    """Apply telephone-like filter on the generated training data
+    Args:
+        df: Data frame with utterances to be synthesized
+        output_directory: Output directory for the file
+        custom: Boolean to activate audio conversion to Microsoft Speech format
+        telephone: Boolean to activate telephone filter in audio files
+    Returns:
+        df: Data frame with utterances and the file name of the synthesized audio file
+    Raises:
+        Exception: If TTS-request failed
+    """
     os.makedirs(output_directory + "/tts_generated/", exist_ok=True)
     audio_synth = []
     for index, row in df.iterrows():
