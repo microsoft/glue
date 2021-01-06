@@ -65,15 +65,15 @@ if __name__ == '__main__':
 
     # TTS
     if do_synthesize:
-        logging.info(f'[STATUS] - Starting text-to-speech synthetization of {len(df_reference)} utterances')
+        logging.info(f'[INFO] - Starting text-to-speech synthetization of {len(df_reference)} utterances')
         df_reference = tts.main(df_reference, f'{output_folder}/{case}', pa.stt_endpoint)
         df_reference[['audio_synth', 'text']].to_csv(f'{output_folder}/{case}/tts_transcription.txt', sep = "\t", header = None, index = False)
-        logging.info(f'[STATUS] - Finished text-to-speech synthetization of {len(df_reference)} utterances')
+        logging.info(f'[INFO] - Finished text-to-speech synthetization of {len(df_reference)} utterances')
 
     # STT
     if do_transcribe:
         if audio_files != None:
-            logging.info('[STATUS] - Starting with speech-to-text conversion')
+            logging.info('[INFO] - Starting with speech-to-text conversion')
             stt_results = stt.main(f'{audio_files}/', f'{output_folder}/{case}')
             df_transcription = pd.DataFrame(list(stt_results), columns=['audio', 'rec'])
             logging.debug(transcription)
@@ -81,25 +81,25 @@ if __name__ == '__main__':
             # Merge reference transcriptions with recognition on audio file names
             if 'audio' in list(df_reference.columns):
                 df_reference = pd.merge(left = df_reference, right = df_transcription, how = 'left', on = 'audio')
-                logging.info(f'[STATUS] - Merged imported reference transcriptions and recognitions')
+                logging.info(f'[INFO] - Merged imported reference transcriptions and recognitions')
                 df_reference.to_csv(f'{output_folder}/{case}/transcriptions_full.csv', sep = ';', encoding = 'utf-8', index = False)
-                logging.info(f'[STATUS] - Wrote transcription file to case folder')
+                logging.info(f'[INFO] - Wrote transcription file to case folder')
         else:
             logging.error('[ERROR] - It seems like you did not pass a path to audio files, cannot do transcriptions')
             sys.exit()
 
     # Speech Evaluation
     if do_evaluate:
-        logging.info('[STATUS] - Starting with reference vs. recognition evaluation')
+        logging.info('[INFO] - Starting with reference vs. recognition evaluation')
         if 'text' in list(df_reference.columns) and 'rec' in list(df_reference.columns):
             eval.main(df_reference)
-            logging.info('[STATUS] - Evaluated reference and recognition transcriptions')
+            logging.info('[INFO] - Evaluated reference and recognition transcriptions')
         else:
             logging.error('[ERROR] - Cannot do evaluation, please verify that you both have "ref" and "rec" in your data!')
 
     # LUIS Scoring
     if do_scoring:
-        logging.info('[STATUS] - Starting with LUIS scoring')
+        logging.info('[INFO] - Starting with LUIS scoring')
         logging.info(f'[INFO] - Set LUIS treshold to {pa.luis_treshold}')
         if 'intent' in list(df_reference.columns) and not 'rec' in list(df_reference.columns):
             luis_scoring = luis.main(df_reference, 'text')
@@ -114,4 +114,4 @@ if __name__ == '__main__':
         luis_scoring.to_csv(f'{output_folder}/{case}/luis_scoring.csv', sep = ';', encoding = 'utf-8', index=False)
 
     # Finish run
-    logging.info(f'[STATUS] - Finished with the run {case}!')
+    logging.info(f'[INFO] - Finished with the run {case}!')
