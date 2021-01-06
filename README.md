@@ -13,11 +13,16 @@ GLUE consists of multiple modules, which either can be executed separately or ra
 WIP:
 - Batch-translate text data using [Microsoft Translator](https://azure.microsoft.com/en-us/services/cognitive-services/translator/).
 
-### Use-Cases (among others)
+### Potential Use-Cases
 The toolkit has been built based on our experience from the field and is a great add-on, but not limited, to the following use-cases: 
 - Automatized generation of synthetic speech-model training data.
 - Batch-transcription of audio files and evaluation given an existing reference transcript.
 - Scoring of STT-transcriptions on an existing LUIS-model.
+
+### (Optional) Batch-Generation of Textual Training Data
+---
+> Based on our experience in the field, we see that often a larger corpus of training data is needed for STT engines and LUIS models. The correct transcription and recognition of entities such as cities and names often play a significant role. Sometimes there is a lack of training data here, which is why we have created a small tool for duplicating utterances based on different entity types. If this also applies to your use-case, then we recommend taking a look at this [Jupyter Notebook](notebooks/Data\ -\ Training\ Data\ Generator.ipynb), which will guide you through the necessary steps.
+---
 
 ## Getting Started
 This section describes how you get started with GLUE and which requirements need to be fulfilled by your working environment.
