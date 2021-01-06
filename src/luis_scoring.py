@@ -55,7 +55,7 @@ def request_luis(text):
     return r.json()
 
 def luis_classification_report(df, col):
-    logging.info('[STATUS] - Starting to create classification report')
+    logging.info('[INFO] - Starting to create classification report')
     logging.info('[OUTPUT] - CLASSIFICATION REPORT (without reset by treshold):')
     logging.info(classification_report(df['intent'], df[f'prediction_{col}']))
     logging.info(f'[OUTPUT] - AFTER RESET BY TRESHOLD ({pa.luis_treshold}):')
