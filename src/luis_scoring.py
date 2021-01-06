@@ -89,7 +89,7 @@ def main(df, col):
             else:
                 drop = top_intent
             logging.info(f"[INFO] {str(index+1)}/{len(df)} -> '{row[col]}' -> Original: {row['intent']}, Pred: {top_intent} ({top_score}, drop? {top_intent != row['intent']})")
-            # Apennd scores and predictions to lists
+            # Append scores and predictions to lists
             predictions.append(top_intent)
             scores.append(top_score)
             prediction_drop.append(drop)
