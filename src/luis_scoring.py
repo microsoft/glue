@@ -24,16 +24,9 @@ pa.get_config()
 def request_luis(text):
     """Scores or loads a LUIS scoring file to assess the model quality and delivers insights
     Args:
-        df: Input data frame
-        mode: Choice between scoring and 
-        appId: LUIS app ID
-        key: LUIS subscription key
-        slot: Staging slot, production or staging, default on production
-        treshold: Minimum confidence score for LUIS result, between 0.00 and 1.00, default on 0.85
+        text: Text string for LUIS request
     Returns:
-        df: Scoring data frame with predicted intents and scores
-    Raises:
-        ConnectionError: If file is not found
+        r.json: Response from endpoint as JSON
     """
     # Uncomment this if you are using the old url version having the region name as endpoint.
     # endpoint_url = f'{endpoint}.api.cognitive.microsoft.com'.
@@ -55,12 +48,12 @@ def request_luis(text):
     return r.json()
 
 def luis_classification_report(df, col):
-    """Creates LUIS classification report and confusion matrix.
+    """Creates LUIS classification report and confusion matrix
     Args:
-        df: A data frame with ground truth and predictions.
-        col: Name of column of prediction.
+        df: A data frame with ground truth and predictions
+        col: Name of column of prediction
     Returns:
-        Output to console as logging.
+        Output to console as logging
     """
     logging.info('[INFO] - Starting to create classification report')
     logging.info('[OUTPUT] - CLASSIFICATION REPORT (without reset by treshold):')
@@ -73,8 +66,10 @@ def luis_classification_report(df, col):
 def main(df, col):
     """Main function of the LUIS scoring component.
     Args:
-        df: A data frame with ground truth and predictions.
-        col: Name of column of prediction.
+        df: Data frame with ground truth and predictions
+        col: Name of column of prediction
+    Returns:
+        df: Data frame with appended predictions
     """
     # Set lists for results
     predictions = []
