@@ -158,7 +158,7 @@ This scenario describes how you can batch-transcribe audio files using GLUE. A p
 #### Pre-requisites:
 - Azure Speech Service resource (see [Get Your Keys](GERYOURKEYS.md)).
 - Audio files in .wav-format in a separate folder, as all wave files in the directory will be collected.
-- See example audio files [here](assets/examples/input_files_files/audio/).
+- See example audio files [here](assets/examples/input_files/audio/).
 
 #### Run GLUE
 1. `cd` to the root folder of GLUE.
