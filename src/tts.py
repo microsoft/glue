@@ -67,7 +67,7 @@ class TextToSpeech(object):
         }
         response = requests.post(constructed_url, headers=headers, data=self.tts)
         if response.status_code == 200:
-            fname = f"{output_directory}/tts_generated/{datetime.today().strftime('%Y-%m-%d')}_{language}_{font}_{str(uuid.uuid4().hex}.wav"
+            fname = f"{output_directory}/tts_generated/{datetime.today().strftime('%Y-%m-%d')}_{language}_{font}_{str(uuid.uuid4().hex)}.wav"
             with open(fname, "wb") as audio:
                 audio.write(response.content)
             return os.path.basename(fname)
