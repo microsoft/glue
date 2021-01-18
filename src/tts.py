@@ -181,6 +181,7 @@ def main(df, output_directory, custom=True, telephone=True):
             fname = "nan"
         audio_synth.append(fname)
     df['audio_synth'] = audio_synth
+    df['text_clean'] = df.text.apply(remove_tags)
     return df
 
 if __name__ == '__main__':
