@@ -76,7 +76,7 @@ if __name__ == '__main__':
             logging.info('[INFO] - Starting with speech-to-text conversion')
             stt_results = stt.main(f'{audio_files}/', f'{output_folder}/{case}')
             df_transcription = pd.DataFrame(list(stt_results), columns=['audio', 'rec'])
-            logging.debug(transcription)
+            logging.debug(df_transcription)
             df_transcription.to_csv(f'{output_folder}/{case}/stt_transcriptions.txt', sep = '\t', header = None, index=False)
             # Merge reference transcriptions with recognition on audio file names
             if 'audio' in list(df_reference.columns):

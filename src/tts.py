@@ -181,8 +181,9 @@ def main(df, output_directory, custom=True, telephone=True):
             fname = "nan"
         audio_synth.append(fname)
     df['audio_synth'] = audio_synth
-    df['text_clean'] = df.text.apply(remove_tags)
+    df['text_ssml'] = df['text'].copy()
+    df['text'] = df['text_ssml'].apply(remove_tags)
     return df
 
 if __name__ == '__main__':
-    main(pd.DataFrame({'text': ['Ich möchte diesen Teppicht nicht kaufen', 'Was geht los da rein?']}), "output/test")
+    main(pd.DataFrame({'text': ['This is a test', 'And this is another test!']}), "output/test")
