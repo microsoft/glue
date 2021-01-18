@@ -60,7 +60,7 @@ region=
 
 For `slot`, either insert `staging` or `production`, depending which deployment slot you are using with your LUIS model. Region can remain blank.
 
-The final section should look as below (fictonal keys):
+The final section should look as below (fictional keys):
 ```
 [luis]
 key=
