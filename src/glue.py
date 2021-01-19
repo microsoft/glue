@@ -83,7 +83,7 @@ if __name__ == '__main__':
             if 'audio' in list(df_reference.columns):
                 df_reference = pd.merge(left = df_reference, right = df_transcription, how = 'left', on = 'audio')
                 logging.info(f'[INFO] - Merged imported reference transcriptions and recognitions')
-                df_reference.to_csv(f'{output_folder}/{case}/transcriptions_full.csv', sep = ';', encoding = 'utf-8', index = False)
+                df_reference.to_csv(f'{output_folder}/{case}/transcriptions_full.csv', sep = ',', encoding = 'utf-8', index = False)
                 logging.info(f'[INFO] - Wrote transcription file to case folder')
         else:
             logging.error('[ERROR] - It seems like you did not pass a path to audio files, cannot do transcriptions')
