@@ -68,7 +68,8 @@ if __name__ == '__main__':
         logging.info(f'[INFO] - Starting text-to-speech synthetization of {len(df_reference)} utterances')
         df_reference = tts.main(df_reference, f'{output_folder}/{case}', pa.stt_endpoint)
         df_reference[['audio_synth', 'text']].to_csv(f'{output_folder}/{case}/tts_transcription.txt', sep = "\t", header = None, index = False)
-        logging.info(f'[INFO] - Finished text-to-speech synthetization of {len(df_reference)} utterances')
+        df_reference[['audio_synth', 'text']].to_csv(f'{output_folder}/{case}/tts_transcription.csv', sep = ",", index = False)
+        logging.info(f'[INFO] - Finished text-to-speech synthetization of {len(df_reference)} utterances and wrote output files')
 
     # STT
     if do_transcribe:
