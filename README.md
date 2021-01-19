@@ -143,6 +143,7 @@ GLUE creates multiple folders and files of different types, depending on the mod
 | __luis_scoring.csv__        |     |     |   X  |      | Comma-separated file with audio file names and transcriptions.     |
 | __stt_transcriptions.txt__  |  X  |     |      |      | Tab-delimited file with audio file names and transcriptions. |
 | __tts_transcriptions.txt__  |     |  X  |      |      | Tab-delimited file with audio file names and transcriptions.|
+| __tts_transcriptions.csv__  |     |  X  |      |      | Comma-separated file with audio file names and transcriptions.|
 | __transcriptions_full.csv__ |  X  |  X  |      |      | Comma-separated file with merged columns of the current run.  |
 | __input/__                  |     |  X  |   X  |   X  | Folder with duplicate of input file.     |
 | __tts_converted/__          |     |  X  |      |      | Folder with TTS-results in Microsoft Speech-optimized format.     |
@@ -209,6 +210,7 @@ GLUE will create an output folder as below:
     | -- [modified audio files]
     | -- [modified audio files]
  | -- tts_transcriptions.txt (tab-delimited file with audio file names and transcriptions)
+ | -- tts_transcriptions.csv (comma-separated file with audio file names and transcriptions)
 ```
 
 ### Scenario 3: LUIS-Scoring
