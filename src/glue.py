@@ -14,7 +14,7 @@ import pandas as pd
 # Import custom modules
 import stt
 import tts
-import luis_scoring
+import luis
 import params as pa
 import helper as he
 import evaluate as eval
@@ -95,7 +95,7 @@ if __name__ == '__main__':
             eval.main(df_reference)
             logging.info('[INFO] - Evaluated reference and recognition transcriptions')
         else:
-            logging.error('[ERROR] - Cannot do evaluation, please verify that you both have "ref" and "rec" in your data!')
+            logging.error('[ERROR] - Cannot do evaluation, please verify that you both have "text" and "rec" in your data!')
 
     # LUIS Scoring
     if do_scoring:
@@ -110,8 +110,9 @@ if __name__ == '__main__':
             luis_scoring = luis.main(df_reference, 'rec')
         else:
             logging.error('[ERROR] - Cannot do LUIS scoring, please verify that you have an "intent"-column in your data.')
-        # Write to output file   
-        luis_scoring.to_csv(f'{output_folder}/{case}/luis_scoring.csv', sep = ';', encoding = 'utf-8', index=False)
+        # Write to output file
+        luis_scoring['luis_treshold'] = pa.luis_treshold
+        luis_scoring.to_csv(f'{output_folder}/{case}/luis_scoring.csv', sep = ',', encoding = 'utf-8', index=False)
 
     # Finish run
     logging.info(f'[INFO] - Finished with the run {case}!')

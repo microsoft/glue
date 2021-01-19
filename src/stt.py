@@ -104,7 +104,7 @@ def main(speech_files, output_directory, lexical = False, enable_proxy = False, 
     logging.info(f'[INFO] - Starting to transcribe {len(next(os.walk(speech_files))[2])} audio files')
     results = []
     filenames = []
-    for audio in glob.iglob(f'{speech_files}*av'):
+    for index, audio in enumerate(glob.iglob(f'{speech_files}*av')):
         result, filename = request_endpoint(audio, speech_config, output_directory, lexical)
         results.append(result)
         filenames.append(filename)
