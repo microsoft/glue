@@ -1,0 +1,17 @@
+intent,text,prediction_text,score_text,prediction_drop_text,luis_treshold
+BookFlight,I would like to book a flight to Frankfurt.,BookFlight,0.8986784,None,0.9
+CancelFlight,I want to cancel my journey to Kuala Lumpur,CancelFlight,0.915191233,CancelFlight,0.9
+ChangeFlight,I would like to change my flight to Singapore.,ChangeFlight,0.9164768,ChangeFlight,0.9
+BookSeat,I would like to book a seat on my flight to Stuttgart.,BookSeat,0.9104437,BookSeat,0.9
+CancelFlight,I want to cancel my journey to Kuala Lumpur,CancelFlight,0.915191233,CancelFlight,0.9
+ChangeFlight,I would like to change my flight to Singapore.,ChangeFlight,0.9164768,ChangeFlight,0.9
+BookSeat,I would like to book a seat on my flight to Stuttgart.,BookSeat,0.9104437,BookSeat,0.9
+CancelFlight,I want to cancel my journey to Kuala Lumpur,ChangeFlight,0.915191233,ChangeFlight,0.9
+ChangeFlight,I would like to change my flight to Singapore.,ChangeFlight,0.9164768,ChangeFlight,0.9
+BookSeat,I would like to book a seat on my flight to Stuttgart.,BookFlight,0.9104437,BookFlight,0.9
+ChangeFlight,I would like to change my flight to Singapore.,ChangeFlight,0.9164768,ChangeFlight,0.9
+BookSeat,I would like to book a seat on my flight to Stuttgart.,BookSeat,0.9104437,BookSeat,0.9
+CancelFlight,I want to cancel my journey to Kuala Lumpur,ChangeFlight,0.915191233,ChangeFlight,0.9
+ChangeFlight,I would like to change my flight to Singapore.,ChangeFlight,0.9164768,ChangeFlight,0.9
+BookSeat,I would like to book a seat on my flight to Stuttgart.,BookFlight,0.9104437,BookFlight,0.9
+BookFlight,I would like to book a flight to Frankfurt.,BookFlight,0.8986784,None,0.9
