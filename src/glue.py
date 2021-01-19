@@ -14,7 +14,7 @@ import pandas as pd
 # Import custom modules
 import stt
 import tts
-import luis
+import luis_scoring as luis
 import params as pa
 import helper as he
 import evaluate as eval
