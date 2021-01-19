@@ -54,7 +54,7 @@ if __name__ == '__main__':
             logging.info(f'[INFO] - Copied input file(s) to case folder')
         except Exception as e:
             if do_synthesize or do_scoring:
-                logging.error(f'[ERROR] - Could not find input file, but it is required for --do_transcribe and/or --do_scoring -> {e}')
+                logging.error(f'[ERROR] - Error with input file or FileNotFound, but it is required for --do_transcribe and/or --do_scoring -> {e}')
                 sys.exit()
             else:
                 logging.warning('[WARNING] - Could not find input file, but we can continue here')
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     if do_synthesize:
         logging.info(f'[INFO] - Starting text-to-speech synthetization of {len(df_reference)} utterances')
         df_reference = tts.main(df_reference, f'{output_folder}/{case}', pa.stt_endpoint)
-        df_reference[['audio_synth', 'text_clean']].to_csv(f'{output_folder}/{case}/tts_transcription.txt', sep = "\t", header = None, index = False)
+        df_reference[['audio_synth', 'text']].to_csv(f'{output_folder}/{case}/tts_transcription.txt', sep = "\t", header = None, index = False)
         logging.info(f'[INFO] - Finished text-to-speech synthetization of {len(df_reference)} utterances')
 
     # STT
