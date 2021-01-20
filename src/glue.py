@@ -41,7 +41,7 @@ pa.get_config()
 logging.getLogger().setLevel(logging.INFO)
 
 if __name__ == '__main__':
-    logging.info('[INFO] - Starting GLUE - v0.1')
+    logging.info('[INFO] - Starting GLUE - v0.1-beta')
 
     # Case Management
     if any([do_scoring, do_synthesize, do_transcribe, do_evaluate]):
