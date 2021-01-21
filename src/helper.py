@@ -30,6 +30,7 @@ def create_case(output_folder):
     return output_folder, case
 
 def create_df(fname):
+    """Create df from LU-file"""
     df = pd.DataFrame(columns=['intent', 'text'])
     intents = []
     texts = []
