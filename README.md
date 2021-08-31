@@ -157,7 +157,7 @@ The following section describes how to run the individual modules via the orches
 This scenario describes how you can batch-transcribe audio files using GLUE. A potential use case can be that you do not have reference transcriptions to the audio files yet and want to accelerate the transcription-process, by "pre-labeling" the data. The recognitions might not be perfect, but it helps you to have a much better time by providing a starting point.
 
 #### Pre-requisites:
-- Azure Speech Service resource (see [Get Your Keys](GERYOURKEYS.md)).
+- Azure Speech Service resource (see [Get Your Keys](GET_YOUR_KEYS.md)).
 - Audio files in .wav-format in a separate folder, as all wave files in the directory will be collected.
 - See example audio files [here](assets/examples/input_files/audio/).
 
