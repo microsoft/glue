@@ -113,3 +113,7 @@ config.ini
 input/
 output/
 tests/
+
+# Virtual envs
+.venv/
+venv/
