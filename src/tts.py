@@ -3,14 +3,11 @@
 
 # Import required packages
 import requests
-import random
 import logging
 import uuid
 import time
-import sys
 import re
 import os
-import configparser
 import pandas as pd
 from datetime import datetime
 from pydub import AudioSegment
@@ -85,7 +82,7 @@ def remove_tags(text):
     """
     return re.compile(r'<[^>]+>').sub('', text)
 
-def custom_speech(output_directory, fname, rate, crop_start, crop_end):
+def convert_to_custom_speech(output_directory, fname, rate, crop_start, crop_end):
     """Convert to Microsoft Speech Service format
     Args:
         output_directory: Output directory for the file
@@ -96,6 +93,12 @@ def custom_speech(output_directory, fname, rate, crop_start, crop_end):
     Returns:
         Writes audio stream to file
     """
+    # Check if it's Windows for driver import
+    if os.name == "nt":
+        AudioSegment.ffmpeg = pa.driver
+        logging.debug("Running on Windows")
+    else:
+        logging.debug("Running on Linux")
     rec = AudioSegment.from_wav(f"{output_directory}/tts_generated/{fname}").set_frame_rate(rate).set_sample_width(2)
     rec = rec.set_channels(1)
     rec = rec[crop_start:crop_end]
@@ -135,7 +138,7 @@ def bandpass_filter(audio, low_freq, high_freq, sample_rate, order=5):
     filtered_audio = lfilter(numerator, denominator, audio)
     return filtered_audio
 
-def telephone_filter(output_directory, fname):
+def convert_with_telephone_filter(output_directory, fname):
     """Apply telephone-like filter on the generated training data
     Args:
         output_directory: Output directory for the file
@@ -162,7 +165,7 @@ def main(df, output_directory, custom=True, telephone=True):
     Raises:
         Exception: If TTS-request failed
     """
-    os.makedirs(output_directory + "/tts_generated/", exist_ok=True)
+    os.makedirs(f'{output_directory}/tts_generated/', exist_ok=True)
     audio_synth = []
     for index, row in df.iterrows():
         try:
@@ -171,10 +174,10 @@ def main(df, output_directory, custom=True, telephone=True):
             fname = app.save_audio(pa.tts_region, pa.tts_resource_name, output_directory, pa.tts_language, pa.tts_font)
             if custom:
                 os.makedirs(f'{output_directory}/tts_converted/', exist_ok=True)
-                custom_speech(output_directory, fname, 8000, 0, None)
+                convert_to_custom_speech(output_directory, fname, 8000, 0, None)
             if telephone:
                 os.makedirs(f'{output_directory}/tts_telephone/', exist_ok=True)
-                telephone_filter(output_directory, fname)          
+                convert_with_telephone_filter(output_directory, fname)          
             logging.info(f'[INFO] - Synthesized {fname}')
         except Exception as e:
             logging.error(f'[ERROR] - Synthetization of "{row["text"]}" failed -> {e}')
