@@ -6,11 +6,6 @@ import logging
 import requests
 import json
 import pandas as pd
-import sys
-from datetime import datetime
-import argparse
-import shutil
-import os
 import time
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix

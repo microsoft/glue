@@ -1,5 +1,4 @@
 # Import relevant packages
-import json
 import re
 import logging
 import pandas as pd

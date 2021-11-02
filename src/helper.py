@@ -5,14 +5,7 @@
 from datetime import datetime
 import os
 import uuid
-import argparse
-import shutil
-import glob
-import codecs
-import logging
-import configparser
 import pandas as pd
-from sklearn.model_selection import train_test_split
 
 # Helper Functions
 def create_case(output_folder):
@@ -52,6 +45,7 @@ def create_df(fname):
     return df
 
 def write_lu(luis_file):
+    """Write LU-file in the structure needed for Microsoft LUIS"""
     luis_file = luis_file.sort_values(by=['intent', 'text'])
     file = open(f"../output/{datetime.today().strftime('%Y-%m-%d')}-luis.lu", "w")
     compare = ""

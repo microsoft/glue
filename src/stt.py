@@ -2,11 +2,8 @@
 ''' tiwalz@microsoft.com '''
 
 # Import required packages
-import time
-import wave
 import os
 import glob
-import sys
 import json
 import logging
 import codecs
@@ -92,7 +89,10 @@ def main(speech_files, output_directory, lexical = False, enable_proxy = False, 
     Returns:
         zip(filenames, results): Zipped lists of filenames and STT-results as string
     """
-    speech_config = speechsdk.SpeechConfig(subscription = pa.stt_key, region = pa.stt_region)
+    try:
+        speech_config = speechsdk.SpeechConfig(subscription = pa.stt_key, region = pa.stt_region)
+    except RuntimeError:
+        logging.error("[ERROR] - Could not retrieve speech config")
     # If necessary, you can enable a proxy here: 
     # set_proxy(hostname: str, port: str, username: str, password: str)
     if enable_proxy: 
@@ -104,7 +104,7 @@ def main(speech_files, output_directory, lexical = False, enable_proxy = False, 
     logging.info(f'[INFO] - Starting to transcribe {len(next(os.walk(speech_files))[2])} audio files')
     results = []
     filenames = []
-    for index, audio in enumerate(glob.iglob(f'{speech_files}*av')):
+    for audio in glob.iglob(f'{speech_files}*av'):
         result, filename = request_endpoint(audio, speech_config, output_directory, lexical)
         results.append(result)
         filenames.append(filename)
