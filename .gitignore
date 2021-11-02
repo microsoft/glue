@@ -112,7 +112,6 @@ config.ini
 # Working directories
 input/
 output/
-tests/
 
 # Virtual envs
 .venv/
