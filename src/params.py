@@ -11,6 +11,7 @@ def get_params(parser):
     """
     parser.add_argument("--input",
                     type=str,
+                    #default="assets/input_files/example_tts.csv", # Uncomment for debugging
                     help="Path to comma-separated text input file")
     parser.add_argument("--subfolder",
                     default="input",
@@ -48,7 +49,7 @@ def get_config(fname_config='config.ini'):
     # Get config file
     sys.path.append('./')
     config = configparser.ConfigParser()
-    global output_folder, luis_appid, luis_key, luis_region, luis_endpoint, luis_slot, luis_treshold, stt_key, stt_endpoint, stt_region, tts_key, tts_region, tts_resource_name, tts_language, tts_font
+    global output_folder, driver, luis_appid, luis_key, luis_region, luis_endpoint, luis_slot, luis_treshold, stt_key, stt_endpoint, stt_region, tts_key, tts_region, tts_resource_name, tts_language, tts_font
     try:
         config.read(fname_config)
         output_folder = config['dir']['output_folder']
@@ -67,6 +68,7 @@ def get_config(fname_config='config.ini'):
         luis_slot = config['luis']['slot']
         luis_treshold = float(config['luis']['treshold'])
         luis_treshold = 0 if luis_treshold == '' else luis_treshold
+        driver = config['driver']['path']
     except Exception as e:
         sys.exit(f'[EXCEPT] - Config file could not be loaded -> {e}.')
 
