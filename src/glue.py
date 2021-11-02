@@ -8,7 +8,6 @@ import sys
 import shutil
 import logging
 import argparse
-import configparser
 import pandas as pd
 
 # Import custom modules
@@ -66,7 +65,7 @@ if __name__ == '__main__':
     # TTS
     if do_synthesize:
         logging.info(f'[INFO] - Starting text-to-speech synthetization of {len(df_reference)} utterances')
-        df_reference = tts.main(df_reference, f'{output_folder}/{case}', pa.stt_endpoint)
+        df_reference = tts.main(df_reference, f'{output_folder}/{case}')
         df_reference[['audio_synth', 'text']].to_csv(f'{output_folder}/{case}/tts_transcription.txt', sep = "\t", header = None, index = False)
         df_reference[['audio_synth', 'text']].to_csv(f'{output_folder}/{case}/tts_transcription.csv', sep = ",", index = False)
         logging.info(f'[INFO] - Finished text-to-speech synthetization of {len(df_reference)} utterances and wrote output files')
