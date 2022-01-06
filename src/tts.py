@@ -138,6 +138,12 @@ def bandpass_filter(audio, low_freq, high_freq, sample_rate, order=5):
     filtered_audio = lfilter(numerator, denominator, audio)
     return filtered_audio
 
+def replace_umlaut_in_string(text, args_dict={'ä': 'ae', 'ö':'oe', 'ü':'ue', 'Ä':'Ae', 'Ö':'Oe', 'Ü':'Ue'}):
+    '''Replace German Umlaut with ae, oe, ue'''
+    for key in args_dict.keys():
+        text = text.replace(key, str(args_dict[key]))
+    return text
+
 def convert_with_telephone_filter(output_directory, fname):
     """Apply telephone-like filter on the generated training data
     Args:
@@ -168,8 +174,9 @@ def main(df, output_directory, custom=True, telephone=True):
     os.makedirs(f'{output_directory}/tts_generated/', exist_ok=True)
     audio_synth = []
     for index, row in df.iterrows():
+        # Temporary workaround for umlaut
         try:
-            app = TextToSpeech(pa.tts_key, pa.tts_language, pa.tts_font, pa.tts_region, row['text'])
+            app = TextToSpeech(pa.tts_key, pa.tts_language, pa.tts_font, pa.tts_region, replace_umlaut_in_string(row['text']))
             app.get_token(pa.tts_region, pa.tts_key)
             fname = app.save_audio(pa.tts_region, pa.tts_resource_name, output_directory, pa.tts_language, pa.tts_font)
             if custom:
