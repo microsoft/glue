@@ -1,5 +1,5 @@
 ''' SPEECH-TO-TEXT USING MICROSOFT SPEECH API '''
-''' tiwalz@microsoft.com '''
+''' nonstoptimm@gmail.com '''
 from functools import reduce
 from collections import defaultdict
 from edit_distance import SequenceMatcher

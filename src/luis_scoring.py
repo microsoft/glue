@@ -1,5 +1,5 @@
 ''' LUIS SCORING SCRIPT '''
-''' tiwalz@microsoft.com '''
+''' nonstoptimm@gmail.com '''
 
 # Import standard packages
 import logging

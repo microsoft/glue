@@ -1,5 +1,5 @@
 ''' TTS SERVICE USING MICROSOFT API '''
-''' tiwalz@microsoft.com '''
+''' nonstoptimm@gmail.com '''
 
 # Import required packages
 import logging

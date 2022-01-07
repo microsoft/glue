@@ -1,5 +1,5 @@
 ''' SPEECH-TO-TEXT USING MICROSOFT SPEECH API '''
-''' tiwalz@microsoft.com '''
+''' nonstoptimm@gmail.com '''
 
 # Import required packages
 import os
