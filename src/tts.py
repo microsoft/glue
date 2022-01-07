@@ -2,13 +2,14 @@
 ''' tiwalz@microsoft.com '''
 
 # Import required packages
-import requests
 import logging
 import uuid
-import time
 import re
 import os
 import pandas as pd
+from azure.cognitiveservices.speech import SpeechConfig, SpeechSynthesizer, SpeechSynthesisOutputFormat
+from azure.cognitiveservices.speech.audio import AudioOutputConfig
+
 from datetime import datetime
 from pydub import AudioSegment
 from scipy.signal import lfilter, butter
@@ -18,58 +19,6 @@ import params as pa
 
 # Load and set configuration parameters
 pa.get_config()
-
-''' MICROSOFT SPEECH API '''
-class TextToSpeech(object):
-    def __init__(self, subscription_key, language, font, region, text):
-        self.subscription_key = subscription_key
-        self.tts = f'<speak version="1.0" xml:lang="en-us"><voice xml:lang="{language}" name="Microsoft Server Speech Text to Speech Voice ({language}, {font})">{text}</voice></speak>'
-        self.timestr = time.strftime("%Y%m%d-%H%M")
-        self.access_token = None
-
-    def get_token(self, region, subscription_key):
-        """Get connection token to text to speech service
-        Args:
-            region: Name of the Azure region
-            subscription_key: Key of Azure resource
-        Returns:
-            self.access_token: Sets access token gathered from the API
-        """
-        fetch_token_url = f"https://{region}.api.cognitive.microsoft.com/sts/v1.0/issueToken"
-        headers = {
-            'Ocp-Apim-Subscription-Key': self.subscription_key
-        }
-        response = requests.post(fetch_token_url, headers=headers)
-        self.access_token = str(response.text)
-
-    def save_audio(self, region, resource_name, output_directory, language, font):
-        """Save generated audio to file
-        Args:
-            region: Name of the Azure region
-            resource_name: Name of the Azure resource
-            output_directory: Output directory for the file
-            language: Language code of the synthetization language, e.g. en-US
-            font: Name of the font, see documentation
-        Returns:
-            Saves audio to file
-        """
-        base_url = f'https://{region}.tts.speech.microsoft.com/'
-        path = 'cognitiveservices/v1'
-        constructed_url = base_url + path
-        headers = {
-            'Authorization': f'Bearer {self.access_token}',
-            'Content-Type': 'application/ssml+xml',
-            'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm',
-            'User-Agent': resource_name
-        }
-        response = requests.post(constructed_url, headers=headers, data=self.tts)
-        if response.status_code == 200:
-            fname = f"{output_directory}/tts_generated/{datetime.today().strftime('%Y-%m-%d')}_{language}_{font}_{str(uuid.uuid4().hex)}.wav"
-            with open(fname, "wb") as audio:
-                audio.write(response.content)
-            return os.path.basename(fname)
-        else:
-            logging.error(f"[ERROR] - Status code: {str(response.status_code)} -> something went wrong, please check your subscription key and headers.")
 
 ''' PRE AND POSTPROCESS '''
 # Remove XML/SSML Tags
@@ -93,18 +42,15 @@ def convert_to_custom_speech(output_directory, fname, rate, crop_start, crop_end
     Returns:
         Writes audio stream to file
     """
-    # Check if it's Windows for driver import
-    if os.name == "nt":
-        AudioSegment.ffmpeg = pa.driver
-        logging.debug("Running on Windows")
-    else:
-        logging.debug("Running on Linux")
-    rec = AudioSegment.from_wav(f"{output_directory}/tts_generated/{fname}").set_frame_rate(rate).set_sample_width(2)
-    rec = rec.set_channels(1)
-    rec = rec[crop_start:crop_end]
-    file_converted = f"{output_directory}/tts_converted/{fname}"
-    rec.export(file_converted, format="wav", bitrate="192k")
-    del rec
+    try:
+        rec = AudioSegment.from_wav(f"{output_directory}/tts_generated/{fname}").set_frame_rate(rate).set_sample_width(2)
+        rec = rec.set_channels(1)
+        rec = rec[crop_start:crop_end]
+        file_converted = f"{output_directory}/tts_converted/{fname}"
+        rec.export(file_converted, format="wav", bitrate="192k")
+        del rec
+    except Exception as e:
+        logging.error(f'[ERROR] - Failed applying telephone filter for {fname} -> {e}')
 
 def bandpass_params(low_freq, high_freq, sample_rate, order=5):
     """Set bandpass params
@@ -138,12 +84,6 @@ def bandpass_filter(audio, low_freq, high_freq, sample_rate, order=5):
     filtered_audio = lfilter(numerator, denominator, audio)
     return filtered_audio
 
-def replace_umlaut_in_string(text, args_dict={'ä': 'ae', 'ö':'oe', 'ü':'ue', 'Ä':'Ae', 'Ö':'Oe', 'Ü':'Ue'}):
-    '''Replace German Umlaut with ae, oe, ue'''
-    for key in args_dict.keys():
-        text = text.replace(key, str(args_dict[key]))
-    return text
-
 def convert_with_telephone_filter(output_directory, fname):
     """Apply telephone-like filter on the generated training data
     Args:
@@ -152,12 +92,15 @@ def convert_with_telephone_filter(output_directory, fname):
     Returns:
         Writes output to file
     """
-    fs, audio = read(f"{output_directory}/tts_converted/{fname}")
-    low_freq = 300.0
-    high_freq = 3000.0
-    filtered_signal = bandpass_filter(audio, low_freq, high_freq, fs, order=6)
-    fname = f'{output_directory}/tts_telephone/{fname}'
-    write(fname, fs, array(filtered_signal, dtype=int16))
+    try:
+        fs, audio = read(f"{output_directory}/tts_converted/{fname}")
+        low_freq = 300.0
+        high_freq = 3000.0
+        filtered_signal = bandpass_filter(audio, low_freq, high_freq, fs, order=6)
+        fname = f'{output_directory}/tts_telephone/{fname}'
+        write(fname, fs, array(filtered_signal, dtype=int16))
+    except Exception as e:
+        logging.error(f'[ERROR] - Failed applying telephone filter for {fname} -> {e}')
 
 def main(df, output_directory, custom=True, telephone=True):
     """Apply telephone-like filter on the generated training data
@@ -169,31 +112,49 @@ def main(df, output_directory, custom=True, telephone=True):
     Returns:
         df: Data frame with utterances and the file name of the synthesized audio file
     Raises:
-        Exception: If TTS-request failed
+        Exception: If tts-request failed
     """
+    # Check if it's Windows for driver import - if not, setting of driver is not necessary
+    if os.name == "nt":
+        AudioSegment.ffmpeg = pa.driver
+        logging.debug("Running on Windows")
+    else:
+        logging.debug("Running on Linux")
+    # Create output folder for TTS generation
     os.makedirs(f'{output_directory}/tts_generated/', exist_ok=True)
     audio_synth = []
+    # Instantiate SpeechConfig for the entire run, as well as voice name and audio format
+    speech_config = SpeechConfig(subscription=pa.tts_key, region=pa.tts_region)
+    speech_config.speech_synthesis_voice_name = f'{pa.tts_language}-{pa.tts_font}'
+    speech_config.set_speech_synthesis_output_format(SpeechSynthesisOutputFormat['Riff24Khz16BitMonoPcm'])
+    # Loop through dataframe of utterances
     for index, row in df.iterrows():
-        # Temporary workaround for umlaut
         try:
-            app = TextToSpeech(pa.tts_key, pa.tts_language, pa.tts_font, pa.tts_region, replace_umlaut_in_string(row['text']))
-            app.get_token(pa.tts_region, pa.tts_key)
-            fname = app.save_audio(pa.tts_region, pa.tts_resource_name, output_directory, pa.tts_language, pa.tts_font)
-            if custom:
-                os.makedirs(f'{output_directory}/tts_converted/', exist_ok=True)
-                convert_to_custom_speech(output_directory, fname, 8000, 0, None)
-            if telephone:
-                os.makedirs(f'{output_directory}/tts_telephone/', exist_ok=True)
-                convert_with_telephone_filter(output_directory, fname)          
-            logging.info(f'[INFO] - Synthesized {fname}')
+            fname = f"{datetime.today().strftime('%Y-%m-%d')}_{pa.tts_language}_{pa.tts_font}_{str(uuid.uuid4().hex)}.wav"
+            # AudioOutputConfig has to be set separately due to the file names
+            audio_config = AudioOutputConfig(filename=f'{output_directory}/tts_generated/{fname}')
+            synthesizer = SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
+            # Submit request and write outputs
+            synthesizer.speak_text_async(row['text'])
         except Exception as e:
             logging.error(f'[ERROR] - Synthetization of "{row["text"]}" failed -> {e}')
             fname = "nan"
+            continue
+        # Convert to Microsoft Speech format, if desired
+        if custom:
+            os.makedirs(f'{output_directory}/tts_converted/', exist_ok=True)
+            convert_to_custom_speech(output_directory, fname, 8000, 0, None)
+        # Apply telephone filter and write to new file, if desired
+        if telephone:
+            os.makedirs(f'{output_directory}/tts_telephone/', exist_ok=True)
+            convert_with_telephone_filter(output_directory, fname)          
+        logging.warning(f'[INFO] - Synthesized file {str(index+1)}/{str(len(df))} - {fname}')
         audio_synth.append(fname)
+    # Set output lists to data frame
     df['audio_synth'] = audio_synth
     df['text_ssml'] = df['text'].copy()
     df['text'] = df['text_ssml'].apply(remove_tags)
     return df
 
 if __name__ == '__main__':
-    main(pd.DataFrame({'text': ['This is a test', 'And this is another test!']}), "output/test")
+    main(pd.DataFrame({'text': ['Ich möchte testen, ob die API auch Umlaute kann.', 'This is a test.', 'And this is another test!']}), "output/test")
