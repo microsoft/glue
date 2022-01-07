@@ -163,7 +163,7 @@ def main(df, output_directory, custom=True, telephone=True):
         if telephone:
             os.makedirs(f'{output_directory}/tts_telephone/', exist_ok=True)
             convert_with_telephone_filter(output_directory, fname)          
-        logging.warning(f'[INFO] - Synthesized file {str(index+1)}/{str(len(df))} - {fname}')
+        logging.info(f'[INFO] - Synthesized file {str(index+1)}/{str(len(df))} - {fname}')
         
     # Set output lists to data frame
     df['audio_synth'] = audio_synth
