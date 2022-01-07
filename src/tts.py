@@ -31,6 +31,18 @@ def remove_tags(text):
     """
     return re.compile(r'<[^>]+>').sub('', text)
 
+def get_ssml_string(text, language, font):
+    """Pack text into a SSML document
+    Args:
+        text: Raw text with SSML tags
+        language: Language-code, e.g. de-DE
+        font: TTS font, such as KatjaNeural
+    Returns:
+        ssml: String as SSML XML notation
+    """
+    ssml = f'<speak version="1.0" xmlns="https://www.w3.org/2001/10/synthesis" xml:lang="en-US"><voice name="{language}-{font}">{text}</voice></speak>'
+    return ssml
+
 def convert_to_custom_speech(output_directory, fname, rate, crop_start, crop_end):
     """Convert to Microsoft Speech Service format
     Args:
@@ -129,17 +141,20 @@ def main(df, output_directory, custom=True, telephone=True):
     speech_config.set_speech_synthesis_output_format(SpeechSynthesisOutputFormat['Riff24Khz16BitMonoPcm'])
     # Loop through dataframe of utterances
     for index, row in df.iterrows():
+        # Submit request to TTS
         try:
             fname = f"{datetime.today().strftime('%Y-%m-%d')}_{pa.tts_language}_{pa.tts_font}_{str(uuid.uuid4().hex)}.wav"
             # AudioOutputConfig has to be set separately due to the file names
             audio_config = AudioOutputConfig(filename=f'{output_directory}/tts_generated/{fname}')
             synthesizer = SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
             # Submit request and write outputs
-            synthesizer.speak_text_async(row['text'])
+            synthesizer.speak_ssml_async(get_ssml_string(row['text'], pa.tts_language, pa.tts_font))
         except Exception as e:
             logging.error(f'[ERROR] - Synthetization of "{row["text"]}" failed -> {e}')
-            fname = "nan"
+            audio_synth.append('nan')
             continue
+        else:
+            audio_synth.append(fname)
         # Convert to Microsoft Speech format, if desired
         if custom:
             os.makedirs(f'{output_directory}/tts_converted/', exist_ok=True)
@@ -149,7 +164,7 @@ def main(df, output_directory, custom=True, telephone=True):
             os.makedirs(f'{output_directory}/tts_telephone/', exist_ok=True)
             convert_with_telephone_filter(output_directory, fname)          
         logging.warning(f'[INFO] - Synthesized file {str(index+1)}/{str(len(df))} - {fname}')
-        audio_synth.append(fname)
+        
     # Set output lists to data frame
     df['audio_synth'] = audio_synth
     df['text_ssml'] = df['text'].copy()
@@ -157,4 +172,4 @@ def main(df, output_directory, custom=True, telephone=True):
     return df
 
 if __name__ == '__main__':
-    main(pd.DataFrame({'text': ['Ich möchte testen, ob die API auch Umlaute kann.', 'This is a test.', 'And this is another test!']}), "output/test")
+    main(pd.DataFrame({'text': ['Ich möchte testen, ob die API auch Umlaute kann.', 'This is a test.', 'And this is another <say-as interpret-as="characters">test</say-as>!']}), "output/test")
