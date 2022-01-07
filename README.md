@@ -28,7 +28,7 @@ If you would like to add your own features and maintain the code in a private re
 
 ### Prerequisites
 Before getting your hands on the toolkits, make sure your local computer is equipped with the following frameworks and base packages:
-- [Python](https://www.python.org/downloads/) (required, Version 3.8 is recommended).
+- [Python](https://www.python.org/downloads/) (required, Version >=3.8 is recommended).
 - [VSCode](https://code.visualstudio.com/) (recommended), but you can also run the scripts using PowerShell, Bash etc.
 - Stable connection for installing your environment and scoring the files.
 - [ffmpeg](https://github.com/BtbN/FFmpeg-Builds/releases) for audio file conversion (only for TTS use cases).
