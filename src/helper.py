@@ -1,5 +1,5 @@
 ''' HELPER FUNCTIONS ACROSS MULTIPLE SCRIPTS '''
-''' tiwalz@microsoft.com '''
+''' nonstoptimm@gmail.com '''
 
 # Import standard packages
 from datetime import datetime

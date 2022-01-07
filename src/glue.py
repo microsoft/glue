@@ -1,5 +1,5 @@
 ''' GLUE - THE TOOLKIT FOR MICROSOFT COGNITIVE SERVICES '''
-''' tiwalz@microsoft.com '''
+''' nonstoptimm@gmail.com '''
 ''' Supports Text-To-Speech (TTS), Speech-To-Text (STT), Evaluation, LUIS-Scoring '''
 
 # Import standard packages
