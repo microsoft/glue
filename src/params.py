@@ -1,5 +1,6 @@
 ''' PARAMETER COLLECTOR '''
 import configparser
+import logging
 import sys
 
 def get_params(parser):
@@ -50,8 +51,10 @@ def get_config(fname_config='config.ini'):
     sys.path.append('./')
     config = configparser.ConfigParser()
     global output_folder, driver, luis_appid, luis_key, luis_region, luis_endpoint, luis_slot, luis_treshold, stt_key, stt_endpoint, stt_region, tts_key, tts_region, tts_resource_name, tts_language, tts_font
+    config.read(fname_config)
+
+    # Read keys/values and assign it to variables
     try:
-        config.read(fname_config)
         output_folder = config['dir']['output_folder']
         stt_key = config['stt']['key']
         stt_endpoint = config['stt']['endpoint']
@@ -69,8 +72,9 @@ def get_config(fname_config='config.ini'):
         luis_treshold = float(config['luis']['treshold'])
         luis_treshold = 0 if luis_treshold == '' else luis_treshold
         driver = config['driver']['path']
-    except Exception as e:
-        sys.exit(f'[EXCEPT] - Config file could not be loaded -> {e}.')
+    except KeyError as e:
+        logging.error(f'[ERROR] - Exit with KeyError for {e}, please verify structure and existance of your config.ini file. You may use config.sample.ini as guidance.')
+        sys.exit()
 
 def main():
     return None
