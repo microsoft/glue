@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     # Case Management
     if any([do_scoring, do_synthesize, do_transcribe, do_evaluate]):
-        output_folder, case = he.create_case(pa.output_folder)
+        output_folder, case = he.create_case(pa.config_data['output_folder'])
         logging.info(f'[INFO] - Created case {case}')
         try:
             os.makedirs(f"{output_folder}/{case}/input", exist_ok=True)
@@ -100,7 +100,7 @@ if __name__ == '__main__':
     # LUIS Scoring
     if do_scoring:
         logging.info('[INFO] - Starting with LUIS scoring')
-        logging.info(f'[INFO] - Set LUIS treshold to {pa.luis_treshold}')
+        logging.info(f'[INFO] - Set LUIS treshold to {pa.config_data["luis_treshold"]}')
         if 'intent' in list(df_reference.columns) and not 'rec' in list(df_reference.columns):
             luis_scoring = luis.main(df_reference, 'text')
         elif all(['intent' in list(df_reference.columns), 'rec' in list(df_reference.columns)]):
@@ -111,7 +111,7 @@ if __name__ == '__main__':
         else:
             logging.error('[ERROR] - Cannot do LUIS scoring, please verify that you have an "intent"-column in your data.')
         # Write to output file
-        luis_scoring['luis_treshold'] = pa.luis_treshold
+        luis_scoring['luis_treshold'] = pa.config_data['luis_treshold']
         luis_scoring.to_csv(f'{output_folder}/{case}/luis_scoring.csv', sep = ',', encoding = 'utf-8', index=False)
 
     # Finish run

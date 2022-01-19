@@ -50,28 +50,30 @@ def get_config(fname_config='config.ini'):
     # Get config file
     sys.path.append('./')
     config = configparser.ConfigParser()
-    global output_folder, driver, luis_appid, luis_key, luis_region, luis_endpoint, luis_slot, luis_treshold, stt_key, stt_endpoint, stt_region, tts_key, tts_region, tts_resource_name, tts_language, tts_font
+    global config_data
+    #global output_folder, driver, luis_appid, luis_key, luis_region, luis_endpoint, luis_slot, luis_treshold, stt_key, stt_endpoint, stt_region, tts_key, tts_region, tts_resource_name, tts_language, tts_font
     config.read(fname_config)
 
     # Read keys/values and assign it to variables
     try:
-        output_folder = config['dir']['output_folder']
-        stt_key = config['stt']['key']
-        stt_endpoint = config['stt']['endpoint']
-        stt_region = config['stt']['region']
-        tts_key = config['tts']['key']
-        tts_region = config['tts']['region']
-        tts_resource_name = config['tts']['resource_name']
-        tts_language = config['tts']['language']
-        tts_font = config['tts']['font']
-        luis_appid = config['luis']['app_id']
-        luis_key = config['luis']['key']
-        luis_region = config['luis']['region']
-        luis_endpoint = config['luis']['endpoint']
-        luis_slot = config['luis']['slot']
-        luis_treshold = float(config['luis']['treshold'])
-        luis_treshold = 0 if luis_treshold == '' else luis_treshold
-        driver = config['driver']['path']
+        config_data = dict()
+        config_data['output_folder'] = config['dir']['output_folder']
+        config_data['stt_key'] = config['stt']['key']
+        config_data['stt_endpoint'] = config['stt']['endpoint']
+        config_data['stt_region'] = config['stt']['region']
+        config_data['tts_key'] = config['tts']['key']
+        config_data['tts_region'] = config['tts']['region']
+        config_data['tts_resource_name'] = config['tts']['resource_name']
+        config_data['tts_language'] = config['tts']['language']
+        config_data['tts_font'] = config['tts']['font']
+        config_data['luis_appid'] = config['luis']['app_id']
+        config_data['luis_key'] = config['luis']['key']
+        config_data['luis_region'] = config['luis']['region']
+        config_data['luis_endpoint'] = config['luis']['endpoint']
+        config_data['luis_slot'] = config['luis']['slot']
+        config_data['luis_treshold'] = float(config['luis']['treshold'])
+        config_data['luis_treshold'] = 0 if config_data['luis_treshold'] == '' else config_data['luis_treshold']
+        config_data['driver'] = config['driver']['path']
     except KeyError as e:
         logging.error(f'[ERROR] - Exit with KeyError for {e}, please verify structure and existance of your config.ini file. You may use config.sample.ini as guidance.')
         sys.exit()

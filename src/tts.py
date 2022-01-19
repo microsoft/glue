@@ -128,7 +128,7 @@ def main(df, output_directory, custom=True, telephone=True):
     """
     # Check if it's Windows for driver import - if not, setting of driver is not necessary
     if os.name == "nt":
-        AudioSegment.ffmpeg = pa.driver
+        AudioSegment.ffmpeg = pa.config_data['driver']
         logging.debug("Running on Windows")
     else:
         logging.debug("Running on Linux")
@@ -136,19 +136,19 @@ def main(df, output_directory, custom=True, telephone=True):
     os.makedirs(f'{output_directory}/tts_generated/', exist_ok=True)
     audio_synth = []
     # Instantiate SpeechConfig for the entire run, as well as voice name and audio format
-    speech_config = SpeechConfig(subscription=pa.tts_key, region=pa.tts_region)
-    speech_config.speech_synthesis_voice_name = f'{pa.tts_language}-{pa.tts_font}'
+    speech_config = SpeechConfig(subscription=pa.config_data['tts_key'], region=pa.config_data['tts_region'])
+    speech_config.speech_synthesis_voice_name = f'{pa.config_data["tts_language"]}-{pa.config_data["tts_font"]}'
     speech_config.set_speech_synthesis_output_format(SpeechSynthesisOutputFormat['Riff24Khz16BitMonoPcm'])
     # Loop through dataframe of utterances
     for index, row in df.iterrows():
         # Submit request to TTS
         try:
-            fname = f"{datetime.today().strftime('%Y-%m-%d')}_{pa.tts_language}_{pa.tts_font}_{str(uuid.uuid4().hex)}.wav"
+            fname = f"{datetime.today().strftime('%Y-%m-%d')}_{pa.config_data['tts_language']}_{pa.config_data['tts_font']}_{str(uuid.uuid4().hex)}.wav"
             # AudioOutputConfig has to be set separately due to the file names
             audio_config = AudioOutputConfig(filename=f'{output_directory}/tts_generated/{fname}')
             synthesizer = SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
             # Submit request and write outputs
-            synthesizer.speak_ssml_async(get_ssml_string(row['text'], pa.tts_language, pa.tts_font))
+            synthesizer.speak_ssml_async(get_ssml_string(row['text'], pa.config_data['tts_language'], pa.config_data['tts_font']))
         except Exception as e:
             logging.error(f'[ERROR] - Synthetization of "{row["text"]}" failed -> {e}')
             audio_synth.append('nan')
