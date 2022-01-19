@@ -26,7 +26,7 @@ def request_luis(text):
     # Uncomment this if you are using the old url version having the region name as endpoint.
     # endpoint_url = f'{endpoint}.api.cognitive.microsoft.com'.
     # Below, you see the most current version of the api having the prediction resource name as endpoint.     
-    endpoint_url = f'{pa.luis_endpoint}.cognitiveservices.azure.com'
+    endpoint_url = f'{pa.config_data["luis_endpoint"]}.cognitiveservices.azure.com'
     headers = {}
     params = {
         'query': text,
@@ -35,9 +35,9 @@ def request_luis(text):
         'show-all-intents': 'true',
         'spellCheck': 'false',
         'staging': 'false',
-        'subscription-key': pa.luis_key
+        'subscription-key': pa.config_data['luis_key']
     }
-    r = requests.get(f'https://{endpoint_url}/luis/prediction/v3.0/apps/{pa.luis_appid}/slots/{pa.luis_slot}/predict', headers=headers, params=params)
+    r = requests.get(f'https://{endpoint_url}/luis/prediction/v3.0/apps/{pa.config_data["luis_appid"]}/slots/{pa.config_data["luis_slot"]}/predict', headers=headers, params=params)
     # Check
     logging.debug(json.dumps(json.loads(r.text), indent=2))
     return r.json()
@@ -53,7 +53,7 @@ def luis_classification_report(df, col):
     logging.info('[INFO] - Starting to create classification report')
     logging.info('[OUTPUT] - CLASSIFICATION REPORT (without reset by treshold):')
     logging.info(classification_report(df['intent'], df[f'prediction_{col}']))
-    logging.info(f'[OUTPUT] - AFTER RESET BY TRESHOLD ({pa.luis_treshold}):')
+    logging.info(f'[OUTPUT] - AFTER RESET BY TRESHOLD ({pa.config_data["luis_treshold"]}):')
     logging.info(classification_report(df['intent'], df[f'prediction_drop_{col}']))
     logging.info('[OUTPUT] - CONFUSION MATRIX:')
     logging.info(f'\n{confusion_matrix(df["intent"], df[f"prediction_{col}"])}')
@@ -79,7 +79,7 @@ def main(df, col):
             top_intent = data['prediction']['topIntent']
             top_score = data['prediction']['intents'][top_intent]['score']
             # Evaluate scores based on treshold and set None-intent if confidence is too low
-            if top_score < pa.luis_treshold: 
+            if top_score < pa.config_data['luis_treshold']: 
                 drop = "None"
             else:
                 drop = top_intent
