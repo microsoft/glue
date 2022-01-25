@@ -112,6 +112,7 @@ config.ini
 # Working directories
 input/
 output/
+assets/customer_data/
 
 # Virtual envs
 .venv/
