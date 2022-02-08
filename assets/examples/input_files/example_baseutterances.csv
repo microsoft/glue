@@ -1,0 +1,26 @@
+intent;text
+VINResolver;it is {vin}
+VINResolver;it's {vin}
+VINResolver;a {vin}
+VINResolver;my vin is {vin}
+VINResolver;the number is {vin}
+VINResolver;my vehicle identification number is {vin}
+VINResolver;sure, it is {vin}
+VINResolver;so i think it's {vin}
+GetEntities;{first_name} {last_name}
+GetEntities;my name is {first_name} {last_name}
+GetEntities;i am {first_name} {last_name}
+GetEntities;my firstname is {first_name}
+GetEntities;my lastname is {last_name}
+GetEntities;It's {last_name}
+GetEntities;it is {first_name}
+GetEntities;{first_name} {last_name}.
+GetEntities;my name is {first_name} {last_name}.
+GetEntities;i am {first_name} {last_name}.
+GetEntities;my firstname is {first_name}.
+GetEntities;my lastname is {last_name}.
+GetEntities;It's {last_name}.
+GetEntities;it is {first_name}.
+None;What are you talking about?
+None;You are dumb!
+None;Do you like candy?
