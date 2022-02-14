@@ -1,12 +1,29 @@
 intent;text
-VINResolver;it is {vin}
-VINResolver;it's {vin}
-VINResolver;a {vin}
-VINResolver;my vin is {vin}
-VINResolver;the number is {vin}
-VINResolver;my vehicle identification number is {vin}
-VINResolver;sure, it is {vin}
-VINResolver;so i think it's {vin}
+BookFlight;a ticket to {Airport} please
+BookFlight;could you book a flight to {Airport} on 2nd of april for me?
+BookFlight;i want a flight to {Airport}
+BookFlight;i would like to book a flight to {Airport}.
+BookFlight;no, i want to fly to {Airport}, not to {Airport}.
+BookSeat;book a seat as close as possible to the galley on my flight to {Airport}
+BookSeat;book a seat for me on my preferred seat.
+BookSeat;i need a special seat on my flight
+BookSeat;i want to have a window seat
+BookSeat;i would like to book a seat on my flight to {Airport}
+CancelFlight;cancel flight to {Airport}
+CancelFlight;cancellation of flight to {Airport}.
+CancelFlight;i need to cancel my flight to {Airport}
+CancelFlight;i want to cancel my journey to {Airport}.
+CancelFlight;please cancel my flight to {Airport}
+ChangeFlight;change flight to {Airport}.
+ChangeFlight;change my flight from {Airport} to {Airport}
+ChangeFlight;i need to change my flight from {Airport} to {Airport}
+ChangeFlight;i would like to change my flight.
+ChangeFlight;please rebook my flight to {Airport}, please.
+DepartureInfo;could you check whether my flight has a delay?
+DepartureInfo;i need the status of my flight {FlightNumber}
+DepartureInfo;is my flight on time?
+DepartureInfo;what is the status of my flight {FlightNumber}
+DepartureInfo;when does {FlightNumber} depart?
 GetEntities;{first_name} {last_name}
 GetEntities;my name is {first_name} {last_name}
 GetEntities;i am {first_name} {last_name}
@@ -24,3 +41,7 @@ GetEntities;it is {first_name}.
 None;What are you talking about?
 None;You are dumb!
 None;Do you like candy?
+None;how are you doing
+None;i want to speak to a human
+None;what can you do
+None;whats the weather like today

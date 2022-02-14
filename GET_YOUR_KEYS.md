@@ -10,6 +10,7 @@ In this section, we describe how to set up ffmpeg in case you do TTS.
 #### Windows
 - Download the latest version of [ffmpeg](https://ffmpeg.org/download.html#build-windows).
 - Extract the archive locally and copy the file `bin/ffpmeg.exe` to a location of your choice, e.g. to the `assets` folder of GLUE.
+- Add the location to the system environment variables "PATH" setting.
 - Finally, copy the path and insert it in your config.ini as below.
 ```
 [driver]

@@ -17,12 +17,20 @@ last_name;Rasztawicki
 last_name;Reichenbach
 last_name;Kistner
 last_name;Mahoney
-vin;2WMCGH3B2CES5C8T2
-vin;LZMABH2PBAWVM4VES
-vin;VF85WY0D8LU3DB2ZM
-vin;2 V 8 6 W L 7 6 P P A D 2 2 1 M A
-vin;M L C 1 B N Y X C E A 3 D 2 T T V
-vin;L D F D F V K 3 M 9 M J N T M K 6
-vin;tango charlie charlie five uniform juliett bravo hotel five nine bravo bravo papa lima delta x-ray three
-vin;yankee victor two tango november alfa three whiskey three whiskey nine bravo victor six seven three zulu
-vin;two victor eight kilo oh kilo golf hotel mike three six six yankee four golf yankee juliett
+last_name;Müller
+FlightNumber;AB1234
+FlightNumber;LH7721
+FlightNumber;AA1834556
+FlightNumber;CP9919223
+FlightNumber;LH1346
+FlightNumber;AA1994557
+FlightNumber;Ab9164
+Airport;Berlin
+Airport;Tokyo
+Airport;New York
+Airport;Tel Aviv
+Airport;London
+Airport;Paris
+Airport;Los Angeles
+Airport;Toronto
+Airport;Seattle
