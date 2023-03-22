@@ -90,7 +90,7 @@ def main(speech_files, output_directory, lexical = False, enable_proxy = False, 
         zip(filenames, results): Zipped lists of filenames and STT-results as string
     """
     try:
-        speech_config = speechsdk.SpeechConfig(subscription = pa.stt_key, region = pa.stt_region)
+        speech_config = speechsdk.SpeechConfig(subscription = pa.config_data['stt_key'], region = pa.config_data['stt_region'])
     except RuntimeError:
         logging.error("[ERROR] - Could not retrieve speech config")
     # If necessary, you can enable a proxy here: 
@@ -99,8 +99,8 @@ def main(speech_files, output_directory, lexical = False, enable_proxy = False, 
         speech_config.set_proxy(argv[0], argv[1], argv[2], argv[3])
     # Set speech service properties, requesting the detailed response format to make it compatible with lexical format, if wanted
     speech_config.set_service_property(name='format', value='detailed', channel=speechsdk.ServicePropertyChannel.UriQueryParameter)
-    if pa.stt_endpoint != "": 
-        speech_config.endpoint_id = pa.stt_endpoint
+    if pa.config_data['stt_endpoint'] != "": 
+        speech_config.endpoint_id = pa.config_data['stt_endpoint']
     logging.info(f'[INFO] - Starting to transcribe {len(next(os.walk(speech_files))[2])} audio files')
     results = []
     filenames = []
