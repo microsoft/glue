@@ -166,7 +166,7 @@ This scenario describes how you can batch-transcribe audio files using GLUE. A p
 2. Make sure your `.venv` is activated.
 3. Run the following command:
 ```bash
-python src/glue.py --audio C:/audio_files/ --do_transcribe
+python src/glue.py --audio assets\examples\input_files\audio --do_transcribe
 ```
 4. Wait for the run to finish.
 
@@ -190,7 +190,7 @@ This scenario describes how you can batch-synthesize text data using GLUE. A pot
 2. Make sure your `.venv` is activated.
 3. Run the following command:
 ```bash
-python src/glue.py --input ../input-files/text.csv --do_synthesize
+python src/glue.py --input assets\examples\input_files\example_tts.csv --do_synthesize
 ```
 4. Wait for the run to finish.
 
@@ -227,7 +227,7 @@ This scenario shows how you can use GLUE to batch-score textual data on a LUIS-e
 2. Make sure your `.venv` is activated.
 3. Run the following command:
 ```bash
-python src/glue.py --input /home/files/luis-utterances.csv --do_scoring
+python src/glue.py --input assets\examples\input_files\example_luis.csv --do_scoring
 ```
 4. Wait for the run to finish and see the command line outputs.
 
@@ -263,7 +263,7 @@ This scenario describes how you can compare already existing recognitions with a
 2. Make sure your `.venv` is activated.
 3. Run the following command:
 ```bash
-python src/glue.py --input ../input/transcriptions.txt --do_evaluate
+python src/glue.py --input assets\examples\output_files\example_transcriptions_full.csv --do_evaluate
 ```
 4. Wait for the run to finish and see the command line outputs.
 
@@ -292,7 +292,7 @@ This scenario describes how you can batch-transcribe audio files and compare the
 2. Make sure your `.venv` is activated.
 3. Run the following command:
 ```bash
-python src/glue.py --audio C:/audio_files/ --input C:/audio_files/transcriptions.txt --do_transcribe --do_evaluate
+python src/glue.py --audio assets\examples\input_files\audio --input assets\examples\input_files\example_stt_eval.csv --do_transcribe --do_evaluate
 ```
 4. Wait for the run to finish and see the command line outputs.
 
@@ -322,7 +322,7 @@ This scenario describes how you can batch-transcribe audio files, compare these 
 2. Make sure your `.venv` is activated.
 3. Run the following command:
 ```bash
-python src/glue.py --audio C:/audio_files/ --input C:/audio_files/transcriptions.txt --do_transcribe --do_evaluate --do_scoring
+python src/glue.py --audio assets\examples\input_files\audio --input assets\examples\input_files\example_stt_eval_luis.csv --do_transcribe --do_evaluate --do_scoring
 ```
 4. Wait for the run to finish and see the command line outputs.
 
@@ -363,7 +363,7 @@ This scenario describes how you can batch-transcribe audio files and score both 
 2. Make sure your `.venv` is activated.
 3. Run the following command:
 ```bash
-python src/glue.py --audio C:/audio_files/ --input C:/audio_files/transcriptions.txt --do_transcribe --do_scoring
+python src/glue.py --audio assets\examples\input_files\audio --input assets\examples\input_files\example_luis.csv --do_transcribe --do_scoring
 ```
 4. Wait for the run to finish and see the command line outputs.
 

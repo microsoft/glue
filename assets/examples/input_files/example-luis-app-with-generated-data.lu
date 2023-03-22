@@ -1,0 +1,964 @@
+
+> LUIS application information
+> !# @app.name = Airline
+> !# @app.desc = Conversational app for flight booking and inquiry
+> !# @app.versionId = 0.1
+> !# @app.culture = en-us
+> !# @app.luis_schema_version = 7.0.0
+> !# @app.tokenizerVersion = 1.0.0
+
+
+> # Intent definitions
+
+
+# BookFlight
+- a ticket to {Airport=Toronto} please
+- no, i want to fly to {Airport=London}, not to {Airport=Tel Aviv}.
+- no, i want to fly to {Airport=Paris}, not to {Airport=Toronto}.
+- i would like to book a flight to {Airport=Los Angeles}.
+- i want a flight to {Airport=Tokyo}
+- could you book a flight to {Airport=Toronto} on 2nd of april for me?
+- a ticket to {Airport=Tel Aviv} please
+- i want a flight to {Airport=Berlin}
+- i would like to book a flight to {Airport=Seattle}.
+- a ticket to {Airport=Paris} please
+- could you book a flight to {Airport=Paris} on 2nd of april for me?
+- i want a flight to {Airport=London}
+- i would like to book a flight to {Airport=Toronto}.
+- could you book a flight to {Airport=Tokyo} on 2nd of april for me?
+- no, i want to fly to {Airport=Paris}, not to {Airport=Seattle}.
+- i want a flight to {Airport=Tel Aviv}
+- a ticket to {Airport=Tokyo} please
+- i would like to book a flight to {Airport=New York}.
+- i want a flight to {Airport=New York}
+- could you book a flight to {Airport=New York} on 2nd of april for me?
+- a ticket to {Airport=Los Angeles} please
+- could you book a flight to {Airport=Tel Aviv} on 2nd of april for me?
+- could you book a flight to {Airport=London} on 2nd of april for me?
+- no, i want to fly to {Airport=Los Angeles}, not to {Airport=Toronto}.
+- no, i want to fly to {Airport=Tel Aviv}, not to {Airport=Berlin}.
+- i would like to book a flight to {Airport=London}.
+- a ticket to {Airport=Berlin} please
+- i would like to book a flight to {Airport=Tel Aviv}.
+- no, i want to fly to {Airport=London}, not to {Airport=Paris}.
+- no, i want to fly to {Airport=London}, not to {Airport=Berlin}.
+- i would like to book a flight to {Airport=Berlin}.
+- i would like to book a flight to {Airport=Tokyo}.
+- could you book a flight to {Airport=Berlin} on 2nd of april for me?
+- a ticket to {Airport=New York} please
+- i want a flight to {Airport=Paris}
+- no, i want to fly to {Airport=London}, not to {Airport=Toronto}.
+- could you book a flight to {Airport=Los Angeles} on 2nd of april for me?
+- a ticket to {Airport=London} please
+- i want a flight to {Airport=Seattle}
+- no, i want to fly to {Airport=Seattle}, not to {Airport=New York}.
+- no, i want to fly to {Airport=Paris}, not to {Airport=Tel Aviv}.
+- i would like to book a flight to {Airport=Paris}.
+- no, i want to fly to {Airport=Tel Aviv}, not to {Airport=Los Angeles}.
+- i want a flight to {Airport=Toronto}
+- no, i want to fly to {Airport=New York}, not to {Airport=Los Angeles}.
+- no, i want to fly to {Airport=Toronto}, not to {Airport=Berlin}.
+- a ticket to {Airport=Seattle} please
+- no, i want to fly to {Airport=Toronto}, not to {Airport=Tokyo}.
+- no, i want to fly to {Airport=Tokyo}, not to {Airport=Los Angeles}.
+- i want a flight to {Airport=Los Angeles}
+- no, i want to fly to {Airport=New York}, not to {Airport=Seattle}.
+- no, i want to fly to {Airport=Seattle}, not to {Airport=Los Angeles}.
+- could you book a flight to {Airport=Seattle} on 2nd of april for me?
+- no, i want to fly to {Airport=Tokyo}, not to {Airport=New York}.
+- no, i want to fly to {Airport=Berlin}, not to {Airport=Los Angeles}.
+- no, i want to fly to {Airport=Berlin}, not to {Airport=London}.
+- no, i want to fly to {Airport=Seattle}, not to {Airport=Berlin}.
+- no, i want to fly to {Airport=Tel Aviv}, not to {Airport=London}.
+- no, i want to fly to {Airport=London}, not to {Airport=New York}.
+- no, i want to fly to {Airport=Toronto}, not to {Airport=Paris}.
+- no, i want to fly to {Airport=Toronto}, not to {Airport=London}.
+- no, i want to fly to {Airport=Berlin}, not to {Airport=Tokyo}.
+- no, i want to fly to {Airport=Paris}, not to {Airport=Berlin}.
+- no, i want to fly to {Airport=Tokyo}, not to {Airport=Seattle}.
+- no, i want to fly to {Airport=New York}, not to {Airport=Tel Aviv}.
+- no, i want to fly to {Airport=Tokyo}, not to {Airport=Paris}.
+- no, i want to fly to {Airport=Tel Aviv}, not to {Airport=Seattle}.
+- no, i want to fly to {Airport=Seattle}, not to {Airport=London}.
+- no, i want to fly to {Airport=Toronto}, not to {Airport=New York}.
+- no, i want to fly to {Airport=Los Angeles}, not to {Airport=Tokyo}.
+- no, i want to fly to {Airport=Paris}, not to {Airport=London}.
+- no, i want to fly to {Airport=Tel Aviv}, not to {Airport=New York}.
+- no, i want to fly to {Airport=Toronto}, not to {Airport=Seattle}.
+- no, i want to fly to {Airport=Berlin}, not to {Airport=New York}.
+- no, i want to fly to {Airport=New York}, not to {Airport=Berlin}.
+- no, i want to fly to {Airport=Tokyo}, not to {Airport=Toronto}.
+- no, i want to fly to {Airport=New York}, not to {Airport=Toronto}.
+- no, i want to fly to {Airport=Los Angeles}, not to {Airport=London}.
+- no, i want to fly to {Airport=Tokyo}, not to {Airport=Tel Aviv}.
+- no, i want to fly to {Airport=Tel Aviv}, not to {Airport=Paris}.
+- no, i want to fly to {Airport=Tel Aviv}, not to {Airport=Tokyo}.
+- no, i want to fly to {Airport=New York}, not to {Airport=Paris}.
+- no, i want to fly to {Airport=London}, not to {Airport=Los Angeles}.
+- no, i want to fly to {Airport=London}, not to {Airport=Seattle}.
+- no, i want to fly to {Airport=Toronto}, not to {Airport=Los Angeles}.
+- no, i want to fly to {Airport=Tel Aviv}, not to {Airport=Toronto}.
+- no, i want to fly to {Airport=Los Angeles}, not to {Airport=Berlin}.
+- no, i want to fly to {Airport=Berlin}, not to {Airport=Seattle}.
+- no, i want to fly to {Airport=Berlin}, not to {Airport=Toronto}.
+- no, i want to fly to {Airport=Los Angeles}, not to {Airport=Paris}.
+- no, i want to fly to {Airport=Toronto}, not to {Airport=Tel Aviv}.
+- no, i want to fly to {Airport=Berlin}, not to {Airport=Tel Aviv}.
+- no, i want to fly to {Airport=Berlin}, not to {Airport=Paris}.
+- no, i want to fly to {Airport=Paris}, not to {Airport=New York}.
+- no, i want to fly to {Airport=Los Angeles}, not to {Airport=New York}.
+- no, i want to fly to {Airport=Los Angeles}, not to {Airport=Tel Aviv}.
+- no, i want to fly to {Airport=Los Angeles}, not to {Airport=Seattle}.
+- no, i want to fly to {Airport=New York}, not to {Airport=Tokyo}.
+- no, i want to fly to {Airport=Tokyo}, not to {Airport=Berlin}.
+- no, i want to fly to {Airport=London}, not to {Airport=Tokyo}.
+- no, i want to fly to {Airport=Seattle}, not to {Airport=Paris}.
+- no, i want to fly to {Airport=Seattle}, not to {Airport=Tel Aviv}.
+- no, i want to fly to {Airport=Seattle}, not to {Airport=Toronto}.
+- no, i want to fly to {Airport=Seattle}, not to {Airport=Tokyo}.
+- no, i want to fly to {Airport=New York}, not to {Airport=London}.
+- no, i want to fly to {Airport=Paris}, not to {Airport=Tokyo}.
+
+# BookSeat
+- i want to have a window seat
+- book a seat as close as possible to the galley on my flight to {Airport=Tokyo}
+- i need a special seat on my flight
+- i would like to book a seat on my flight to {Airport=Tokyo}
+- book a seat for me on my preferred seat.
+- book a seat as close as possible to the galley on my flight to {Airport=Tel Aviv}
+- book a seat as close as possible to the galley on my flight to {Airport=Seattle}
+- i would like to book a seat on my flight to {Airport=Paris}
+- book a seat as close as possible to the galley on my flight to {Airport=Los Angeles}
+- i would like to book a seat on my flight to {Airport=New York}
+- book a seat as close as possible to the galley on my flight to {Airport=Toronto}
+- i would like to book a seat on my flight to {Airport=Toronto}
+- book a seat as close as possible to the galley on my flight to {Airport=New York}
+- i would like to book a seat on my flight to {Airport=Tel Aviv}
+- i would like to book a seat on my flight to {Airport=London}
+- i would like to book a seat on my flight to {Airport=Los Angeles}
+- book a seat as close as possible to the galley on my flight to {Airport=Berlin}
+- book a seat as close as possible to the galley on my flight to {Airport=Paris}
+- i would like to book a seat on my flight to {Airport=Seattle}
+- book a seat as close as possible to the galley on my flight to {Airport=London}
+- i would like to book a seat on my flight to {Airport=Berlin}
+
+# CancelFlight
+- cancellation of flight to {Airport=Los Angeles}.
+- cancel flight to {Airport=Seattle}
+- please cancel my flight to {Airport=Los Angeles}
+- please cancel my flight to {Airport=New York}
+- i want to cancel my journey to {Airport=Seattle}.
+- cancellation of flight to {Airport=Tel Aviv}.
+- cancel flight to {Airport=Paris}
+- i need to cancel my flight to {Airport=Berlin}
+- cancellation of flight to {Airport=Seattle}.
+- i want to cancel my journey to {Airport=Paris}.
+- please cancel my flight to {Airport=Berlin}
+- please cancel my flight to {Airport=Paris}
+- i want to cancel my journey to {Airport=Tokyo}.
+- i need to cancel my flight to {Airport=London}
+- i need to cancel my flight to {Airport=New York}
+- cancel flight to {Airport=Berlin}
+- i need to cancel my flight to {Airport=Los Angeles}
+- cancel flight to {Airport=London}
+- cancellation of flight to {Airport=Toronto}.
+- cancel flight to {Airport=New York}
+- i need to cancel my flight to {Airport=Seattle}
+- cancellation of flight to {Airport=Paris}.
+- i want to cancel my journey to {Airport=London}.
+- please cancel my flight to {Airport=Seattle}
+- i want to cancel my journey to {Airport=Tel Aviv}.
+- i need to cancel my flight to {Airport=Toronto}
+- cancellation of flight to {Airport=New York}.
+- i need to cancel my flight to {Airport=Tel Aviv}
+- i need to cancel my flight to {Airport=Tokyo}
+- cancellation of flight to {Airport=Tokyo}.
+- please cancel my flight to {Airport=Toronto}
+- i want to cancel my journey to {Airport=Los Angeles}.
+- i want to cancel my journey to {Airport=New York}.
+- i need to cancel my flight to {Airport=Paris}
+- cancel flight to {Airport=Toronto}
+- cancellation of flight to {Airport=Berlin}.
+- please cancel my flight to {Airport=Tel Aviv}
+- i want to cancel my journey to {Airport=Toronto}.
+- cancel flight to {Airport=Los Angeles}
+- i want to cancel my journey to {Airport=Berlin}.
+- please cancel my flight to {Airport=Tokyo}
+- please cancel my flight to {Airport=London}
+- cancel flight to {Airport=Tel Aviv}
+- cancellation of flight to {Airport=London}.
+- cancel flight to {Airport=Tokyo}
+
+# ChangeFlight
+- change my flight from {Airport=Paris} to {Airport=New York}
+- i need to change my flight from {Airport=Los Angeles} to {Airport=Tel Aviv}
+- i would like to change my flight.
+- change flight to {Airport=Seattle}.
+- change flight to {Airport=Los Angeles}.
+- please rebook my flight to {Airport=Berlin}, please.
+- change flight to {Airport=Berlin}.
+- please rebook my flight to {Airport=Paris}, please.
+- please rebook my flight to {Airport=Tel Aviv}, please.
+- i need to change my flight from {Airport=New York} to {Airport=Paris}
+- change my flight from {Airport=Tokyo} to {Airport=London}
+- i need to change my flight from {Airport=Toronto} to {Airport=Seattle}
+- i need to change my flight from {Airport=Tel Aviv} to {Airport=Los Angeles}
+- change my flight from {Airport=Los Angeles} to {Airport=Seattle}
+- change my flight from {Airport=Tokyo} to {Airport=Los Angeles}
+- i need to change my flight from {Airport=Los Angeles} to {Airport=New York}
+- please rebook my flight to {Airport=Tokyo}, please.
+- please rebook my flight to {Airport=London}, please.
+- change my flight from {Airport=Seattle} to {Airport=Tel Aviv}
+- please rebook my flight to {Airport=Toronto}, please.
+- i need to change my flight from {Airport=Berlin} to {Airport=Seattle}
+- change my flight from {Airport=London} to {Airport=New York}
+- i need to change my flight from {Airport=Los Angeles} to {Airport=Berlin}
+- change my flight from {Airport=Tokyo} to {Airport=New York}
+- change flight to {Airport=London}.
+- change my flight from {Airport=Toronto} to {Airport=Tokyo}
+- change flight to {Airport=New York}.
+- please rebook my flight to {Airport=Seattle}, please.
+- i need to change my flight from {Airport=London} to {Airport=Berlin}
+- i need to change my flight from {Airport=Los Angeles} to {Airport=Seattle}
+- change my flight from {Airport=Tokyo} to {Airport=Seattle}
+- change my flight from {Airport=Toronto} to {Airport=Tel Aviv}
+- i need to change my flight from {Airport=New York} to {Airport=Los Angeles}
+- please rebook my flight to {Airport=New York}, please.
+- i need to change my flight from {Airport=Paris} to {Airport=New York}
+- change my flight from {Airport=Tokyo} to {Airport=Paris}
+- change flight to {Airport=Tel Aviv}.
+- change my flight from {Airport=Los Angeles} to {Airport=Tokyo}
+- change flight to {Airport=Toronto}.
+- change my flight from {Airport=Tokyo} to {Airport=Tel Aviv}
+- change my flight from {Airport=Tel Aviv} to {Airport=Seattle}
+- please rebook my flight to {Airport=Los Angeles}, please.
+- i need to change my flight from {Airport=New York} to {Airport=Seattle}
+- change flight to {Airport=Paris}.
+- i need to change my flight from {Airport=Paris} to {Airport=Tel Aviv}
+- change my flight from {Airport=Los Angeles} to {Airport=Paris}
+- change my flight from {Airport=Seattle} to {Airport=Toronto}
+- i need to change my flight from {Airport=Berlin} to {Airport=Tel Aviv}
+- change my flight from {Airport=New York} to {Airport=Tel Aviv}
+- change my flight from {Airport=Seattle} to {Airport=Berlin}
+- change flight to {Airport=Tokyo}.
+- i need to change my flight from {Airport=Tokyo} to {Airport=Berlin}
+- i need to change my flight from {Airport=Seattle} to {Airport=Tokyo}
+- change my flight from {Airport=Toronto} to {Airport=London}
+- change my flight from {Airport=Paris} to {Airport=Tel Aviv}
+- i need to change my flight from {Airport=Toronto} to {Airport=Tel Aviv}
+- i need to change my flight from {Airport=London} to {Airport=New York}
+- i need to change my flight from {Airport=Paris} to {Airport=Tokyo}
+- change my flight from {Airport=Seattle} to {Airport=Paris}
+- change my flight from {Airport=Tel Aviv} to {Airport=Berlin}
+- i need to change my flight from {Airport=Paris} to {Airport=Seattle}
+- i need to change my flight from {Airport=Seattle} to {Airport=Tel Aviv}
+- change my flight from {Airport=Berlin} to {Airport=Toronto}
+- change my flight from {Airport=Berlin} to {Airport=Tokyo}
+- i need to change my flight from {Airport=Los Angeles} to {Airport=London}
+- change my flight from {Airport=London} to {Airport=Paris}
+- i need to change my flight from {Airport=New York} to {Airport=Berlin}
+- change my flight from {Airport=Seattle} to {Airport=New York}
+- i need to change my flight from {Airport=Seattle} to {Airport=Berlin}
+- i need to change my flight from {Airport=Seattle} to {Airport=Paris}
+- change my flight from {Airport=New York} to {Airport=Toronto}
+- change my flight from {Airport=Tokyo} to {Airport=Toronto}
+- change my flight from {Airport=Paris} to {Airport=Los Angeles}
+- change my flight from {Airport=Paris} to {Airport=Berlin}
+- i need to change my flight from {Airport=London} to {Airport=Tokyo}
+- change my flight from {Airport=Toronto} to {Airport=Berlin}
+- i need to change my flight from {Airport=Tokyo} to {Airport=New York}
+- change my flight from {Airport=Tokyo} to {Airport=Berlin}
+- change my flight from {Airport=Paris} to {Airport=London}
+- i need to change my flight from {Airport=Berlin} to {Airport=Toronto}
+- change my flight from {Airport=New York} to {Airport=London}
+- change my flight from {Airport=Tel Aviv} to {Airport=Los Angeles}
+- change my flight from {Airport=London} to {Airport=Berlin}
+- i need to change my flight from {Airport=London} to {Airport=Toronto}
+- change my flight from {Airport=Tel Aviv} to {Airport=London}
+- change my flight from {Airport=Berlin} to {Airport=Tel Aviv}
+- i need to change my flight from {Airport=Tokyo} to {Airport=Toronto}
+- i need to change my flight from {Airport=Tokyo} to {Airport=Seattle}
+- change my flight from {Airport=Seattle} to {Airport=London}
+- i need to change my flight from {Airport=Toronto} to {Airport=Tokyo}
+- change my flight from {Airport=Toronto} to {Airport=Los Angeles}
+- change my flight from {Airport=London} to {Airport=Los Angeles}
+- change my flight from {Airport=Toronto} to {Airport=Paris}
+- i need to change my flight from {Airport=Tel Aviv} to {Airport=New York}
+- change my flight from {Airport=Paris} to {Airport=Toronto}
+- i need to change my flight from {Airport=Toronto} to {Airport=Berlin}
+- change my flight from {Airport=Tel Aviv} to {Airport=Paris}
+- change my flight from {Airport=Berlin} to {Airport=Los Angeles}
+- i need to change my flight from {Airport=London} to {Airport=Seattle}
+- i need to change my flight from {Airport=Berlin} to {Airport=Paris}
+- i need to change my flight from {Airport=Toronto} to {Airport=Los Angeles}
+- i need to change my flight from {Airport=Seattle} to {Airport=Los Angeles}
+- i need to change my flight from {Airport=Toronto} to {Airport=London}
+- i need to change my flight from {Airport=New York} to {Airport=Tokyo}
+- change my flight from {Airport=Berlin} to {Airport=Paris}
+- i need to change my flight from {Airport=Tokyo} to {Airport=Los Angeles}
+- change my flight from {Airport=New York} to {Airport=Paris}
+- change my flight from {Airport=New York} to {Airport=Berlin}
+- i need to change my flight from {Airport=Tokyo} to {Airport=Paris}
+- change my flight from {Airport=Berlin} to {Airport=London}
+- i need to change my flight from {Airport=Los Angeles} to {Airport=Toronto}
+- i need to change my flight from {Airport=Los Angeles} to {Airport=Paris}
+- change my flight from {Airport=Tel Aviv} to {Airport=New York}
+- change my flight from {Airport=London} to {Airport=Tokyo}
+- i need to change my flight from {Airport=Tel Aviv} to {Airport=Paris}
+- change my flight from {Airport=Los Angeles} to {Airport=Tel Aviv}
+- i need to change my flight from {Airport=Tel Aviv} to {Airport=Tokyo}
+- i need to change my flight from {Airport=Toronto} to {Airport=New York}
+- i need to change my flight from {Airport=Paris} to {Airport=Toronto}
+- i need to change my flight from {Airport=Seattle} to {Airport=Toronto}
+- i need to change my flight from {Airport=Berlin} to {Airport=New York}
+- i need to change my flight from {Airport=Tokyo} to {Airport=Tel Aviv}
+- change my flight from {Airport=Los Angeles} to {Airport=London}
+- change my flight from {Airport=Seattle} to {Airport=Los Angeles}
+- i need to change my flight from {Airport=New York} to {Airport=Toronto}
+- change my flight from {Airport=London} to {Airport=Seattle}
+- i need to change my flight from {Airport=London} to {Airport=Los Angeles}
+- change my flight from {Airport=Berlin} to {Airport=New York}
+- change my flight from {Airport=New York} to {Airport=Los Angeles}
+- i need to change my flight from {Airport=Tokyo} to {Airport=London}
+- change my flight from {Airport=Paris} to {Airport=Seattle}
+- i need to change my flight from {Airport=Tel Aviv} to {Airport=London}
+- change my flight from {Airport=London} to {Airport=Toronto}
+- change my flight from {Airport=Paris} to {Airport=Tokyo}
+- i need to change my flight from {Airport=Paris} to {Airport=London}
+- i need to change my flight from {Airport=London} to {Airport=Tel Aviv}
+- i need to change my flight from {Airport=Berlin} to {Airport=Los Angeles}
+- i need to change my flight from {Airport=Los Angeles} to {Airport=Tokyo}
+- i need to change my flight from {Airport=Tel Aviv} to {Airport=Seattle}
+- i need to change my flight from {Airport=Paris} to {Airport=Los Angeles}
+- i need to change my flight from {Airport=Toronto} to {Airport=Paris}
+- i need to change my flight from {Airport=Seattle} to {Airport=New York}
+- change my flight from {Airport=Tel Aviv} to {Airport=Toronto}
+- i need to change my flight from {Airport=New York} to {Airport=Tel Aviv}
+- change my flight from {Airport=Los Angeles} to {Airport=Berlin}
+- i need to change my flight from {Airport=Berlin} to {Airport=Tokyo}
+- change my flight from {Airport=New York} to {Airport=Seattle}
+- i need to change my flight from {Airport=London} to {Airport=Paris}
+- i need to change my flight from {Airport=Tel Aviv} to {Airport=Berlin}
+- change my flight from {Airport=London} to {Airport=Tel Aviv}
+- change my flight from {Airport=Tel Aviv} to {Airport=Tokyo}
+- i need to change my flight from {Airport=Paris} to {Airport=Berlin}
+- i need to change my flight from {Airport=Berlin} to {Airport=London}
+- change my flight from {Airport=Los Angeles} to {Airport=New York}
+- i need to change my flight from {Airport=Tel Aviv} to {Airport=Toronto}
+- change my flight from {Airport=Toronto} to {Airport=New York}
+- i need to change my flight from {Airport=Seattle} to {Airport=London}
+
+# DepartureInfo
+- what is the status of my flight {FlightNumber=CP9919223}
+- i need the status of my flight {FlightNumber=AA1994557}
+- could you check whether my flight has a delay?
+- is my flight on time?
+- i need the status of my flight {FlightNumber=CP9919223}
+- what is the status of my flight {FlightNumber=AA1834556}
+- when does {FlightNumber=LH7721} depart?
+- i need the status of my flight {FlightNumber=AB1234}
+- what is the status of my flight {FlightNumber=LH1346}
+- when does {FlightNumber=AA1994557} depart?
+- when does {FlightNumber=AA1834556} depart?
+- what is the status of my flight {FlightNumber=Ab9164}
+- when does {FlightNumber=CP9919223} depart?
+- what is the status of my flight {FlightNumber=AA1994557}
+- i need the status of my flight {FlightNumber=Ab9164}
+- when does {FlightNumber=LH1346} depart?
+- i need the status of my flight {FlightNumber=AA1834556}
+- when does {FlightNumber=Ab9164} depart?
+- what is the status of my flight {FlightNumber=LH7721}
+- i need the status of my flight {FlightNumber=LH7721}
+- when does {FlightNumber=AB1234} depart?
+- i need the status of my flight {FlightNumber=LH1346}
+- what is the status of my flight {FlightNumber=AB1234}
+
+# GetEntities
+- my name is {first_name=Paul} {last_name=M�ller}.
+- my firstname is {first_name=Tom}.
+- my lastname is {last_name=Reichenbach}.
+- my firstname is {first_name=Paul}
+- my lastname is {last_name=Mahoney}.
+- It's {last_name=Kistner}.
+- i am {first_name=Lisa} {last_name=Kistner}.
+- It's {last_name=Coskun}.
+- it is {first_name=Maria}.
+- my lastname is {last_name=M�ller}.
+- it is {first_name=Margret}.
+- it is {first_name=Mary}.
+- {first_name=Theo} {last_name=Reichenbach}.
+- it is {first_name=Tom}
+- It's {last_name=Kistner}
+- i am {first_name=Margret} {last_name=Maier}
+- It's {last_name=Reichenbach}.
+- my name is {first_name=Maria} {last_name=Ebner}
+- it is {first_name=Peter}.
+- It's {last_name=Delaunay}.
+- it is {first_name=Peter}
+- it is {first_name=Paul}.
+- my lastname is {last_name=Mahoney}
+- It's {last_name=Mahoney}
+- it is {first_name=Maria}
+- {first_name=Tom} {last_name=Maier}.
+- my name is {first_name=Paul} {last_name=Coskun}.
+- {first_name=Margret} {last_name=Reichenbach}
+- {first_name=Tom} {last_name=Coskun}
+- my name is {first_name=Linda} {last_name=Reichenbach}
+- i am {first_name=Theo} {last_name=Ebner}
+- my lastname is {last_name=Rasztawicki}
+- It's {last_name=Reichenbach}
+- {first_name=Mary} {last_name=Delaunay}
+- my name is {first_name=Tom} {last_name=Kistner}
+- i am {first_name=Margret} {last_name=Kistner}
+- it is {first_name=Margret}
+- {first_name=Mary} {last_name=Rasztawicki}.
+- my name is {first_name=Lisa} {last_name=Reichenbach}.
+- i am {first_name=Linda} {last_name=Maier}.
+- i am {first_name=Theo} {last_name=M�ller}.
+- my firstname is {first_name=Mary}.
+- my firstname is {first_name=Mary}
+- my lastname is {last_name=Reichenbach}
+- {first_name=Mary} {last_name=Kistner}
+- It's {last_name=M�ller}
+- it is {first_name=Theo}
+- my firstname is {first_name=Lisa}.
+- {first_name=Mary} {last_name=Delaunay}.
+- {first_name=Mary} {last_name=M�ller}.
+- my name is {first_name=Theo} {last_name=Kistner}.
+- i am {first_name=Linda} {last_name=Ebner}.
+- It's {last_name=Delaunay}
+- i am {first_name=Peter} {last_name=Kistner}.
+- my firstname is {first_name=Margret}.
+- i am {first_name=Linda} {last_name=Rasztawicki}
+- my name is {first_name=Tom} {last_name=Coskun}
+- my lastname is {last_name=Coskun}.
+- It's {last_name=Ebner}.
+- {first_name=Theo} {last_name=Ebner}
+- my lastname is {last_name=Delaunay}.
+- my lastname is {last_name=M�ller}
+- {first_name=Tom} {last_name=Kistner}
+- {first_name=Maria} {last_name=M�ller}
+- my name is {first_name=Lisa} {last_name=Coskun}
+- i am {first_name=Margret} {last_name=Mahoney}
+- my name is {first_name=Mary} {last_name=Delaunay}
+- i am {first_name=Maria} {last_name=Mahoney}
+- my lastname is {last_name=Delaunay}
+- It's {last_name=Inhestern}
+- {first_name=Tom} {last_name=Ebner}
+- my lastname is {last_name=Maier}.
+- my firstname is {first_name=Maria}.
+- my name is {first_name=Tom} {last_name=Inhestern}
+- i am {first_name=Linda} {last_name=Delaunay}
+- my name is {first_name=Theo} {last_name=Ebner}
+- {first_name=Lisa} {last_name=Reichenbach}
+- i am {first_name=Maria} {last_name=Reichenbach}
+- my name is {first_name=Theo} {last_name=Reichenbach}.
+- my name is {first_name=Mary} {last_name=Rasztawicki}.
+- it is {first_name=Linda}
+- my lastname is {last_name=Coskun}
+- my lastname is {last_name=Ebner}.
+- It's {last_name=Maier}.
+- It's {last_name=Rasztawicki}
+- {first_name=Peter} {last_name=Reichenbach}.
+- my name is {first_name=Tom} {last_name=Rasztawicki}.
+- i am {first_name=Theo} {last_name=Rasztawicki}.
+- my firstname is {first_name=Theo}
+- i am {first_name=Peter} {last_name=Coskun}.
+- my lastname is {last_name=Kistner}.
+- i am {first_name=Lisa} {last_name=M�ller}.
+- {first_name=Peter} {last_name=Inhestern}
+- my name is {first_name=Paul} {last_name=Maier}
+- my name is {first_name=Margret} {last_name=Mahoney}.
+- {first_name=Lisa} {last_name=Kistner}.
+- my lastname is {last_name=Inhestern}
+- my firstname is {first_name=Tom}
+- i am {first_name=Theo} {last_name=Rasztawicki}
+- i am {first_name=Tom} {last_name=Ebner}
+- It's {last_name=Coskun}
+- my name is {first_name=Paul} {last_name=Delaunay}
+- {first_name=Peter} {last_name=M�ller}
+- i am {first_name=Paul} {last_name=Ebner}.
+- {first_name=Margret} {last_name=Mahoney}.
+- my name is {first_name=Peter} {last_name=Kistner}.
+- my lastname is {last_name=Inhestern}.
+- my lastname is {last_name=Rasztawicki}.
+- It's {last_name=M�ller}.
+- my firstname is {first_name=Margret}
+- i am {first_name=Theo} {last_name=Inhestern}
+- It's {last_name=Inhestern}.
+- i am {first_name=Paul} {last_name=Reichenbach}
+- my name is {first_name=Linda} {last_name=Mahoney}
+- {first_name=Linda} {last_name=Reichenbach}
+- it is {first_name=Mary}
+- {first_name=Maria} {last_name=M�ller}.
+- {first_name=Theo} {last_name=M�ller}
+- my name is {first_name=Theo} {last_name=Reichenbach}
+- i am {first_name=Lisa} {last_name=Inhestern}
+- my name is {first_name=Theo} {last_name=Coskun}
+- my name is {first_name=Peter} {last_name=Mahoney}.
+- {first_name=Peter} {last_name=Inhestern}.
+- i am {first_name=Paul} {last_name=Rasztawicki}.
+- {first_name=Maria} {last_name=Mahoney}
+- i am {first_name=Linda} {last_name=Mahoney}.
+- it is {first_name=Paul}
+- i am {first_name=Margret} {last_name=Coskun}.
+- my name is {first_name=Margret} {last_name=Inhestern}.
+- {first_name=Tom} {last_name=Delaunay}.
+- my firstname is {first_name=Linda}
+- i am {first_name=Tom} {last_name=Reichenbach}
+- my name is {first_name=Linda} {last_name=Kistner}
+- {first_name=Margret} {last_name=Kistner}
+- my firstname is {first_name=Paul}.
+- i am {first_name=Margret} {last_name=Maier}.
+- my name is {first_name=Maria} {last_name=Delaunay}.
+- my name is {first_name=Mary} {last_name=Mahoney}
+- i am {first_name=Margret} {last_name=Ebner}
+- my firstname is {first_name=Peter}
+- It's {last_name=Maier}
+- my name is {first_name=Maria} {last_name=Ebner}.
+- {first_name=Maria} {last_name=Inhestern}
+- my name is {first_name=Mary} {last_name=Reichenbach}
+- i am {first_name=Tom} {last_name=Delaunay}
+- my lastname is {last_name=Kistner}
+- {first_name=Linda} {last_name=Rasztawicki}.
+- my name is {first_name=Paul} {last_name=Maier}.
+- i am {first_name=Theo} {last_name=Delaunay}.
+- it is {first_name=Tom}.
+- {first_name=Peter} {last_name=Coskun}
+- my name is {first_name=Linda} {last_name=Coskun}
+- It's {last_name=Mahoney}.
+- my firstname is {first_name=Peter}.
+- my name is {first_name=Paul} {last_name=Inhestern}.
+- {first_name=Theo} {last_name=Inhestern}.
+- my name is {first_name=Peter} {last_name=Kistner}
+- i am {first_name=Maria} {last_name=Maier}
+- my firstname is {first_name=Lisa}
+- it is {first_name=Lisa}
+- it is {first_name=Linda}.
+- my name is {first_name=Mary} {last_name=M�ller}.
+- It's {last_name=Rasztawicki}.
+- It's {last_name=Ebner}
+- my name is {first_name=Tom} {last_name=M�ller}
+- i am {first_name=Mary} {last_name=Inhestern}.
+- my name is {first_name=Linda} {last_name=M�ller}.
+- {first_name=Mary} {last_name=Kistner}.
+- my name is {first_name=Peter} {last_name=Inhestern}
+- {first_name=Margret} {last_name=M�ller}
+- {first_name=Linda} {last_name=Inhestern}
+- my name is {first_name=Mary} {last_name=Coskun}
+- my lastname is {last_name=Ebner}
+- i am {first_name=Margret} {last_name=Delaunay}
+- my firstname is {first_name=Linda}.
+- i am {first_name=Paul} {last_name=M�ller}.
+- my name is {first_name=Lisa} {last_name=Coskun}.
+- i am {first_name=Maria} {last_name=Ebner}
+- my name is {first_name=Maria} {last_name=Kistner}
+- {first_name=Mary} {last_name=Reichenbach}
+- my name is {first_name=Margret} {last_name=Reichenbach}
+- i am {first_name=Mary} {last_name=M�ller}
+- {first_name=Margret} {last_name=Coskun}.
+- my name is {first_name=Linda} {last_name=Coskun}.
+- i am {first_name=Maria} {last_name=Inhestern}.
+- my name is {first_name=Lisa} {last_name=Kistner}.
+- it is {first_name=Theo}.
+- i am {first_name=Tom} {last_name=Maier}.
+- i am {first_name=Tom} {last_name=M�ller}.
+- my name is {first_name=Lisa} {last_name=Maier}.
+- {first_name=Linda} {last_name=M�ller}.
+- i am {first_name=Mary} {last_name=Reichenbach}
+- my name is {first_name=Margret} {last_name=Delaunay}
+- {first_name=Tom} {last_name=Maier}
+- my name is {first_name=Lisa} {last_name=Ebner}
+- i am {first_name=Linda} {last_name=Reichenbach}.
+- my name is {first_name=Margret} {last_name=M�ller}.
+- i am {first_name=Lisa} {last_name=Delaunay}.
+- my name is {first_name=Maria} {last_name=Kistner}.
+- {first_name=Peter} {last_name=Coskun}.
+- my lastname is {last_name=Maier}
+- i am {first_name=Paul} {last_name=Mahoney}
+- my name is {first_name=Tom} {last_name=Maier}
+- {first_name=Tom} {last_name=Reichenbach}
+- {first_name=Tom} {last_name=Inhestern}
+- my name is {first_name=Paul} {last_name=Inhestern}
+- i am {first_name=Margret} {last_name=Coskun}
+- {first_name=Linda} {last_name=Inhestern}.
+- my name is {first_name=Paul} {last_name=Rasztawicki}.
+- {first_name=Maria} {last_name=Maier}.
+- i am {first_name=Linda} {last_name=Maier}
+- {first_name=Tom} {last_name=M�ller}
+- i am {first_name=Linda} {last_name=M�ller}.
+- my name is {first_name=Mary} {last_name=Kistner}
+- my firstname is {first_name=Maria}
+- {first_name=Lisa} {last_name=Coskun}.
+- my name is {first_name=Peter} {last_name=Maier}.
+- i am {first_name=Maria} {last_name=M�ller}.
+- {first_name=Peter} {last_name=Maier}.
+- i am {first_name=Lisa} {last_name=Maier}
+- my name is {first_name=Linda} {last_name=Rasztawicki}
+- {first_name=Lisa} {last_name=M�ller}
+- {first_name=Paul} {last_name=Delaunay}
+- i am {first_name=Theo} {last_name=M�ller}
+- {first_name=Peter} {last_name=Kistner}.
+- my firstname is {first_name=Theo}.
+- it is {first_name=Lisa}.
+- i am {first_name=Lisa} {last_name=Rasztawicki}.
+- my name is {first_name=Margret} {last_name=Rasztawicki}.
+- {first_name=Maria} {last_name=Ebner}.
+- i am {first_name=Maria} {last_name=Kistner}
+- {first_name=Paul} {last_name=Coskun}
+- my name is {first_name=Maria} {last_name=Mahoney}
+- i am {first_name=Maria} {last_name=Rasztawicki}
+- my name is {first_name=Maria} {last_name=Mahoney}.
+- i am {first_name=Linda} {last_name=Kistner}.
+- i am {first_name=Paul} {last_name=Inhestern}.
+- my name is {first_name=Margret} {last_name=Maier}.
+- {first_name=Paul} {last_name=Inhestern}.
+- i am {first_name=Maria} {last_name=M�ller}
+- my name is {first_name=Margret} {last_name=Mahoney}
+- my name is {first_name=Theo} {last_name=Delaunay}
+- my name is {first_name=Tom} {last_name=Delaunay}.
+- i am {first_name=Paul} {last_name=Mahoney}.
+- {first_name=Margret} {last_name=Ebner}.
+- i am {first_name=Linda} {last_name=Inhestern}.
+- {first_name=Tom} {last_name=M�ller}.
+- my name is {first_name=Theo} {last_name=Ebner}.
+- my name is {first_name=Theo} {last_name=Maier}
+- {first_name=Lisa} {last_name=Inhestern}.
+- {first_name=Lisa} {last_name=Mahoney}
+- my name is {first_name=Linda} {last_name=Ebner}
+- my name is {first_name=Lisa} {last_name=Mahoney}.
+- i am {first_name=Lisa} {last_name=Inhestern}.
+- {first_name=Linda} {last_name=Ebner}
+- i am {first_name=Maria} {last_name=Coskun}.
+- {first_name=Lisa} {last_name=Delaunay}.
+- {first_name=Theo} {last_name=Mahoney}.
+- my name is {first_name=Linda} {last_name=Maier}
+- i am {first_name=Paul} {last_name=Delaunay}
+- i am {first_name=Theo} {last_name=Coskun}
+- {first_name=Paul} {last_name=Mahoney}.
+- i am {first_name=Peter} {last_name=Reichenbach}.
+- i am {first_name=Mary} {last_name=Inhestern}
+- {first_name=Peter} {last_name=Kistner}
+- {first_name=Lisa} {last_name=Ebner}.
+- {first_name=Linda} {last_name=M�ller}
+- my name is {first_name=Margret} {last_name=Rasztawicki}
+- {first_name=Margret} {last_name=M�ller}.
+- i am {first_name=Tom} {last_name=Delaunay}.
+- i am {first_name=Peter} {last_name=Coskun}
+- i am {first_name=Mary} {last_name=Reichenbach}.
+- my name is {first_name=Tom} {last_name=M�ller}.
+- {first_name=Tom} {last_name=Mahoney}
+- my name is {first_name=Tom} {last_name=Mahoney}
+- i am {first_name=Tom} {last_name=Ebner}.
+- my name is {first_name=Paul} {last_name=Mahoney}.
+- i am {first_name=Paul} {last_name=M�ller}
+- my name is {first_name=Margret} {last_name=Ebner}
+- {first_name=Paul} {last_name=Mahoney}
+- {first_name=Mary} {last_name=Maier}
+- my name is {first_name=Maria} {last_name=Inhestern}
+- i am {first_name=Mary} {last_name=Maier}
+- {first_name=Peter} {last_name=Delaunay}.
+- i am {first_name=Paul} {last_name=Kistner}.
+- my name is {first_name=Margret} {last_name=Delaunay}.
+- {first_name=Margret} {last_name=Kistner}.
+- i am {first_name=Maria} {last_name=Coskun}
+- {first_name=Margret} {last_name=Inhestern}
+- my name is {first_name=Paul} {last_name=Delaunay}.
+- i am {first_name=Tom} {last_name=Rasztawicki}.
+- {first_name=Maria} {last_name=Maier}
+- my name is {first_name=Mary} {last_name=Delaunay}.
+- {first_name=Mary} {last_name=Inhestern}.
+- {first_name=Paul} {last_name=M�ller}
+- my name is {first_name=Peter} {last_name=Rasztawicki}
+- i am {first_name=Paul} {last_name=Kistner}
+- {first_name=Linda} {last_name=Kistner}.
+- my name is {first_name=Margret} {last_name=Reichenbach}.
+- i am {first_name=Tom} {last_name=Mahoney}.
+- i am {first_name=Mary} {last_name=Coskun}.
+- i am {first_name=Tom} {last_name=Mahoney}
+- my name is {first_name=Mary} {last_name=Ebner}
+- {first_name=Theo} {last_name=Kistner}
+- my name is {first_name=Tom} {last_name=Coskun}.
+- my name is {first_name=Peter} {last_name=Delaunay}
+- i am {first_name=Mary} {last_name=Ebner}
+- my name is {first_name=Tom} {last_name=Delaunay}
+- {first_name=Maria} {last_name=Kistner}
+- i am {first_name=Maria} {last_name=Delaunay}
+- i am {first_name=Tom} {last_name=Coskun}.
+- {first_name=Paul} {last_name=Kistner}.
+- {first_name=Tom} {last_name=Delaunay}
+- {first_name=Paul} {last_name=Ebner}
+- {first_name=Theo} {last_name=M�ller}.
+- my name is {first_name=Margret} {last_name=Kistner}.
+- i am {first_name=Theo} {last_name=Reichenbach}.
+- my name is {first_name=Linda} {last_name=Maier}.
+- {first_name=Lisa} {last_name=Mahoney}.
+- {first_name=Maria} {last_name=Coskun}
+- my name is {first_name=Mary} {last_name=Rasztawicki}
+- my name is {first_name=Paul} {last_name=Reichenbach}.
+- {first_name=Peter} {last_name=Mahoney}.
+- i am {first_name=Mary} {last_name=M�ller}.
+- {first_name=Paul} {last_name=Ebner}.
+- i am {first_name=Mary} {last_name=Delaunay}
+- {first_name=Linda} {last_name=Mahoney}
+- {first_name=Lisa} {last_name=Delaunay}
+- my name is {first_name=Tom} {last_name=Rasztawicki}
+- {first_name=Linda} {last_name=Coskun}.
+- my name is {first_name=Theo} {last_name=Delaunay}.
+- i am {first_name=Tom} {last_name=Coskun}
+- my name is {first_name=Margret} {last_name=M�ller}
+- i am {first_name=Theo} {last_name=Ebner}.
+- my name is {first_name=Linda} {last_name=Kistner}.
+- {first_name=Linda} {last_name=Reichenbach}.
+- {first_name=Margret} {last_name=Maier}
+- {first_name=Lisa} {last_name=M�ller}.
+- my name is {first_name=Mary} {last_name=Kistner}.
+- i am {first_name=Mary} {last_name=Maier}.
+- my name is {first_name=Linda} {last_name=M�ller}
+- my name is {first_name=Maria} {last_name=Rasztawicki}.
+- {first_name=Peter} {last_name=Maier}
+- {first_name=Linda} {last_name=Mahoney}.
+- {first_name=Margret} {last_name=Rasztawicki}.
+- my name is {first_name=Paul} {last_name=Kistner}
+- {first_name=Theo} {last_name=Rasztawicki}
+- {first_name=Lisa} {last_name=Maier}.
+- i am {first_name=Theo} {last_name=Maier}.
+- {first_name=Theo} {last_name=Maier}.
+- {first_name=Maria} {last_name=Rasztawicki}
+- i am {first_name=Lisa} {last_name=Coskun}
+- i am {first_name=Maria} {last_name=Kistner}.
+- {first_name=Paul} {last_name=Inhestern}
+- my name is {first_name=Maria} {last_name=Delaunay}
+- i am {first_name=Paul} {last_name=Ebner}
+- my name is {first_name=Peter} {last_name=M�ller}.
+- my name is {first_name=Linda} {last_name=Delaunay}.
+- my name is {first_name=Maria} {last_name=Reichenbach}.
+- {first_name=Maria} {last_name=Rasztawicki}.
+- i am {first_name=Paul} {last_name=Maier}
+- {first_name=Paul} {last_name=Kistner}
+- i am {first_name=Linda} {last_name=Coskun}
+- i am {first_name=Lisa} {last_name=Maier}.
+- my name is {first_name=Mary} {last_name=Mahoney}.
+- {first_name=Margret} {last_name=Delaunay}.
+- my name is {first_name=Lisa} {last_name=Maier}
+- my name is {first_name=Peter} {last_name=M�ller}
+- i am {first_name=Margret} {last_name=Inhestern}
+- {first_name=Lisa} {last_name=Reichenbach}.
+- i am {first_name=Mary} {last_name=Ebner}.
+- {first_name=Lisa} {last_name=Rasztawicki}.
+- my name is {first_name=Mary} {last_name=Maier}.
+- i am {first_name=Margret} {last_name=Inhestern}.
+- i am {first_name=Tom} {last_name=M�ller}
+- i am {first_name=Peter} {last_name=Maier}.
+- my name is {first_name=Maria} {last_name=Inhestern}.
+- {first_name=Margret} {last_name=Inhestern}.
+- {first_name=Maria} {last_name=Delaunay}
+- {first_name=Margret} {last_name=Ebner}
+- my name is {first_name=Theo} {last_name=Rasztawicki}
+- {first_name=Paul} {last_name=M�ller}.
+- i am {first_name=Theo} {last_name=Mahoney}
+- my name is {first_name=Maria} {last_name=Coskun}
+- {first_name=Linda} {last_name=Rasztawicki}
+- {first_name=Lisa} {last_name=Maier}
+- i am {first_name=Lisa} {last_name=Rasztawicki}
+- my name is {first_name=Theo} {last_name=Mahoney}.
+- i am {first_name=Peter} {last_name=Delaunay}.
+- {first_name=Theo} {last_name=Reichenbach}
+- my name is {first_name=Tom} {last_name=Reichenbach}
+- i am {first_name=Linda} {last_name=Mahoney}
+- {first_name=Tom} {last_name=Inhestern}.
+- i am {first_name=Margret} {last_name=Delaunay}.
+- i am {first_name=Tom} {last_name=Inhestern}
+- my name is {first_name=Paul} {last_name=Reichenbach}
+- {first_name=Lisa} {last_name=Ebner}
+- {first_name=Margret} {last_name=Mahoney}
+- my name is {first_name=Lisa} {last_name=Delaunay}
+- i am {first_name=Linda} {last_name=Inhestern}
+- {first_name=Tom} {last_name=Coskun}.
+- i am {first_name=Peter} {last_name=Inhestern}.
+- my name is {first_name=Tom} {last_name=Inhestern}.
+- i am {first_name=Margret} {last_name=Reichenbach}
+- my name is {first_name=Paul} {last_name=Mahoney}
+- my name is {first_name=Lisa} {last_name=Rasztawicki}.
+- my name is {first_name=Theo} {last_name=Mahoney}
+- {first_name=Margret} {last_name=Delaunay}
+- my name is {first_name=Lisa} {last_name=Rasztawicki}
+- i am {first_name=Maria} {last_name=Reichenbach}.
+- my name is {first_name=Tom} {last_name=Maier}.
+- {first_name=Theo} {last_name=Rasztawicki}.
+- i am {first_name=Margret} {last_name=Rasztawicki}
+- my name is {first_name=Maria} {last_name=Maier}
+- {first_name=Theo} {last_name=Coskun}.
+- i am {first_name=Margret} {last_name=Kistner}.
+- {first_name=Mary} {last_name=Mahoney}.
+- i am {first_name=Theo} {last_name=Delaunay}
+- my name is {first_name=Peter} {last_name=Reichenbach}
+- my name is {first_name=Paul} {last_name=Rasztawicki}
+- i am {first_name=Paul} {last_name=Reichenbach}.
+- {first_name=Tom} {last_name=Kistner}.
+- i am {first_name=Theo} {last_name=Kistner}.
+- my name is {first_name=Theo} {last_name=M�ller}.
+- {first_name=Maria} {last_name=Coskun}.
+- my name is {first_name=Lisa} {last_name=Inhestern}
+- i am {first_name=Paul} {last_name=Coskun}
+- my name is {first_name=Linda} {last_name=Rasztawicki}.
+- i am {first_name=Mary} {last_name=Kistner}.
+- {first_name=Paul} {last_name=Coskun}.
+- my name is {first_name=Mary} {last_name=Inhestern}
+- i am {first_name=Linda} {last_name=Delaunay}.
+- my name is {first_name=Peter} {last_name=Ebner}.
+- i am {first_name=Lisa} {last_name=Mahoney}.
+- my name is {first_name=Margret} {last_name=Coskun}
+- {first_name=Paul} {last_name=Maier}
+- my name is {first_name=Peter} {last_name=Maier}
+- i am {first_name=Peter} {last_name=Rasztawicki}
+- {first_name=Mary} {last_name=Coskun}.
+- i am {first_name=Paul} {last_name=Coskun}.
+- i am {first_name=Paul} {last_name=Delaunay}.
+- i am {first_name=Margret} {last_name=Mahoney}.
+- i am {first_name=Margret} {last_name=M�ller}
+- {first_name=Peter} {last_name=Ebner}
+- {first_name=Theo} {last_name=Delaunay}
+- i am {first_name=Linda} {last_name=Coskun}.
+- my name is {first_name=Theo} {last_name=Inhestern}.
+- {first_name=Maria} {last_name=Ebner}
+- my name is {first_name=Tom} {last_name=Kistner}.
+- {first_name=Peter} {last_name=Delaunay}
+- {first_name=Theo} {last_name=Coskun}
+- i am {first_name=Theo} {last_name=Reichenbach}
+- my name is {first_name=Lisa} {last_name=Ebner}.
+- i am {first_name=Peter} {last_name=Mahoney}
+- my name is {first_name=Mary} {last_name=Reichenbach}.
+- i am {first_name=Mary} {last_name=Mahoney}.
+- my name is {first_name=Mary} {last_name=Ebner}.
+- {first_name=Tom} {last_name=Reichenbach}.
+- my name is {first_name=Tom} {last_name=Ebner}.
+- my name is {first_name=Linda} {last_name=Delaunay}
+- i am {first_name=Peter} {last_name=Mahoney}.
+- {first_name=Maria} {last_name=Kistner}.
+- i am {first_name=Theo} {last_name=Inhestern}.
+- my name is {first_name=Tom} {last_name=Reichenbach}.
+- i am {first_name=Lisa} {last_name=Ebner}
+- my name is {first_name=Theo} {last_name=Inhestern}
+- i am {first_name=Mary} {last_name=Mahoney}
+- {first_name=Maria} {last_name=Inhestern}.
+- {first_name=Mary} {last_name=Inhestern}
+- my name is {first_name=Lisa} {last_name=M�ller}.
+- {first_name=Linda} {last_name=Maier}.
+- i am {first_name=Peter} {last_name=Ebner}
+- i am {first_name=Tom} {last_name=Reichenbach}.
+- my name is {first_name=Paul} {last_name=Ebner}.
+- {first_name=Linda} {last_name=Coskun}
+- my name is {first_name=Peter} {last_name=Mahoney}
+- i am {first_name=Paul} {last_name=Rasztawicki}
+- i am {first_name=Peter} {last_name=Kistner}
+- i am {first_name=Linda} {last_name=M�ller}
+- my name is {first_name=Margret} {last_name=Maier}
+- {first_name=Lisa} {last_name=Rasztawicki}
+- my name is {first_name=Peter} {last_name=Coskun}
+- i am {first_name=Peter} {last_name=Maier}
+- my name is {first_name=Peter} {last_name=Inhestern}.
+- i am {first_name=Margret} {last_name=M�ller}.
+- {first_name=Margret} {last_name=Reichenbach}.
+- i am {first_name=Mary} {last_name=Delaunay}.
+- my name is {first_name=Tom} {last_name=Mahoney}.
+- {first_name=Maria} {last_name=Mahoney}.
+- {first_name=Mary} {last_name=Ebner}.
+- i am {first_name=Lisa} {last_name=Coskun}.
+- {first_name=Maria} {last_name=Reichenbach}.
+- i am {first_name=Theo} {last_name=Maier}
+- i am {first_name=Paul} {last_name=Maier}.
+- my name is {first_name=Maria} {last_name=Coskun}.
+- {first_name=Peter} {last_name=Reichenbach}
+- i am {first_name=Mary} {last_name=Rasztawicki}.
+- my name is {first_name=Theo} {last_name=Rasztawicki}.
+- i am {first_name=Maria} {last_name=Inhestern}
+- my name is {first_name=Paul} {last_name=Ebner}
+- i am {first_name=Linda} {last_name=Rasztawicki}.
+- {first_name=Linda} {last_name=Ebner}.
+- i am {first_name=Peter} {last_name=Delaunay}
+- my name is {first_name=Peter} {last_name=Ebner}
+- i am {first_name=Theo} {last_name=Kistner}
+- {first_name=Margret} {last_name=Maier}.
+- my name is {first_name=Linda} {last_name=Ebner}.
+- {first_name=Linda} {last_name=Delaunay}
+- my name is {first_name=Lisa} {last_name=Mahoney}
+- my name is {first_name=Maria} {last_name=M�ller}
+- {first_name=Tom} {last_name=Rasztawicki}
+- {first_name=Paul} {last_name=Maier}.
+- my name is {first_name=Peter} {last_name=Reichenbach}.
+- {first_name=Mary} {last_name=Mahoney}
+- {first_name=Peter} {last_name=Ebner}.
+- i am {first_name=Maria} {last_name=Rasztawicki}.
+- my name is {first_name=Maria} {last_name=Reichenbach}
+- i am {first_name=Peter} {last_name=Inhestern}
+- my name is {first_name=Lisa} {last_name=Delaunay}.
+- i am {first_name=Lisa} {last_name=Reichenbach}.
+- {first_name=Mary} {last_name=Reichenbach}.
+- i am {first_name=Tom} {last_name=Kistner}.
+- my name is {first_name=Maria} {last_name=M�ller}.
+- i am {first_name=Margret} {last_name=Ebner}.
+- i am {first_name=Peter} {last_name=M�ller}.
+- my name is {first_name=Mary} {last_name=Maier}
+- {first_name=Peter} {last_name=M�ller}.
+- my name is {first_name=Maria} {last_name=Rasztawicki}
+- {first_name=Mary} {last_name=Rasztawicki}
+- {first_name=Paul} {last_name=Reichenbach}
+- i am {first_name=Maria} {last_name=Mahoney}.
+- i am {first_name=Lisa} {last_name=M�ller}
+- {first_name=Mary} {last_name=Ebner}
+- i am {first_name=Lisa} {last_name=Kistner}
+- my name is {first_name=Lisa} {last_name=Inhestern}.
+- {first_name=Linda} {last_name=Maier}
+- {first_name=Lisa} {last_name=Coskun}
+- my name is {first_name=Theo} {last_name=Maier}.
+- my name is {first_name=Linda} {last_name=Mahoney}.
+- my name is {first_name=Paul} {last_name=M�ller}
+- {first_name=Lisa} {last_name=Kistner}
+- i am {first_name=Peter} {last_name=Rasztawicki}.
+- {first_name=Linda} {last_name=Delaunay}.
+- {first_name=Theo} {last_name=Inhestern}
+- {first_name=Theo} {last_name=Delaunay}.
+- my name is {first_name=Margret} {last_name=Ebner}.
+- my name is {first_name=Tom} {last_name=Ebner}
+- my name is {first_name=Lisa} {last_name=Reichenbach}
+- {first_name=Paul} {last_name=Rasztawicki}.
+- i am {first_name=Peter} {last_name=Reichenbach}
+- {first_name=Peter} {last_name=Mahoney}
+- {first_name=Paul} {last_name=Delaunay}.
+
+# None
+- i want to speak to a human
+- what can you do
+- how are you doing
+- What are you talking about?
+- You are dumb!
+- Do you like candy?
+- whats the weather like today
+
+
+
+> # Entity definitions
+
+@ ml Airport
+
+
+
+@ ml FlightNumber
+
+
+
+
+> # PREBUILT Entity definitions
+
+@ prebuilt datetimeV2
+
+
+> # Phrase list definitions
+
+
+> # List entities
+
+> # RegEx entities
+
+

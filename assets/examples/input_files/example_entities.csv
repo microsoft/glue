@@ -1,0 +1,36 @@
+entity_name;entity_value
+first_name;Peter
+first_name;Paul
+first_name;Mary
+first_name;Margret
+first_name;Theo
+first_name;Tom
+first_name;Maria
+first_name;Linda
+first_name;Lisa
+last_name;Coskun
+last_name;Delaunay
+last_name;Maier
+last_name;Ebner
+last_name;Inhestern
+last_name;Rasztawicki
+last_name;Reichenbach
+last_name;Kistner
+last_name;Mahoney
+last_name;Müller
+FlightNumber;AB1234
+FlightNumber;LH7721
+FlightNumber;AA1834556
+FlightNumber;CP9919223
+FlightNumber;LH1346
+FlightNumber;AA1994557
+FlightNumber;Ab9164
+Airport;Berlin
+Airport;Tokyo
+Airport;New York
+Airport;Tel Aviv
+Airport;London
+Airport;Paris
+Airport;Los Angeles
+Airport;Toronto
+Airport;Seattle
