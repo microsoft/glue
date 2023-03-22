@@ -113,6 +113,7 @@ config.ini
 input/
 output/
 output_files/
+tests/output_files/
 assets/customer_data/
 
 # Virtual envs
